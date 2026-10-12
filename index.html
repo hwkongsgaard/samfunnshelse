@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Samfunnshelse Dashbord</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1b2733;--muted:#5b6b7a;--line:#dde3ea;--accent:#0b5c8a;--accent-bg:#e6f1f8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10161c;--card:#18212a;--text:#e6ecf1;--muted:#9fb0bf;--line:#2a3743;--accent:#6bb7e3;--accent-bg:#1c2e3b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 16px 56px}
+h1{font-size:1.7rem;margin:0 0 4px}
+.lead{color:var(--muted);margin:0 0 28px}
+h2{font-size:1.2rem;margin:32px 0 6px}
+.desc{margin:0 0 14px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h3{margin:0 0 2px;font-size:1rem}
+.card p{margin:0 0 10px;font-size:.9rem;color:var(--muted)}
+.links a{display:inline-block;margin:0 6px 6px 0;padding:5px 11px;border-radius:999px;background:var(--accent-bg);color:var(--accent);text-decoration:none;font-size:.88rem;font-weight:600}
+.links a:hover{text-decoration:underline}
+.sources{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.sources ul{margin:6px 0 0;padding-left:20px}
+</style>
+</head>
+<body>
+<main>
+<h1>Samfunnshelse – dashbord</h1>
+<p class="lead">Avdeling Samfunnshelse, Helsedirektoratet. Dashbord om legevakt og fastleger. «Forenklet» gir de viktigste funnene i kort form. «Fullt» har alle analyser og tabeller.</p>
+
+<h2>Legevakt</h2>
+<p class="desc">Hvem som jobber på legevakt, og hvordan legevaktene brukes. Datagrunnlaget er HELFOs refusjonsoppgjør (KUHR) for legevaktkonsultasjoner, koblet til autoriserte leger, utdanningsland og fastlegestatus. Dashbordene viser alder og erfaring, utdanningsland, konsultasjoner per ukedag og time, og geografi med interkommunale legevakter. 2025 inneholder også pasienterfaringer fra PasOpp (skår per legevakt). 2026 er et delår.</p>
+<div class="grid">
+  <div class="card"><h3>2024</h3><p>Hele året.</p>
+    <div class="links"><a href="legevakt_behandlere_dashboard_v2.html">Fullt dashbord</a></div></div>
+  <div class="card"><h3>2025</h3><p>Hele året, med pasienterfaringer (PasOpp).</p>
+    <div class="links"><a href="legevakt_kort_2025.html">Forenklet</a><a href="legevakt_behandlere_dashboard_v2_2025.html">Fullt</a></div></div>
+  <div class="card"><h3>2026</h3><p>Delår: 1. januar – 14. september.</p>
+    <div class="links"><a href="legevakt_kort_2026.html">Forenklet</a><a href="legevakt_behandlere_dashboard_v2_2026.html">Fullt</a></div></div>
+</div>
+
+<h2>Fastleger</h2>
+<p class="desc">Fastlegenes aktivitet og arbeidsform. Datagrunnlaget er KUHR-takster per lege, med praksistype (fastlege, fastlønnet, turnuslege), kommune, alder, kjønn og utdanningsland. Dashbordene viser praksistype, refusjon og egenandel, utdanningsland og listelengde, ledig listekapasitet fra Helsenorge og pasienterfaringer fra PasOpp. De er koblet til kommuneøkonomi (ROBEK-listen og SSB KOSTRA). Analysen av fastlønnet mot privat lønnet fastlege og skår finnes bare for 2025. 2026 er et delår.</p>
+<div class="grid">
+  <div class="card"><h3>2025</h3><p>Hele året.</p>
+    <div class="links"><a href="fastleger_kort_2025.html">Forenklet</a><a href="fastleger_dashboard_2025.html">Fullt</a></div></div>
+  <div class="card"><h3>2026</h3><p>Delår.</p>
+    <div class="links"><a href="fastleger_kort_2026.html">Forenklet</a><a href="fastleger_dashboard_2026.html">Fullt</a></div></div>
+</div>
+
+<div class="sources">
+  <strong>Datakilder</strong>
+  <ul>
+    <li>HELFO/KUHR: takster og refusjon for legevakt og fastleger</li>
+    <li>HPR: autoriserte leger, utdanningsland</li>
+    <li>PasOpp: pasienterfaringer (skår) for legevakt og fastlege, 2025</li>
+    <li>Helsenorge fastlegesøk: listelengde og ledige plasser</li>
+    <li>Regjeringen (ROBEK) og SSB tabell 13566 (KOSTRA): kommuneøkonomi</li>
+  </ul>
+  <p>Tallene er statistiske sammenhenger, ikke årsaksforklaringer. Tallene for 2026 er foreløpige.</p>
+</div>
+</main>
+</body>
+</html>
