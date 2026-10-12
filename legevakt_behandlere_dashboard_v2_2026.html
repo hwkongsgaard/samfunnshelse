@@ -51,8 +51,11 @@
 <body>
 <div class="wrap">
   <p style="font-size:12.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); margin:0 0 6px;">Avdeling Samfunnshelse, Helsedirektoratet</p>
+
   <h1>Hvem jobber på legevakt</h1>
+
   <p class="subtitle">Sammenligning av spesialisering, rekvisisjonsrett og tilleggskompetanse blant leger med og uten registrerte konsultasjoner i legevakt 2026</p>
+
   <p class="note"><strong>Merk: 2026-tall er foreløpige (år til dags dato, ikke fullt kalenderår) og derfor ikke direkte sammenlignbare med et helt år.</strong> Populasjonen er avgrenset til helsepersonellkategori LE (lege). "Aktiv" betyr registrert med minst én konsultasjon i legevakt-takstregisteret for 2026; "Ikke aktiv" er øvrige leger med gyldig HPR-historikk i registrene. Rekvisisjonsrett, spesialitet og tilleggskompetanse er regnet som aktiv/gjeldende status i kildedataene (ikke avsluttet/godkjenning = ja). Andeler er beregnet innad i hver gruppe for å gjøre gruppene sammenlignbare til tross for ulik størrelse. Tallene er aggregert og bør ikke brukes til å identifisere enkeltpersoner.</p>
 
   <div class="panel" style="border-left:4px solid var(--accent); background:#F7F9FC;">
@@ -61,6 +64,7 @@
   </div>
 
   <h2>Legene som jobber på legevakt i 2026</h2>
+
   <p class="panel-sub" style="max-width:760px;">Profil av de 5 701 legene med minst én registrert konsultasjon i legevakt-takstregisteret 2026, før sammenligning med legene uten slik aktivitet.</p>
 
   <div class="kpis">
@@ -73,6 +77,66 @@
   <div class="kpis" style="grid-template-columns: repeat(2, 1fr); max-width:520px;">
     <div class="kpi"><p class="kpi-label">Med spesialisering</p><p class="kpi-value" id="p-med-spes">-</p></div>
     <div class="kpi"><p class="kpi-label">Uten spesialisering</p><p class="kpi-value" id="p-uten-spes">-</p></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi aktiv"><p class="kpi-label">Aktive på legevakt (LE)</p><p class="kpi-value" id="kpi-aktiv-antall">-</p></div>
+    <div class="kpi inaktiv"><p class="kpi-label">Ikke aktive på legevakt (LE)</p><p class="kpi-value" id="kpi-inaktiv-antall">-</p></div>
+    <div class="kpi"><p class="kpi-label">Snitt konsultasjoner (aktive)</p><p class="kpi-value" id="kpi-kons">-</p></div>
+    <div class="kpi"><p class="kpi-label">Total refusjon (aktive)</p><p class="kpi-value" id="kpi-refusjon">-</p></div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Oversikt – aktiv vs. ikke aktiv</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Gruppe</th>
+          <th class="num">Antall leger</th>
+          <th class="num">Snitt år siden første rekvisisjonsrett</th>
+          <th class="num">Med aktiv spesialisering</th>
+          <th class="num">Med aktiv tilleggskompetanse</th>
+          <th class="num">Er fastlege</th>
+          <th class="num">Snitt konsultasjoner</th>
+          <th class="num">Total refusjon</th>
+        </tr>
+      </thead>
+      <tbody id="totals-body"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Spesialitet – andel av gruppen</p>
+    <p class="panel-sub">Topp 20 spesialiteter blant aktive leger, sammenlignet med samme kode blant ikke-aktive</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
+    <div class="chart-wrap" style="height:560px;">
+      <canvas id="spesChart" role="img" aria-label="Gruppert stolpediagram over andel med hver spesialitet, aktiv vs ikke aktiv"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Rekvisisjonsrett – andel av gruppen</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
+    <div class="chart-wrap" style="height:280px;">
+      <canvas id="rekvChart" role="img" aria-label="Gruppert stolpediagram over rekvisisjonsrett-typer, aktiv vs ikke aktiv"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Tilleggskompetanse – andel av gruppen</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#0F6E56"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
+    <div class="chart-wrap" style="height:340px;">
+      <canvas id="tillChart" role="img" aria-label="Gruppert stolpediagram over tilleggskompetanse, aktiv vs ikke aktiv"></canvas>
+    </div>
   </div>
 
   <div class="grid2">
@@ -92,22 +156,6 @@
   </div>
 
   <div class="panel">
-    <p class="panel-title">Topp 15 legevakter/avsendere etter antall konsultasjoner</p>
-    <p class="panel-sub">Kun konsultasjoner utført av leger i denne populasjonen (LE, aktive i 2026)</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Legevakt / avsender</th>
-          <th class="num">Antall leger</th>
-          <th class="num">Konsultasjoner</th>
-          <th class="num">Total refusjon</th>
-        </tr>
-      </thead>
-      <tbody id="avsender-body"></tbody>
-    </table>
-  </div>
-
-  <div class="panel">
     <p class="panel-title">Bruk av takstkoder</p>
     <p class="panel-sub">Kodeverket for takster er ikke slått opp mot beskrivende navn i dette datasettet – kun kode vises</p>
     <div class="chart-wrap" style="height:220px;">
@@ -115,23 +163,62 @@
     </div>
   </div>
 
+  <h2>Alder, kjønn og erfaring</h2>
+
   <div class="panel">
-    <p class="panel-title">Konsultasjoner per ukedag</p>
-    <p class="panel-sub">Lørdag og søndag skiller seg klart ut – legevakt dekker i stor grad tiden fastlegekontorene har stengt</p>
-    <div class="chart-wrap" style="height:260px;">
-      <canvas id="ukedagChart" role="img" aria-label="Stolpediagram over antall konsultasjoner per ukedag"></canvas>
+    <p class="panel-title">Kjønn, alder og utdanningsland – ekte HPR-data</p>
+    <p class="panel-sub" id="demo-coverage-text">Kjønn/alder/utdanningsland hentet direkte fra HPR-registeret "Autoriserte leger", koblet på HPR-nummer (ikke tilnærmet). Dekning: beregnes under.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <p class="panel-title">Kjønn – andel av gruppen</p>
+      <div class="legend-hint">
+        <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+        <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+      </div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="leKjonnChart" role="img" aria-label="Gruppert stolpediagram over kjønnsfordeling, aktiv vs ikke aktiv"></canvas>
+      </div>
+    </div>
+    <div class="panel">
+      <p class="panel-title">Aldersgrupper – andel av gruppen</p>
+      <div class="legend-hint">
+        <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+        <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+      </div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="leAlderBucketChart" role="img" aria-label="Gruppert stolpediagram over aldersgrupper, aktiv vs ikke aktiv"></canvas>
+      </div>
     </div>
   </div>
 
-  <div class="panel" id="tidPanel" style="display:none;">
-    <p class="panel-title">Konsultasjoner per time på døgnet</p>
-    <p class="panel-sub">Kun tilgjengelig fra og med 2025-datasettet, som har klokkeslett (2024-dataene har kun dato)</p>
+  <div class="panel">
+    <p class="panel-title">Alder – density plot</p>
+    <p class="panel-sub">Fordeling av faktisk alder (Gauss-KDE), normalisert innad i hver gruppe</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
     <div class="chart-wrap" style="height:260px;">
-      <canvas id="tidChart" role="img" aria-label="Stolpediagram over antall konsultasjoner per time på døgnet"></canvas>
+      <canvas id="leAlderDensityChart" role="img" aria-label="Density plot over alder, aktiv vs ikke aktiv"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Erfaring – år siden første rekvisisjonsrett</p>
+    <p class="panel-sub">Fordeling (density plot, Gauss-kjerne) normalisert innad i hver gruppe. Aktive legevaktleger er tydelig konsentrert i 3-20 års erfaring, mens ikke-aktive har en langt større andel med 21+ år (ofte pensjonerte/emeritus-leger uten legevaktvakter)</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
+    <div class="chart-wrap" style="height:260px;">
+      <canvas id="erfaringSammenligningChart" role="img" aria-label="Density plot over år siden første rekvisisjonsrett, aktiv vs ikke aktiv"></canvas>
     </div>
   </div>
 
   <h2>Alder og kjønn blant legevaktleger (2026)</h2>
+
   <p class="panel-sub" style="max-width:760px;">Fra et eget datauttrekk med alder og kjønn direkte på hver konsultasjon i 2026 – <strong>reell registrert alder/kjønn for alle 5 734 leger med konsultasjoner</strong>, ikke en tilnærming via fastlegeregisteret slik resten av dashbordet bruker. Kun tilgjengelig for 2026.</p>
 
   <div class="kpis" style="grid-template-columns: repeat(4, 1fr);">
@@ -216,7 +303,146 @@
     </div>
   </div>
 
+  <h2>Utdanningsland</h2>
+
+  <div class="panel">
+    <p class="panel-title">Utdanningsland – Norge vs. utlandet</p>
+    <div class="chart-wrap" style="height:150px;">
+      <canvas id="leUtdanningNoChart" role="img" aria-label="Stolpediagram over andel utdannet i Norge vs. utlandet"></canvas>
+    </div>
+    <div id="utdanning-stat-konklusjon" style="margin-top:14px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
+  </div>
+
+  <div class="panel">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:4px;">
+      <p class="panel-title" style="margin:0;">Verdenskart – utdanningsland blant aktive legevaktleger</p>
+      <div class="map-toggle">
+        <button type="button" class="map-toggle-btn active" data-wmetric="aktiv_antall">Antall aktive</button>
+        <button type="button" class="map-toggle-btn" data-wmetric="andel_av_utland_pct">Andel av utenlandsutdannede</button>
+        <button type="button" class="map-toggle-btn" data-wmetric="andel_aktiv_pct">Andel aktiv (av landets leger)</button>
+      </div>
+    </div>
+    <p class="panel-sub">Norge dominerer skalaen og vises derfor i oransje (ikke med i fargeskalaen) for «Antall aktive» og «Andel av utenlandsutdannede»; tall for Norge finnes i tooltip og i «Andel aktiv». Grå betyr ingen leger/ikke data. Grenser: Natural Earth 110m (public domain). "XX" (ukjent/uoppgitt land) er utelatt.</p>
+    <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
+      <div class="chart-wrap" style="height:420px; flex:1 1 420px; min-width:280px;">
+        <svg id="worldMap" viewBox="0 0 900 480" style="width:100%; height:100%;" role="img" aria-label="Verdenskart fargelagt etter antall aktive legevaktleger utdannet i hvert land"></svg>
+      </div>
+      <div id="worldMapTooltip" style="flex:0 0 220px; min-width:200px; background:#F2F1EB; border:1px solid var(--border); border-radius:8px; padding:12px 14px; font-size:13px; align-self:flex-start;">
+        <p style="margin:0; font-weight:600; color:var(--text-muted);">Hold musepekeren over et land</p>
+      </div>
+    </div>
+    <div id="worldMapLegend" style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-secondary); margin-top:10px;"></div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Utdanningsland – etter region</p>
+    <p class="panel-sub">Norge vist for referanse. Øst-Europa er delt i to: Polen/Ungarn/Slovakia/Latvia (de fire største gruppene i utvalget) og resten av Øst-Europa. Andel av gruppen (aktiv/ikke aktiv), ikke deltakelsesrate.</p>
+    <div class="chart-wrap" style="height:320px;">
+      <canvas id="leUtdanningRegionChart" role="img" aria-label="Stolpediagram over andel utdannet i ulike verdensregioner, aktiv vs ikke aktiv"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Topp utdanningsland – andel av gruppen</p>
+    <p class="panel-sub">Topp 12 land, resten samlet som "Annet". Landkoder fra HPR-registeret (f.eks. PL=Polen, DK=Danmark, HU=Ungarn)</p>
+    <div class="legend-hint">
+      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
+      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
+    </div>
+    <div class="chart-wrap" style="height:400px;">
+      <canvas id="leUtdanningslandChart" role="img" aria-label="Gruppert stolpediagram over utdanningsland, aktiv vs ikke aktiv"></canvas>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Deltakelsesrate per utdanningsland – riktig sammenligningsgrunnlag</p>
+    <p class="panel-sub">Andel av <em>alle leger utdannet i hvert land</em> (uavhengig av gruppestørrelse) som jobber legevakt. Kun land med minst 50 leger totalt er med. Dette er et riktigere mål på hvilke land som er overrepresentert enn andel av gruppen, siden landene har svært ulik størrelse i utvalget. *Aldersjustert = direkte aldersstandardisert rate (5 aldersgrupper: &lt;35, 35–44, 45–54, 55–64, 65+) mot aldersfordelingen i hele LE-populasjonen, for å kontrollere for at land har ulik alderssammensetning blant sine leger. Justert rate er mer usikker for land med lite utvalg per aldersgruppe.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Land</th>
+          <th class="num">Totalt antall leger</th>
+          <th class="num">Aktive på legevakt</th>
+          <th class="num">Andel aktiv</th>
+          <th class="num">Aldersjustert*</th>
+        </tr>
+      </thead>
+      <tbody id="utdanningsrate-body"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Region – sentralitet, erfaring og fastlegestatus</p>
+    <p class="panel-sub">Blant aktive legevaktleger i hver region: gjennomsnittlig antall år siden første rekvisisjonsrett (proxy for autorisasjonsår/erfaring), andel som også er registrert fastlege, og hvilken sentralitetsklasse (1=mest sentral storby, 6=minst sentral) de primært jobber legevakt i.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th class="num">Antall aktive</th>
+          <th class="num">Snitt erfaring (år)</th>
+          <th class="num">Andel fastlege (aktive)</th>
+          <th class="num">Andel fastlege (ikke aktive)</th>
+          <th class="num">Snitt sentralitetsklasse</th>
+        </tr>
+      </thead>
+      <tbody id="region-crosscheck-body"></tbody>
+    </table>
+    <div class="chart-wrap" style="height:320px; margin-top:16px;">
+      <canvas id="regionSentralitetChart" role="img" aria-label="Stolpediagram over fordeling av sentralitetsklasse per region"></canvas>
+    </div>
+    <div id="region-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Region – spesialisering</p>
+    <p class="panel-sub">Andel av aktive/ikke-aktive legevaktleger i hver region som har minst én registrert formell spesialitet, samt den vanligste spesialiteten blant aktive med spesialisering i regionen.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th class="num">Antall aktive</th>
+          <th class="num">Andel med spesialisering (aktive)</th>
+          <th class="num">Andel med spesialisering (ikke aktive)</th>
+          <th>Vanligste spesialitet (aktive)</th>
+        </tr>
+      </thead>
+      <tbody id="region-spes-body"></tbody>
+    </table>
+    <div id="region-spes-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-title">Region – alder og kjønn (dobbeltsjekket mot HPR-registeret)</p>
+    <p class="panel-sub">Alder og kjønn er hentet fra samme kilde og samme rad som utdanningsland (HPR-registeret "Autoriserte leger", koblet på HPR-nummer) – ikke tilnærmet via andre registre. Dekningstabellen under viser at alder/kjønn og utdanningsland i praksis har identisk dekning innad i hver gruppe, siden de kommer fra samme kobling.</p>
+    <table style="margin-bottom:16px;">
+      <thead>
+        <tr>
+          <th>Gruppe</th>
+          <th class="num">Antall</th>
+          <th class="num">Med kjønn/alder</th>
+          <th class="num">Dekning kjønn/alder</th>
+          <th class="num">Dekning utdanningsland</th>
+        </tr>
+      </thead>
+      <tbody id="region-ak-coverage-body"></tbody>
+    </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th class="num">Antall aktive</th>
+          <th class="num">Snitt alder</th>
+          <th class="num">Median alder</th>
+          <th class="num">Andel kvinner</th>
+        </tr>
+      </thead>
+      <tbody id="region-ak-body"></tbody>
+    </table>
+    <div id="region-ak-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
+  </div>
+
   <h2>Er de som jobber på legevakt fastleger?</h2>
+
   <p class="panel-sub" style="max-width:760px;">Her snus perspektivet: populasjonen er nå <strong>alle 5 732 fastleger</strong> i det nasjonale fastlegeregisteret (<a href="https://github.com/hwkongsgaard/oppdrag_2025" target="_blank" rel="noopener">hwkongsgaard/oppdrag_2025</a> på GitHub, koblet via HPR-nummer), delt i de som har hatt minst én legevakt-konsultasjon i 2026 og de som ikke har det. Spesialisering og tilleggskompetanse er sammenlignet mellom de to gruppene.</p>
 
   <div class="kpis" style="grid-template-columns: repeat(4, 1fr);">
@@ -375,7 +601,8 @@
     <p class="panel-sub" style="margin-top:12px;">Av de aktive legevaktlegene som også ble funnet i spesialistregisteret: <span id="sp-avtale-text">-</span></p>
   </div>
 
-  <h2>Geografi</h2>
+  <h2>Hvor og når: geografi og tidspunkt</h2>
+
   <p class="panel-sub" style="max-width:760px;">Geografi er avledet fra hvilken legevakt/kommunal avsender konsultasjonene er registrert hos (org.nr slått opp i Brønnøysundregisteret), ikke legens bosted. En lege som har jobbet ved legevakter i flere fylker/kommuner telles med i hver av dem, så summen av "antall leger" per fylke/kommune overstiger 5 701. Sentralitet er SSBs sentralitetsindeks/-klasse per kommune (klasse 1 = mest sentral storby, klasse 6 = minst sentral).</p>
 
   <div class="panel">
@@ -500,171 +727,39 @@
     </table>
   </div>
 
-  <h2>Sammenligning: aktiv vs. ikke aktiv på legevakt</h2>
-
-  <div class="kpis">
-    <div class="kpi aktiv"><p class="kpi-label">Aktive på legevakt (LE)</p><p class="kpi-value" id="kpi-aktiv-antall">-</p></div>
-    <div class="kpi inaktiv"><p class="kpi-label">Ikke aktive på legevakt (LE)</p><p class="kpi-value" id="kpi-inaktiv-antall">-</p></div>
-    <div class="kpi"><p class="kpi-label">Snitt konsultasjoner (aktive)</p><p class="kpi-value" id="kpi-kons">-</p></div>
-    <div class="kpi"><p class="kpi-label">Total refusjon (aktive)</p><p class="kpi-value" id="kpi-refusjon">-</p></div>
-  </div>
-
   <div class="panel">
-    <p class="panel-title">Oversikt – aktiv vs. ikke aktiv</p>
+    <p class="panel-title">Topp 15 legevakter/avsendere etter antall konsultasjoner</p>
+    <p class="panel-sub">Kun konsultasjoner utført av leger i denne populasjonen (LE, aktive i 2026)</p>
     <table>
       <thead>
         <tr>
-          <th>Gruppe</th>
+          <th>Legevakt / avsender</th>
           <th class="num">Antall leger</th>
-          <th class="num">Snitt år siden første rekvisisjonsrett</th>
-          <th class="num">Med aktiv spesialisering</th>
-          <th class="num">Med aktiv tilleggskompetanse</th>
-          <th class="num">Er fastlege</th>
-          <th class="num">Snitt konsultasjoner</th>
+          <th class="num">Konsultasjoner</th>
           <th class="num">Total refusjon</th>
         </tr>
       </thead>
-      <tbody id="totals-body"></tbody>
+      <tbody id="avsender-body"></tbody>
     </table>
   </div>
 
   <div class="panel">
-    <p class="panel-title">Erfaring – år siden første rekvisisjonsrett</p>
-    <p class="panel-sub">Fordeling (density plot, Gauss-kjerne) normalisert innad i hver gruppe. Aktive legevaktleger er tydelig konsentrert i 3-20 års erfaring, mens ikke-aktive har en langt større andel med 21+ år (ofte pensjonerte/emeritus-leger uten legevaktvakter)</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
+    <p class="panel-title">Konsultasjoner per ukedag</p>
+    <p class="panel-sub">Lørdag og søndag skiller seg klart ut – legevakt dekker i stor grad tiden fastlegekontorene har stengt</p>
     <div class="chart-wrap" style="height:260px;">
-      <canvas id="erfaringSammenligningChart" role="img" aria-label="Density plot over år siden første rekvisisjonsrett, aktiv vs ikke aktiv"></canvas>
+      <canvas id="ukedagChart" role="img" aria-label="Stolpediagram over antall konsultasjoner per ukedag"></canvas>
     </div>
   </div>
 
-  <div class="panel">
-    <p class="panel-title">Kjønn, alder og utdanningsland – ekte HPR-data</p>
-    <p class="panel-sub" id="demo-coverage-text">Kjønn/alder/utdanningsland hentet direkte fra HPR-registeret "Autoriserte leger", koblet på HPR-nummer (ikke tilnærmet). Dekning: beregnes under.</p>
-  </div>
-
-  <div class="grid2">
-    <div class="panel">
-      <p class="panel-title">Kjønn – andel av gruppen</p>
-      <div class="legend-hint">
-        <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-        <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-      </div>
-      <div class="chart-wrap" style="height:180px;">
-        <canvas id="leKjonnChart" role="img" aria-label="Gruppert stolpediagram over kjønnsfordeling, aktiv vs ikke aktiv"></canvas>
-      </div>
-    </div>
-    <div class="panel">
-      <p class="panel-title">Aldersgrupper – andel av gruppen</p>
-      <div class="legend-hint">
-        <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-        <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-      </div>
-      <div class="chart-wrap" style="height:180px;">
-        <canvas id="leAlderBucketChart" role="img" aria-label="Gruppert stolpediagram over aldersgrupper, aktiv vs ikke aktiv"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Alder – density plot</p>
-    <p class="panel-sub">Fordeling av faktisk alder (Gauss-KDE), normalisert innad i hver gruppe</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
+  <div class="panel" id="tidPanel" style="display:none;">
+    <p class="panel-title">Konsultasjoner per time på døgnet</p>
+    <p class="panel-sub">Kun tilgjengelig fra og med 2025-datasettet, som har klokkeslett (2024-dataene har kun dato)</p>
     <div class="chart-wrap" style="height:260px;">
-      <canvas id="leAlderDensityChart" role="img" aria-label="Density plot over alder, aktiv vs ikke aktiv"></canvas>
+      <canvas id="tidChart" role="img" aria-label="Stolpediagram over antall konsultasjoner per time på døgnet"></canvas>
     </div>
   </div>
 
-  <div class="panel">
-    <p class="panel-title">Utdanningsland – Norge vs. utlandet</p>
-    <div class="chart-wrap" style="height:150px;">
-      <canvas id="leUtdanningNoChart" role="img" aria-label="Stolpediagram over andel utdannet i Norge vs. utlandet"></canvas>
-    </div>
-    <div id="utdanning-stat-konklusjon" style="margin-top:14px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Utdanningsland – etter region</p>
-    <p class="panel-sub">Norge vist for referanse. Øst-Europa er delt i to: Polen/Ungarn/Slovakia/Latvia (de fire største gruppene i utvalget) og resten av Øst-Europa. Andel av gruppen (aktiv/ikke aktiv), ikke deltakelsesrate.</p>
-    <div class="chart-wrap" style="height:320px;">
-      <canvas id="leUtdanningRegionChart" role="img" aria-label="Stolpediagram over andel utdannet i ulike verdensregioner, aktiv vs ikke aktiv"></canvas>
-    </div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Region – sentralitet, erfaring og fastlegestatus</p>
-    <p class="panel-sub">Blant aktive legevaktleger i hver region: gjennomsnittlig antall år siden første rekvisisjonsrett (proxy for autorisasjonsår/erfaring), andel som også er registrert fastlege, og hvilken sentralitetsklasse (1=mest sentral storby, 6=minst sentral) de primært jobber legevakt i.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Region</th>
-          <th class="num">Antall aktive</th>
-          <th class="num">Snitt erfaring (år)</th>
-          <th class="num">Andel fastlege (aktive)</th>
-          <th class="num">Andel fastlege (ikke aktive)</th>
-          <th class="num">Snitt sentralitetsklasse</th>
-        </tr>
-      </thead>
-      <tbody id="region-crosscheck-body"></tbody>
-    </table>
-    <div class="chart-wrap" style="height:320px; margin-top:16px;">
-      <canvas id="regionSentralitetChart" role="img" aria-label="Stolpediagram over fordeling av sentralitetsklasse per region"></canvas>
-    </div>
-    <div id="region-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Region – spesialisering</p>
-    <p class="panel-sub">Andel av aktive/ikke-aktive legevaktleger i hver region som har minst én registrert formell spesialitet, samt den vanligste spesialiteten blant aktive med spesialisering i regionen.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Region</th>
-          <th class="num">Antall aktive</th>
-          <th class="num">Andel med spesialisering (aktive)</th>
-          <th class="num">Andel med spesialisering (ikke aktive)</th>
-          <th>Vanligste spesialitet (aktive)</th>
-        </tr>
-      </thead>
-      <tbody id="region-spes-body"></tbody>
-    </table>
-    <div id="region-spes-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Region – alder og kjønn (dobbeltsjekket mot HPR-registeret)</p>
-    <p class="panel-sub">Alder og kjønn er hentet fra samme kilde og samme rad som utdanningsland (HPR-registeret "Autoriserte leger", koblet på HPR-nummer) – ikke tilnærmet via andre registre. Dekningstabellen under viser at alder/kjønn og utdanningsland i praksis har identisk dekning innad i hver gruppe, siden de kommer fra samme kobling.</p>
-    <table style="margin-bottom:16px;">
-      <thead>
-        <tr>
-          <th>Gruppe</th>
-          <th class="num">Antall</th>
-          <th class="num">Med kjønn/alder</th>
-          <th class="num">Dekning kjønn/alder</th>
-          <th class="num">Dekning utdanningsland</th>
-        </tr>
-      </thead>
-      <tbody id="region-ak-coverage-body"></tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th>Region</th>
-          <th class="num">Antall aktive</th>
-          <th class="num">Snitt alder</th>
-          <th class="num">Median alder</th>
-          <th class="num">Andel kvinner</th>
-        </tr>
-      </thead>
-      <tbody id="region-ak-body"></tbody>
-    </table>
-    <div id="region-ak-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
-  </div>
+  <h2>Arbeidsmengde</h2>
 
   <div class="panel">
     <p class="panel-title">Høyvolum-leger (250+ konsultasjoner) – utdanningsland og alder</p>
@@ -690,90 +785,6 @@
       <canvas id="volumRegionChart" role="img" aria-label="Stolpediagram over andel høyvolumleger per region"></canvas>
     </div>
     <div id="volum-stat-konklusjon" style="margin-top:16px; padding:14px 16px; background:#F2F1EB; border-radius:8px; font-size:13px; line-height:1.6;"></div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Deltakelsesrate per utdanningsland – riktig sammenligningsgrunnlag</p>
-    <p class="panel-sub">Andel av <em>alle leger utdannet i hvert land</em> (uavhengig av gruppestørrelse) som jobber legevakt. Kun land med minst 50 leger totalt er med. Dette er et riktigere mål på hvilke land som er overrepresentert enn andel av gruppen, siden landene har svært ulik størrelse i utvalget. *Aldersjustert = direkte aldersstandardisert rate (5 aldersgrupper: &lt;35, 35–44, 45–54, 55–64, 65+) mot aldersfordelingen i hele LE-populasjonen, for å kontrollere for at land har ulik alderssammensetning blant sine leger. Justert rate er mer usikker for land med lite utvalg per aldersgruppe.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Land</th>
-          <th class="num">Totalt antall leger</th>
-          <th class="num">Aktive på legevakt</th>
-          <th class="num">Andel aktiv</th>
-          <th class="num">Aldersjustert*</th>
-        </tr>
-      </thead>
-      <tbody id="utdanningsrate-body"></tbody>
-    </table>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Topp utdanningsland – andel av gruppen</p>
-    <p class="panel-sub">Topp 12 land, resten samlet som "Annet". Landkoder fra HPR-registeret (f.eks. PL=Polen, DK=Danmark, HU=Ungarn)</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
-    <div class="chart-wrap" style="height:400px;">
-      <canvas id="leUtdanningslandChart" role="img" aria-label="Gruppert stolpediagram over utdanningsland, aktiv vs ikke aktiv"></canvas>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:4px;">
-      <p class="panel-title" style="margin:0;">Verdenskart – utdanningsland blant aktive legevaktleger</p>
-      <div class="map-toggle">
-        <button type="button" class="map-toggle-btn active" data-wmetric="aktiv_antall">Antall aktive</button>
-        <button type="button" class="map-toggle-btn" data-wmetric="andel_av_utland_pct">Andel av utenlandsutdannede</button>
-        <button type="button" class="map-toggle-btn" data-wmetric="andel_aktiv_pct">Andel aktiv (av landets leger)</button>
-      </div>
-    </div>
-    <p class="panel-sub">Land Norge er utelatt fra fargeleggingen (dominerer skalaen) men vises i tooltip. Grenser: Natural Earth 110m (public domain). "XX" (ukjent/uoppgitt land) er utelatt.</p>
-    <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
-      <div class="chart-wrap" style="height:420px; flex:1 1 420px; min-width:280px;">
-        <svg id="worldMap" viewBox="0 0 900 480" style="width:100%; height:100%;" role="img" aria-label="Verdenskart fargelagt etter antall aktive legevaktleger utdannet i hvert land"></svg>
-      </div>
-      <div id="worldMapTooltip" style="flex:0 0 220px; min-width:200px; background:#F2F1EB; border:1px solid var(--border); border-radius:8px; padding:12px 14px; font-size:13px; align-self:flex-start;">
-        <p style="margin:0; font-weight:600; color:var(--text-muted);">Hold musepekeren over et land</p>
-      </div>
-    </div>
-    <div id="worldMapLegend" style="display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text-secondary); margin-top:10px;"></div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Spesialitet – andel av gruppen</p>
-    <p class="panel-sub">Topp 20 spesialiteter blant aktive leger, sammenlignet med samme kode blant ikke-aktive</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
-    <div class="chart-wrap" style="height:560px;">
-      <canvas id="spesChart" role="img" aria-label="Gruppert stolpediagram over andel med hver spesialitet, aktiv vs ikke aktiv"></canvas>
-    </div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Rekvisisjonsrett – andel av gruppen</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#185FA5"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
-    <div class="chart-wrap" style="height:280px;">
-      <canvas id="rekvChart" role="img" aria-label="Gruppert stolpediagram over rekvisisjonsrett-typer, aktiv vs ikke aktiv"></canvas>
-    </div>
-  </div>
-
-  <div class="panel">
-    <p class="panel-title">Tilleggskompetanse – andel av gruppen</p>
-    <div class="legend-hint">
-      <span><i class="dot" style="background:#0F6E56"></i>Aktiv på legevakt</span>
-      <span><i class="dot" style="background:#C9C6B8"></i>Ikke aktiv på legevakt</span>
-    </div>
-    <div class="chart-wrap" style="height:340px;">
-      <canvas id="tillChart" role="img" aria-label="Gruppert stolpediagram over tilleggskompetanse, aktiv vs ikke aktiv"></canvas>
-    </div>
   </div>
 
   <footer>Basert på rekvisisjonsrett-, spesialitet-, tilleggskompetanse- og konsultasjonstakst-registrene (2026 legevakt), koblet mot Helsedirektoratets kodeverk 7426, 7701 og 7702. Avgrenset til helsepersonellkategori LE.</footer>
@@ -1703,7 +1714,7 @@ function renderWorldMap() {
   svg.innerHTML = Object.entries(worldSvgData.paths).map(([iso2, d]) => {
     const rec = utdMapByLand[iso2];
     const val = (rec && (includeNorway || iso2 !== 'NO')) ? rec[currentWorldMetric] : 0;
-    const fill = worldColorScale(val, maxValue, 212);
+    const fill = (iso2 === 'NO' && !includeNorway) ? '#D97757' : worldColorScale(val, maxValue, 212);
     return `<path class="world-path" data-iso2="${iso2}" d="${d}" fill="${fill}"></path>`;
   }).join('');
 
@@ -1717,7 +1728,7 @@ function renderWorldMap() {
     const light = 90 - Math.sqrt(t) * 60;
     return `<span style="width:16px; height:16px; border-radius:3px; background:hsl(212,55%,${light}%); display:inline-block; border:1px solid var(--border);"></span>`;
   }).join('');
-  document.getElementById('worldMapLegend').innerHTML = `<span>Færre</span>${swatches}<span>Flere (${maxLabel})</span>`;
+  document.getElementById('worldMapLegend').innerHTML = `<span>Færre</span>${swatches}<span>Flere (${maxLabel})</span>` + (includeNorway ? '' : `<span style="margin-left:14px; display:inline-flex; align-items:center; gap:6px;"><span style="width:16px; height:16px; border-radius:3px; background:#D97757; display:inline-block;"></span>Norge (ikke med i fargeskalaen)</span>`) + `<span style="margin-left:14px; display:inline-flex; align-items:center; gap:6px;"><span style="width:16px; height:16px; border-radius:3px; background:#EDEBE3; display:inline-block; border:1px solid var(--border);"></span>Ingen leger / ikke data</span>`;
 }
 
 function showWorldTooltip(iso2) {
