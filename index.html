@@ -66,7 +66,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 16px 32px
   <div class="wrap">
     <p class="eyebrow">Avdeling Samfunnshelse · Helsedirektoratet</p>
     <h1>Dashbord om legevakt og fastleger</h1>
-    <p>Hvem som jobber i primærhelsetjenesten, hvor mye de jobber, og hva pasientene opplever. Velg forenklet versjon for hovedfunnene, eller fullt dashbord for alle analyser og tabeller.</p>
+    <p>Hvem som jobber i primærhelsetjenesten, hvor mye de jobber, hva det koster og hva pasientene opplever. Velg forenklet versjon for hovedfunnene, eller fullt dashbord for alle analyser og tabeller.</p>
     <div class="legend">
       <span class="pill">Forenklet: kort og enkelt språk</span>
       <span class="pill">Fullt: alle analyser og tester</span>
@@ -113,11 +113,11 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 16px 32px
       <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M17 8v6M14 11h6"/></svg></div>
       <div>
         <h2>Fastleger</h2>
-        <p class="desc">Fastlegenes aktivitet og arbeidsform. Datagrunnlaget er KUHR-takster per lege med praksistype, kommune, alder, kjønn og utdanningsland, koblet til listekapasitet, pasienterfaringer og kommuneøkonomi.</p>
+        <p class="desc">Fastlegenes aktivitet og arbeidsform. Datagrunnlaget er KUHR-takster per lege med praksistype, kommune, alder, kjønn og utdanningsland, koblet til listekapasitet og pasienterfaringer.</p>
       </div>
     </div>
     <div class="tags">
-      <span class="tag">Praksistype</span><span class="tag">Refusjon og egenandel</span><span class="tag">Utdanningsland og listelengde</span><span class="tag">Ledige listeplasser</span><span class="tag">Pasienterfaringer</span><span class="tag">Kommuneøkonomi (ROBEK, KOSTRA)</span><span class="tag">Fastlønnet mot privat (2025)</span>
+      <span class="tag">Praksistype</span><span class="tag">Utdanningsland og listelengde</span><span class="tag">Ledige listeplasser</span><span class="tag">Pasienterfaringer</span><span class="tag">Fastlønnet mot privat (2025)</span>
     </div>
     <div class="years">
       <div class="year">
@@ -133,12 +133,67 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 16px 32px
     </div>
   </section>
 
+  <section class="section" id="okonomi">
+    <div class="s-head">
+      <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+      <div>
+        <h2>Fastleger: økonomi</h2>
+        <p class="desc">Refusjon og egenandel for fastlegene, delt på praksistype og takstkode, og kommuneøkonomi (ROBEK og SSB KOSTRA) mot pasienterfaringer og legeprofil. Beløpene er fakturert refusjon, ikke inntekt.</p>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag">Refusjon og egenandel</span><span class="tag">Praksistype</span><span class="tag">Takstkoder</span><span class="tag">ROBEK</span><span class="tag">Netto driftsresultat, lånegjeld, disposisjonsfond</span>
+    </div>
+    <div class="years">
+      <div class="year">
+        <h3>2025</h3>
+        <p>Hele året.</p>
+        <div class="btns"><a class="btn primary" href="fastleger_okonomi_2025.html">Økonomi-dashbord</a></div>
+      </div>
+      <div class="year">
+        <h3>2026 <span class="badge">Delår</span></h3>
+        <p>Foreløpige tall for 2026.</p>
+        <div class="btns"><a class="btn primary" href="fastleger_okonomi_2026.html">Økonomi-dashbord</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lv-okonomi">
+    <div class="s-head">
+      <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+      <div>
+        <h2>Legevakt: økonomi</h2>
+        <p class="desc">Refusjon og egenandel for legevakter som ikke er interkommunale (kommuner med egen legevakt), og kommuneøkonomi (ROBEK og SSB KOSTRA) mot legevaktens fakturering og refusjon per innbygger. Beløpene er fakturert refusjon, ikke kostnader.</p>
+      </div>
+    </div>
+    <div class="tags">
+      <span class="tag">Refusjon og egenandel</span><span class="tag">Takstkoder</span><span class="tag">Refusjon per innbygger</span><span class="tag">ROBEK</span><span class="tag">Alle legevakter, interkommunale sammenslått</span><span class="tag">Egen-kommune-utvalg</span>
+    </div>
+    <div class="years">
+      <div class="year">
+        <h3>2024</h3>
+        <p>Hele året.</p>
+        <div class="btns"><a class="btn primary" href="legevakt_okonomi_alle_2024.html">Alle legevakter</a><a class="btn" href="legevakt_okonomi_2024.html">Kun egen kommune</a></div>
+      </div>
+      <div class="year">
+        <h3>2025</h3>
+        <p>Hele året.</p>
+        <div class="btns"><a class="btn primary" href="legevakt_okonomi_alle_2025.html">Alle legevakter</a><a class="btn" href="legevakt_okonomi_2025.html">Kun egen kommune</a></div>
+      </div>
+      <div class="year">
+        <h3>2026 <span class="badge">Delår</span></h3>
+        <p>1. januar – 14. september.</p>
+        <div class="btns"><a class="btn primary" href="legevakt_okonomi_alle_2026.html">Alle legevakter</a><a class="btn" href="legevakt_okonomi_2026.html">Kun egen kommune</a></div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="kilder">
     <h2 class="plain">Datakilder</h2>
     <div class="sources">
       <div class="src"><b>HELFO / KUHR</b><span>Takster og refusjon for legevakt og fastleger</span></div>
       <div class="src"><b>HPR</b><span>Autoriserte leger og utdanningsland</span></div>
-      <div class="src"><b>PasOpp</b><span>Pasienterfaringer (skår) for legevakt og fastlege, 2025</span></div>
+      <div class="src"><b>PasOpp</b><span>Pasienterfaringer (skår) for legevakt og fastlege</span></div>
       <div class="src"><b>Helsenorge fastlegesøk</b><span>Listelengde og ledige plasser</span></div>
       <div class="src"><b>ROBEK og SSB KOSTRA</b><span>Kommuneøkonomi (tabell 13566)</span></div>
     </div>

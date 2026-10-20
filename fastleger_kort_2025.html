@@ -189,7 +189,7 @@
       <div class="chart-wrap" style="height:230px;"><canvas id="cPkLv" role="img" aria-label="Andel som jobber legevakt etter praksistype"></canvas></div></div>
   </div>
   <div class="panel"><p class="panel-title">Oversikt</p>
-    <table><thead><tr><th>Praksistype</th><th class="num">Leger</th><th class="num">Takster</th><th class="num">Snitt alder</th><th class="num">Andel kvinner</th><th class="num">Utdannet i Norge</th><th class="num">Refusjon</th><th class="num">Egenandel</th></tr></thead><tbody id="tPk"></tbody></table>
+    <table><thead><tr><th>Praksistype</th><th class="num">Leger</th><th class="num">Takster</th><th class="num">Snitt alder</th><th class="num">Andel kvinner</th><th class="num">Utdannet i Norge</th></tr></thead><tbody id="tPk"></tbody></table>
     <div class="tolk" id="tolkPk"></div></div>
   <div class="panel"><p class="panel-title">Utdanningsland og praksistype</p><p class="panel-sub">Andel av legene i hver praksistype, etter utdanningsregion</p>
     <div class="legend-hint" id="pkLeg"></div>
@@ -200,12 +200,6 @@
     <div class="chart-wrap" style="height:280px;"><canvas id="cLL" role="img" aria-label="Forskjell i takster mot norskutdannede før og etter justering for listelengde"></canvas></div>
     <div class="tolk" id="tolkLL"></div></div>
   <div id="pfBlokk"></div>
-  <h2>Kommuneøkonomi</h2>
-  <p class="lead" id="ecLead"></p>
-  <div class="panel"><p class="panel-title">Hva henger sammen med pasienterfaringene?</p><p class="panel-sub">Spearman-sammenheng mellom kommunens økonomi og skår (PasOpp 2024). Fet skrift: sikker sammenheng.</p>
-    <table><thead><tr><th>Nøkkeltall</th><th class="num">ROBEK</th><th class="num">Øvrige</th><th class="num">Fastlegen</th><th class="num">Kontinuitet</th><th class="num">Tilgjengelighet</th></tr></thead><tbody id="tEc"></tbody></table>
-    <div class="tolk" id="tolkEc"></div></div>
-
   <p class="note" id="note"></p>
 </div>
 <script>
@@ -322,11 +316,10 @@ const pkN = { 'Fastlege':'Fastlege', 'Fastlønnet':'Fastlønnet', 'Turnuslege fa
 const PCOL = [C.acc, C.or, C.green];
 bar('cPk', PT.map(t => pkN[t.praksis]), [[PT.map(t => t.snitt), C.acc]]);
 bar('cPkLv', PT.map(t => pkN[t.praksis]), [[PT.map(t => t.andel_legevakt * 100), C.green]], pctOpts());
-$('tPk').innerHTML = PT.map((t, i) => { const o = OT[i]; return `<tr><td>${pkN[t.praksis]}</td><td class="num">${nf.format(t.leger)}</td><td class="num">${nf.format(t.takster)}</td><td class="num">${f1(t.snitt_alder, 0)}</td><td class="num">${pc(t.andel_kvinne)}</td><td class="num">${t.andel_norge != null ? pc(t.andel_norge) : '–'}</td><td class="num">${f1(o.refusjon / 1e9, 2)} mrd.</td><td class="num">${f1(o.egenandel / 1e9, 2)} mrd.</td></tr>`; }).join('');
+$('tPk').innerHTML = PT.map((t, i) => { const o = OT[i]; return `<tr><td>${pkN[t.praksis]}</td><td class="num">${nf.format(t.leger)}</td><td class="num">${nf.format(t.takster)}</td><td class="num">${f1(t.snitt_alder, 0)}</td><td class="num">${pc(t.andel_kvinne)}</td><td class="num">${t.andel_norge != null ? pc(t.andel_norge) : '–'}</td></tr>`; }).join('');
 const pF = PT.find(t => t.praksis === 'Fastlege'), pL = PT.find(t => t.praksis === 'Fastlønnet'), pU = PT.find(t => t.praksis === 'Turnuslege fastlønnet'), oF = OT.find(t => t.praksis === 'Fastlege'), oL = OT.find(t => t.praksis === 'Fastlønnet'), oU = OT.find(t => t.praksis === 'Turnuslege fastlønnet');
 $('tolkPk').innerHTML = `<p><mark class="funn">Selvstendige fastleger står for ${pc(pF.andel_takster)} av takstene</mark> og har ${nf.format(pF.snitt)} takster per lege, mot ${nf.format(pL.snitt)} for fastlønnede og ${nf.format(pU.snitt)} for turnusleger.</p>
-  <p>Fastlønnede og turnusleger er yngre (snitt ${f1(pL.snitt_alder, 0)} og ${f1(pU.snitt_alder, 0)} år mot ${f1(pF.snitt_alder, 0)}) og jobber langt oftere legevakt: <mark class="funn">${pc(pF.andel_legevakt)} av de selvstendige fastlegene, ${pc(pL.andel_legevakt)} av de fastlønnede og ${pc(pU.andel_legevakt)} av turnuslegene</mark>.</p>
-  <p>Refusjonen per takst er ${nf.format(oF.ref_per_takst)} kr for fastlege, ${nf.format(oL.ref_per_takst)} kr for fastlønnet og ${nf.format(oU.ref_per_takst)} kr for turnuslege, mens egenandelen er jevnere (${nf.format(oF.egen_per_takst)}, ${nf.format(oL.egen_per_takst)} og ${nf.format(oU.egen_per_takst)} kr). Egenandelen utgjør dermed en større andel av betalingen for fastlønnede (${pc(oL.egen_andel)}) og turnusleger (${pc(oU.egen_andel)}) enn for fastleger (${pc(oF.egen_andel)}). Beløpene er fakturert refusjon, ikke inntekt.</p>`;
+  <p>Fastlønnede og turnusleger er yngre (snitt ${f1(pL.snitt_alder, 0)} og ${f1(pU.snitt_alder, 0)} år mot ${f1(pF.snitt_alder, 0)}) og jobber langt oftere legevakt: <mark class="funn">${pc(pF.andel_legevakt)} av de selvstendige fastlegene, ${pc(pL.andel_legevakt)} av de fastlønnede og ${pc(pU.andel_legevakt)} av turnuslegene</mark>.</p>`;
 $('pkLeg').innerHTML = PL.typer.map((t, i) => `<span><i class="dot" style="background:${PCOL[i]}"></i>${pkN[t.praksis]}</span>`).join('');
 bar('cPkLand', PL.reg, PL.typer.map((t, i) => [t.andel.map(v => v * 100), PCOL[i]]), pctOpts());
 const plF = PL.typer.find(t => t.praksis === 'Fastlege'), plL = PL.typer.find(t => t.praksis === 'Fastlønnet'), plU = PL.typer.find(t => t.praksis === 'Turnuslege fastlønnet');
@@ -349,14 +342,6 @@ if (d.pas.praksis) {
   $('tolkPf').innerHTML = `<p><mark class="funn">Kommuner med mange fastlønnede leger har lavere skår på alle fem skalaene.</mark> Fra kommuner med under 10 % fastlønnede til over 60 % faller kontinuiteten fra ${f1(g0['Kontinuitet'], 0)} til ${f1(g3['Kontinuitet'], 0)} og tilgjengeligheten fra ${f1(g0['Tilgjengelighet'], 0)} til ${f1(g3['Tilgjengelighet'], 0)}.</p>
     <p>Mye henger sammen med at fastlønnede er vanligst i små og mindre sentrale kommuner. Etter justering for sentralitet og kommunestørrelse er effekten på kontinuitet ${f1(Math.abs(cK.b), 1)} poeng per 10 prosentpoeng (mot ${f1(Math.abs(cKu.b), 1)} ujustert), fortsatt ${cK.p < 0.05 ? 'sikker' : 'usikker'}. Dette er sammenhenger på kommunenivå, ikke årsaker.</p>`;
 }
-const RBk = d.pas.robek, ECk = d.pas.okonomi;
-$('ecLead').textContent = `${RBk.n_robek} kommuner står i ROBEK (register over kommuner i økonomisk ubalanse, ${RBk.dato.split('-').reverse().join('.')}). Nøkkeltall fra SSB (KOSTRA): netto driftsresultat, netto lånegjeld og disposisjonsfond, som prosent av driftsinntektene.`;
-const ecs = ECk.vars, ecP = (v, m) => v.pas.find(p => p.m === m);
-$('tEc').innerHTML = ecs.map(v => `<tr><td>${v.label.replace(' (% av driftsinntekter)', '')}</td><td class="num">${f1(v.robek, 1)} %</td><td class="num">${f1(v.andre, 1)} %</td>${['Fastlegen', 'Kontinuitet', 'Tilgjengelighet'].map(m => { const p = ecP(v, m), t = f1(p.rho, 2); return `<td class="num">${p.p < 0.05 ? '<strong>' + t + '</strong>' : t}</td>`; }).join('')}</tr>`).join('');
-const dpV = ecs.find(v => v.key === 'disp25'), sigM = ['Fastlegen', 'Koordinering og samhandling', 'Mestring', 'Tilgjengelighet', 'Kontinuitet'].filter(m => dpV.ols.j[m].p < 0.05);
-$('tolkEc').innerHTML = `<p><mark class="funn">Disposisjonsfond (økonomisk buffer) er det som henger tydeligst sammen med bedre pasienterfaringer</mark>: kommuner med større fond skårer høyere${sigM.length ? ', også etter justering for sentralitet og størrelse (' + sigM.join(', ') + ')' : ''}. Netto driftsresultat og lånegjeld gir ingen sikre utslag.</p>
-  <p>ROBEK-kommunene skiller seg ikke sikkert fra øvrige kommuner på legeprofil eller pasienterfaringer når man justerer for sentralitet og kommunestørrelse. Effektene er små, og sammenhengene beskriver kommuner, ikke årsaker.</p>`;
-
 // ---- Hovedfunn
 const toppFylke = fyS[0], bunnFylke = fyS[fyS.length - 1];
 const items = [
@@ -372,9 +357,8 @@ items.push(`Pasientene gir lavest skår på tilgjengelighet (${f1(P.norge['Tilgj
 items.push(`<mark class="funn">Selvstendige fastleger står for ${pc(pF.andel_takster)} av takstene.</mark> Fastlønnede leger og turnusleger jobber langt oftere legevakt (${pc(pL.andel_legevakt)} og ${pc(pU.andel_legevakt)} mot ${pc(pF.andel_legevakt)} av de selvstendige fastlegene).`);
 items.push(`Takster følger listelengden. <mark class="funn">Leger fra Polen, Ungarn, Slovakia og Latvia tar ${efK(llP.just_ak.b)} flere takster enn norskutdannede med samme alder og kjønn, men forskjellen forsvinner (${efK(llP.just_liste.b)}) når man justerer for listelengde.</mark>`);
 if (d.pas.praksis) items.push(`<mark class="funn">Kommuner med mange fastlønnede leger har lavere skår på pasienterfaringer</mark> – kontinuitet ${f1(d.pas.praksis.grupper[0]['Kontinuitet'], 0)} mot ${f1(d.pas.praksis.grupper[d.pas.praksis.grupper.length - 1]['Kontinuitet'], 0)} – delvis fordi de er vanligst i små, mindre sentrale kommuner.`);
-items.push(`ROBEK-status gir ingen sikker forskjell etter justering. <mark class="funn">Kommuner med større disposisjonsfond har bedre pasienterfaringer.</mark>`);
 $('funn').innerHTML = items.map(t => `<li>${t}</li>`).join('');
-$('note').textContent = `«Aktive hele året» betyr første takst før 1. mars og siste takst fra 1. september. En takst er én regning for en konsultasjon. Sammenhenger på kommunenivå (pasienterfaringer) beskriver kommuner, ikke enkeltleger. Det fulle dashbordet har tabeller, statistiske tester og flere detaljer. Praksistype er refusjonsgrunnlaget i regningene. ROBEK per 9. oktober 2026 og kommuneøkonomi fra SSB (KOSTRA). Kilder: HELFO-refusjonsregninger, HPR, fastlegeregisteret${d.api ? ', Helsenorges fastlegesøk (7. oktober 2026)' : ''}, PasOpp 2024, SSB.`;
+$('note').textContent = `«Aktive hele året» betyr første takst før 1. mars og siste takst fra 1. september. En takst er én regning for en konsultasjon. Sammenhenger på kommunenivå (pasienterfaringer) beskriver kommuner, ikke enkeltleger. Det fulle dashbordet har tabeller, statistiske tester og flere detaljer. Praksistype er refusjonsgrunnlaget i regningene. Kilder: HELFO-refusjonsregninger, HPR, fastlegeregisteret${d.api ? ', Helsenorges fastlegesøk (7. oktober 2026)' : ''}, PasOpp 2024.`;
 })();
 </script>
 <script id="pen-js">
