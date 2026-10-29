@@ -1,1 +1,355 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Sykehus innen to timer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: én kolonne; trappen av utgaver er hovedfiguren, deretter kurver og fylker med felles Bodø-valg, til slutt tabell */
+:root {
+  --bg: #f2f4f6;
+  --surface: #ffffff;
+  --ink: #12161b;
+  --ink-2: #4b525c;
+  --muted: #747c87;
+  --line: #e1e4e8;
+  --axis: #c3c7cd;
+  --track: #e9ecf0;
+  --inne: #2a78d6;
+  --inne-mork: #184f95;
+  --ute: #e34948;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100;
+  --h0: #edf3fb; --h1: #c4dcf8; --h2: #79aeee; --h3: #2a78d6; --h4: #184f95;
+  --ht0: #12161b; --ht1: #12161b; --ht2: #12161b; --ht3: #ffffff; --ht4: #ffffff;
+  --hover: rgba(42, 120, 214, 0.07);
+  --f-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #101317; --surface: #181c21; --ink: #eef0f2; --ink-2: #b7bdc6; --muted: #8a919b; --line: #2a3037;
+    --axis: #3a414a; --track: #232930; --inne: #3987e5; --inne-mork: #6da7ec; --ute: #e66767;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+    --h0: #1b2633; --h1: #1f3d63; --h2: #2a5f9e; --h3: #3987e5; --h4: #8dbcf2;
+    --ht0: #eef0f2; --ht1: #eef0f2; --ht2: #ffffff; --ht3: #0b1220; --ht4: #0b1220;
+    --hover: rgba(57, 135, 229, 0.12);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101317; --surface: #181c21; --ink: #eef0f2; --ink-2: #b7bdc6; --muted: #8a919b; --line: #2a3037;
+  --axis: #3a414a; --track: #232930; --inne: #3987e5; --inne-mork: #6da7ec; --ute: #e66767;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --h0: #1b2633; --h1: #1f3d63; --h2: #2a5f9e; --h3: #3987e5; --h4: #8dbcf2;
+  --ht0: #eef0f2; --ht1: #eef0f2; --ht2: #ffffff; --ht3: #0b1220; --ht4: #0b1220;
+  --hover: rgba(57, 135, 229, 0.12);
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 64px; }
+.les { max-width: 68ch; display: grid; gap: 12px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 1.6rem; line-height: 1.2; font-weight: 600; }
+h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--inne-mork); }
+a:focus-visible, button:focus-visible, input:focus-visible + label { outline: 2px solid var(--inne); outline-offset: 2px; }
+section { display: grid; gap: 22px; }
+.etikett { font: 500 0.75rem/1 var(--f-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.ingress { font-size: 1.15rem; color: var(--ink-2); }
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+header { display: grid; gap: 18px; }
 
+/* Trappen */
+.trapp { display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.trinn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 16px 36px; padding: 24px 26px; align-items: center; }
+.trinn + .trinn { border-top: 1px solid var(--line); }
+.trinn .hode { display: grid; gap: 10px; }
+.trinn .tittel { display: flex; align-items: baseline; gap: 10px; }
+.trinn .tittel i { width: 10px; height: 10px; border-radius: 50%; flex: none; transform: translateY(-1px); }
+.kjede { display: flex; flex-wrap: wrap; gap: 6px 4px; align-items: center; font-size: 0.8rem; }
+.kjede span { background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; color: var(--ink-2); white-space: nowrap; }
+.kjede span b { font: 500 0.78rem var(--f-data); color: var(--ink); }
+.kjede .ny { border-color: currentColor; }
+.kjede em { font-style: normal; color: var(--muted); padding: 0 2px; }
+.maal { display: grid; gap: 8px; }
+.spor { position: relative; height: 34px; }
+.spor .bak { position: absolute; inset: 11px 0; background: var(--track); border-radius: 4px; }
+.spor .fyll { position: absolute; top: 11px; bottom: 11px; left: 0; border-radius: 0 4px 4px 0; }
+.spor .bodo { position: absolute; top: 4px; bottom: 4px; width: 2px; background: var(--ink); border-radius: 1px; }
+.spor .tolv { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px dashed var(--axis); }
+.tall { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; }
+.tall a { display: inline-flex; gap: 8px; align-items: baseline; text-decoration: none; color: var(--ink-2); font-size: 0.85rem;
+  padding: 4px 10px 4px 0; border-radius: 4px; }
+.tall a b { font: 600 1.45rem/1 var(--f-display); color: var(--ink); letter-spacing: -0.01em; }
+.tall a:hover span { text-decoration: underline; }
+.tall a .pil { color: var(--muted); }
+.skala { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 36px; padding: 10px 26px 14px; border-top: 1px solid var(--line); }
+.skala div { display: flex; justify-content: space-between; font: 0.72rem var(--f-data); color: var(--muted); }
+.skala div span:first-child { transform: translateX(-30%); } .skala div span:last-child { transform: translateX(30%); }
+.forklar { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.82rem; color: var(--ink-2); align-items: center; }
+.forklar i { display: inline-block; vertical-align: -2px; margin-right: 6px; }
+
+/* Bodø-velger */
+.velger { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 3px; gap: 2px; }
+.velger input { position: absolute; opacity: 0; pointer-events: none; }
+.velger label { padding: 5px 14px; border-radius: 4px; font-size: 0.85rem; color: var(--ink-2); cursor: pointer; }
+.velger input:checked + label { background: var(--ink); color: var(--bg); }
+.verktoy { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+
+.to { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; position: relative; display: grid; gap: 12px; }
+.diagram svg { display: block; width: 100%; height: auto; overflow: visible; }
+.diagram text { fill: var(--muted); font: 11px var(--f-data); }
+.leg { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.8rem; color: var(--ink-2); }
+.leg i { display: inline-block; width: 14px; height: 0; border-top: 2px solid; margin-right: 6px; vertical-align: 3px; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font: 500 0.8rem/1.45 var(--f-body);
+  padding: 7px 10px; border-radius: 4px; white-space: nowrap; transform: translate(-50%, -110%); z-index: 2; }
+.tip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.varme { width: 100%; border-collapse: separate; border-spacing: 2px; font-size: 0.8rem; }
+.varme th { font: 500 0.68rem/1.2 var(--f-data); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 4px 6px; text-align: center; vertical-align: bottom; }
+.varme th:first-child, .varme td:first-child { text-align: left; }
+.varme td { padding: 5px 6px; text-align: center; font: 500 0.78rem var(--f-data); border-radius: 3px; }
+.varme td:first-child { font: 500 0.85rem var(--f-body); color: var(--ink-2); padding-left: 0; }
+.trinnskala { display: flex; gap: 2px; font: 0.7rem var(--f-data); color: var(--muted); align-items: center; flex-wrap: wrap; }
+.trinnskala i { display: inline-block; width: 26px; height: 10px; border-radius: 2px; }
+.trinnskala span { margin-right: 8px; }
+
+.tabell { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+table.data { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+.data th, .data td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.data th { font: 500 0.72rem/1.2 var(--f-data); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); vertical-align: bottom; }
+.data th:first-child, .data td:first-child { text-align: left; }
+.data td { font-family: var(--f-data); font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+.data td:first-child { font-family: var(--f-body); font-size: 0.92rem; }
+.data td.gr { font-weight: 600; }
+.data tr.forste td { border-top: 1px solid var(--axis); }
+.data tbody tr:hover { background: var(--hover); }
+.data .hoved { color: var(--inne-mork); font-weight: 500; }
+.notat { font-size: 0.85rem; color: var(--muted); }
+ul.metode { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: var(--ink-2); }
+ul.metode b { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 800px) {
+  .trinn, .to { grid-template-columns: minmax(0, 1fr); }
+  .trinn { padding: 20px 18px; }
+  .skala { padding-inline: 18px; grid-template-columns: minmax(0, 1fr); gap: 0; } .skala > span { display: none; }
+  .wrap { gap: 48px; padding-block: 32px 56px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="les">
+    <span class="etikett">Reisetidsanalyse · samleside · 8 utgaver · befolkning 1.1.2026</span>
+    <h1>Hvor mange når et sykehus innen to timer?</h1>
+    <p class="ingress">Hver utgave legger til et nytt ledd i kjeden fra nødsamtale til sykehus. Alle finnes med åtte sykehus og med Nordlandssykehuset Bodø som det niende. Målet er hele tiden andelen av de <span class="num" id="tot"></span> innbyggerne som har under 120 minutter.</p>
+  </header>
+
+  <section aria-labelledby="h-trapp">
+    <div class="les">
+      <span class="etikett">Utgavene</span>
+      <h2 id="h-trapp">Hvert nytt ledd flytter andelen innen to timer</h2>
+      <p>Ambulanseetappen og de faste tidene trekker andelen ned med til sammen elleve prosentpoeng. Luftambulansen løfter den igjen, men tallet forutsetter at et helikopter alltid er ledig. Trykk på et tall for å åpne rapporten.</p>
+    </div>
+    <div class="forklar" aria-hidden="true">
+      <span><i style="width:18px;height:8px;border-radius:0 3px 3px 0;background:var(--muted)"></i>åtte sykehus</span>
+      <span><i style="width:2px;height:16px;background:var(--ink)"></i>med Bodø</span>
+      <span><i style="width:0;height:14px;border-left:1px dashed var(--axis)"></i>skala 50–100 %</span>
+    </div>
+    <div class="trapp" id="trapp"></div>
+  </section>
+
+  <section aria-labelledby="h-kurver">
+    <div class="les">
+      <span class="etikett">Fordeling og fylker</span>
+      <h2 id="h-kurver">Med helikopter er Finnmark det eneste fylket under 80 prosent</h2>
+      <p>Kurven viser andelen som har kommet frem innen et gitt antall minutter. Tabellen til høyre viser andelen innen 120 minutter for hvert fylke. Begge følger valget av sykehus under.</p>
+    </div>
+    <div class="verktoy">
+      <div class="velger" role="radiogroup" aria-label="Sykehus">
+        <input type="radio" name="bodo" id="v-uten" value="uten" checked><label for="v-uten">Åtte sykehus</label>
+        <input type="radio" name="bodo" id="v-med" value="med"><label for="v-med">Med Bodø</label>
+      </div>
+      <div class="leg" id="leg"></div>
+    </div>
+    <div class="to">
+      <div class="diagram" id="kurve"><h3>Andel fremme innen X minutter</h3></div>
+      <div class="diagram"><h3>Andel innen 120 min, per fylke</h3>
+        <div style="overflow-x:auto"><table class="varme" id="varme"></table></div>
+        <div class="trinnskala" aria-label="Fargeskala">
+          <i style="background:var(--h0)"></i><span>&lt;25</span><i style="background:var(--h1)"></i><span>25–50</span>
+          <i style="background:var(--h2)"></i><span>50–75</span><i style="background:var(--h3)"></i><span>75–90</span>
+          <i style="background:var(--h4)"></i><span>≥90 %</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-tabell">
+    <div class="les">
+      <span class="etikett">Alle tall</span>
+      <h2 id="h-tabell">De åtte utgavene side om side</h2>
+      <p>Spennet er laveste og høyeste andel innen 120 minutter i sensitivitetsanalysen i hver rapport: vegfart, ferjeventetid, tid på stedet og helikopterfart.</p>
+    </div>
+    <div class="tabell"><table class="data" id="alle"></table></div>
+  </section>
+
+  <section class="les" aria-labelledby="h-metode">
+    <span class="etikett">Metode i kortform</span>
+    <h2 id="h-metode">Felles for alle utgavene</h2>
+    <ul class="metode">
+      <li><b>Befolkning:</b> SSB, befolkning på rutenett 250 m per 1.1.2026.</li>
+      <li><b>Vegnett:</b> OpenStreetMap (25.10.2026) med fartsgrenser, faktor for kryss og kurver, 427 bilferjestrekninger og 15 min ventetid per ferje. Normal trafikk, ingen utrykningskjøring. Modellen er rundt 7 % raskere enn OSRM.</li>
+      <li><b>Ambulanse:</b> 299 stasjoner. Nærmeste stasjon er antatt å ha ledig bil.</li>
+      <li><b>Faste tider:</b> <span id="m-faste"></span></li>
+      <li><b>Luftambulanse:</b> <span id="m-luft"></span></li>
+    </ul>
+    <p class="notat">Skript: <span class="num">~/hdir_prosjekter/reisetid/</span> 01–04 per utgave, 05_samleside.py for denne siden.</p>
+  </section>
+</div>
+
+<script>
+const D = {"tot": 5617894, "faste": {"amk": 6, "sted": 17.5, "heli": 15, "inn": 5, "kmt": 240}, "fylkeorden": ["Oslo", "Rogaland", "Møre og Romsdal", "Nordland", "Østfold", "Akershus", "Buskerud", "Innlandet", "Vestfold", "Telemark", "Agder", "Vestland", "Trøndelag", "Troms", "Finnmark"], "utgaver": [{"id": "bil", "navn": "Bil hjem → sykehus", "uten": {"andel": {"30": 0.4025462210572146, "60": 0.5571653719347499, "90": 0.7014979278711916, "120": 0.793383784030101, "180": 0.8536223716574218, "240": 0.8918804804789837}, "bef120": 4457146, "utenfor": 1160748, "sens": [0.7622771095360645, 0.81201033696969], "kurve": [0.0, 0.0467, 0.1573, 0.2675, 0.3252, 0.3691, 0.4025, 0.4259, 0.455, 0.4822, 0.5072, 0.5375, 0.5572, 0.573, 0.5913, 0.6196, 0.6576, 0.6823, 0.7015, 0.7237, 0.7379, 0.752, 0.7638, 0.7778, 0.7934, 0.8046, 0.8109, 0.8172, 0.823, 0.8276, 0.8327, 0.8369, 0.8404, 0.8434, 0.8465, 0.8501, 0.8536, 0.8566, 0.8601, 0.8644, 0.868, 0.8703, 0.873, 0.8757, 0.8801, 0.8838, 0.8865, 0.8882, 0.8919, 0.8959, 0.8992, 0.9008, 0.9017, 0.9025, 0.9033, 0.905, 0.9072, 0.9096, 0.9108, 0.9122, 0.9138, 0.9147, 0.9156, 0.917, 0.9191, 0.9197, 0.9208, 0.9217, 0.9226, 0.9247, 0.9298, 0.9366, 0.9412], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.9369, 508011], "Møre og Romsdal": [0.0024, 272769], "Nordland": [0.0, 242988], "Østfold": [0.9995, 315969], "Akershus": [1.0, 747977], "Buskerud": [0.9082, 272588], "Innlandet": [0.6705, 379087], "Vestfold": [1.0, 258961], "Telemark": [0.8172, 177718], "Agder": [0.9265, 323535], "Vestland": [0.7436, 657412], "Trøndelag": [0.8247, 488434], "Troms": [0.5441, 170929], "Finnmark": [0.0, 75170]}, "median": 48.8, "med_sh": 48.8}, "med": {"andel": {"30": 0.4116688566925613, "60": 0.5680331455168075, "90": 0.7138692898086009, "120": 0.8066478292399252, "180": 0.8678832316878887, "240": 0.91230592816454}, "bef120": 4531662, "utenfor": 1086232, "sens": [0.775133706687951, 0.8255150417576409], "kurve": [0.0, 0.05, 0.1639, 0.2757, 0.3338, 0.3782, 0.4117, 0.4352, 0.4643, 0.4916, 0.5168, 0.5478, 0.568, 0.584, 0.6026, 0.631, 0.669, 0.6939, 0.7139, 0.7362, 0.7506, 0.7648, 0.7768, 0.7908, 0.8066, 0.8181, 0.8244, 0.8307, 0.8367, 0.8414, 0.8464, 0.8506, 0.8543, 0.8573, 0.8605, 0.8643, 0.8679, 0.8711, 0.8745, 0.879, 0.883, 0.8867, 0.8918, 0.8951, 0.8998, 0.9037, 0.9065, 0.9084, 0.9123, 0.9168, 0.9203, 0.9219, 0.9229, 0.9238, 0.9249, 0.9277, 0.9312, 0.9354, 0.9372, 0.9388, 0.9405, 0.9417, 0.943, 0.9448, 0.947, 0.948, 0.9498, 0.9521, 0.9537, 0.9563, 0.9612, 0.9662, 0.9702], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.9369, 508011], "Møre og Romsdal": [0.0024, 272769], "Nordland": [0.3067, 242988], "Østfold": [0.9995, 315969], "Akershus": [1.0, 747977], "Buskerud": [0.9082, 272588], "Innlandet": [0.6705, 379087], "Vestfold": [1.0, 258961], "Telemark": [0.8172, 177718], "Agder": [0.9265, 323535], "Vestland": [0.7436, 657412], "Trøndelag": [0.8247, 488434], "Troms": [0.5441, 170929], "Finnmark": [0.0, 75170]}, "median": 47.0, "med_sh": 47.0}, "url_uten": "bil_uten_bodo.html", "url_med": "bil_med_bodo.html"}, {"id": "amb", "navn": "Ambulanse", "uten": {"andel": {"30": 0.3234407769174712, "60": 0.4948217250094074, "90": 0.6513549383452233, "120": 0.7536970259673821, "180": 0.8427095634057887, "240": 0.8821601119565445}, "bef120": 4234190, "utenfor": 1383704, "sens": [0.7232510972973146, 0.7883144466591929], "kurve": [0.0, 0.0027, 0.0491, 0.1165, 0.2009, 0.2688, 0.3234, 0.3627, 0.3935, 0.4178, 0.4431, 0.4706, 0.4948, 0.5179, 0.5406, 0.5615, 0.5867, 0.6163, 0.6514, 0.6759, 0.6975, 0.7149, 0.7273, 0.7371, 0.7537, 0.7745, 0.787, 0.7966, 0.8032, 0.8094, 0.8151, 0.8213, 0.8268, 0.8306, 0.8345, 0.8387, 0.8427, 0.8461, 0.8495, 0.8524, 0.8569, 0.8615, 0.8646, 0.8671, 0.8692, 0.8741, 0.8775, 0.88, 0.8822, 0.8854, 0.8895, 0.8938, 0.8966, 0.8982, 0.8992, 0.9004, 0.9019, 0.9044, 0.9069, 0.9081, 0.9094, 0.9106, 0.9115, 0.9126, 0.9139, 0.9158, 0.9172, 0.918, 0.9186, 0.9194, 0.922, 0.9262, 0.9325], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.8311, 508011], "Møre og Romsdal": [0.0006, 272769], "Nordland": [0.0, 242988], "Østfold": [0.9771, 315969], "Akershus": [0.9999, 747977], "Buskerud": [0.8881, 272588], "Innlandet": [0.5116, 379087], "Vestfold": [0.9577, 258961], "Telemark": [0.7424, 177718], "Agder": [0.8851, 323535], "Vestland": [0.7086, 657412], "Trøndelag": [0.7643, 488434], "Troms": [0.5109, 170929], "Finnmark": [0.0, 75170]}, "median": 61.2, "med_sh": 48.8, "med_amb": 8.8}, "med": {"andel": {"30": 0.332223071492627, "60": 0.5049881681640843, "90": 0.6628147487296842, "120": 0.7663960907770777, "180": 0.8564903502985283, "240": 0.90149440341879}, "bef120": 4305532, "utenfor": 1312362, "sens": [0.735347979153754, 0.801495898641021], "kurve": [0.0, 0.0027, 0.0515, 0.1214, 0.2071, 0.2769, 0.3322, 0.3717, 0.4025, 0.4268, 0.4523, 0.4801, 0.505, 0.5285, 0.5514, 0.5724, 0.5976, 0.6273, 0.6628, 0.6877, 0.7095, 0.7269, 0.7394, 0.7495, 0.7664, 0.7874, 0.8001, 0.8099, 0.8166, 0.8228, 0.8285, 0.8347, 0.8404, 0.8442, 0.8482, 0.8524, 0.8565, 0.86, 0.8635, 0.8665, 0.8711, 0.8763, 0.8804, 0.8846, 0.8876, 0.8929, 0.8965, 0.8991, 0.9015, 0.905, 0.9095, 0.914, 0.9169, 0.9186, 0.9199, 0.9216, 0.9236, 0.928, 0.9318, 0.9334, 0.9349, 0.9363, 0.9373, 0.9383, 0.9397, 0.9417, 0.9433, 0.9451, 0.9465, 0.9485, 0.9514, 0.9554, 0.9607], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.8311, 508011], "Møre og Romsdal": [0.0006, 272769], "Nordland": [0.2936, 242988], "Østfold": [0.9771, 315969], "Akershus": [0.9999, 747977], "Buskerud": [0.8881, 272588], "Innlandet": [0.5116, 379087], "Vestfold": [0.9577, 258961], "Telemark": [0.7424, 177718], "Agder": [0.8851, 323535], "Vestland": [0.7086, 657412], "Trøndelag": [0.7643, 488434], "Troms": [0.5109, 170929], "Finnmark": [0.0, 75170]}, "median": 59.0, "med_sh": 47.0, "med_amb": 8.8}, "url_uten": "amb_uten_bodo.html", "url_med": "amb_med_bodo.html"}, {"id": "amk", "navn": "AMK og tid på stedet", "uten": {"andel": {"30": 0.010820068872784, "60": 0.372280431065449, "90": 0.5253139343675762, "120": 0.682409636066469, "180": 0.8229548296924079, "240": 0.8677146631816122}, "bef120": 3833705, "utenfor": 1784189, "sens": [0.6312527434657899, 0.7178992697263423], "kurve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0108, 0.0658, 0.1408, 0.2209, 0.2884, 0.3369, 0.3723, 0.4017, 0.425, 0.4511, 0.4783, 0.5012, 0.5253, 0.5469, 0.5673, 0.5954, 0.6277, 0.659, 0.6824, 0.7037, 0.7191, 0.7302, 0.7417, 0.7596, 0.7786, 0.7902, 0.7986, 0.8052, 0.8111, 0.817, 0.823, 0.8282, 0.832, 0.8356, 0.84, 0.8439, 0.8473, 0.8503, 0.8534, 0.8583, 0.8625, 0.8652, 0.8677, 0.8703, 0.8754, 0.8782, 0.8806, 0.8831, 0.8866, 0.8911, 0.8947, 0.8973, 0.8986, 0.8994, 0.9009, 0.9022, 0.9054, 0.9074, 0.9086, 0.9099, 0.9109, 0.9119, 0.9129, 0.9145, 0.9162, 0.9174, 0.9182], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.7597, 508011], "Møre og Romsdal": [0.0, 272769], "Nordland": [0.0, 242988], "Østfold": [0.8746, 315969], "Akershus": [0.9912, 747977], "Buskerud": [0.8407, 272588], "Innlandet": [0.311, 379087], "Vestfold": [0.6824, 258961], "Telemark": [0.2851, 177718], "Agder": [0.821, 323535], "Vestland": [0.6768, 657412], "Trøndelag": [0.6905, 488434], "Troms": [0.4765, 170929], "Finnmark": [0.0, 75170]}, "median": 84.7, "med_sh": 48.8, "med_amb": 8.8}, "med": {"andel": {"30": 0.0108942959763925, "60": 0.3812498064221218, "90": 0.5359873290596084, "120": 0.6942991448396855, "180": 0.8364007936069994, "240": 0.8854380306926404}, "bef120": 3900499, "utenfor": 1717395, "sens": [0.6423180999855106, 0.7299354526803105], "kurve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0109, 0.0691, 0.1461, 0.2276, 0.2968, 0.3458, 0.3812, 0.4107, 0.4341, 0.4603, 0.488, 0.5115, 0.536, 0.5577, 0.5782, 0.6063, 0.6388, 0.6706, 0.6943, 0.7157, 0.7312, 0.7424, 0.7541, 0.7724, 0.7917, 0.8034, 0.8119, 0.8186, 0.8245, 0.8304, 0.8364, 0.8417, 0.8457, 0.8494, 0.8538, 0.8577, 0.8612, 0.8644, 0.8676, 0.8725, 0.8776, 0.8815, 0.8854, 0.8888, 0.8942, 0.8972, 0.8998, 0.9025, 0.9064, 0.9112, 0.9149, 0.9176, 0.919, 0.9202, 0.9223, 0.9242, 0.9294, 0.9324, 0.9339, 0.9355, 0.9367, 0.9377, 0.9387, 0.9404, 0.9421, 0.9438, 0.9456], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.7597, 508011], "Møre og Romsdal": [0.0, 272769], "Nordland": [0.2749, 242988], "Østfold": [0.8746, 315969], "Akershus": [0.9912, 747977], "Buskerud": [0.8407, 272588], "Innlandet": [0.311, 379087], "Vestfold": [0.6824, 258961], "Telemark": [0.2851, 177718], "Agder": [0.821, 323535], "Vestland": [0.6768, 657412], "Trøndelag": [0.6905, 488434], "Troms": [0.4765, 170929], "Finnmark": [0.0, 75170]}, "median": 82.5, "med_sh": 47.0, "med_amb": 8.8}, "url_uten": "amk_uten_bodo.html", "url_med": "amk_med_bodo.html"}, {"id": "luft", "navn": "Luftambulanse", "uten": {"andel": {"30": 0.010820068872784, "60": 0.3763182430996384, "90": 0.7139438729175025, "120": 0.9245174437253532, "180": 0.994411072903832, "240": 0.9993488663189444}, "bef120": 5193841, "utenfor": 424053, "sens": [0.8595610739540476, 0.9497808253413113], "kurve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0108, 0.0658, 0.1408, 0.2209, 0.2884, 0.3372, 0.3763, 0.4139, 0.4626, 0.5208, 0.595, 0.6647, 0.7139, 0.7574, 0.7918, 0.825, 0.8649, 0.9, 0.9245, 0.9397, 0.95, 0.9623, 0.971, 0.9754, 0.9788, 0.9811, 0.984, 0.9866, 0.9908, 0.9931, 0.9944, 0.9953, 0.9974, 0.998, 0.9984, 0.9987, 0.9989, 0.999, 0.9991, 0.9992, 0.9992, 0.9993, 0.9993, 0.9994, 0.9995, 0.9995, 0.9995, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9996, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.9967, 508011], "Møre og Romsdal": [0.7957, 272769], "Nordland": [0.2207, 242988], "Østfold": [0.9984, 315969], "Akershus": [1.0, 747977], "Buskerud": [0.9916, 272588], "Innlandet": [0.8641, 379087], "Vestfold": [1.0, 258961], "Telemark": [0.9417, 177718], "Agder": [0.9803, 323535], "Vestland": [0.9607, 657412], "Trøndelag": [0.9497, 488434], "Troms": [0.9691, 170929], "Finnmark": [0.3273, 75170]}, "median": 73.5, "med_sh": 48.8, "med_amb": 8.8, "luft_bef": 3253435}, "med": {"andel": {"30": 0.0108942959763925, "60": 0.3852876184563112, "90": 0.7270621339598077, "120": 0.9520738554340826, "180": 0.9976882796293416, "240": 0.999737268093702}, "bef120": 5348650, "utenfor": 269244, "sens": [0.8841085289256081, 0.9745641338195415], "kurve": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0109, 0.0691, 0.1461, 0.2276, 0.2968, 0.3461, 0.3853, 0.4231, 0.473, 0.5321, 0.6071, 0.6773, 0.7271, 0.7712, 0.8086, 0.8472, 0.8899, 0.9269, 0.9521, 0.9678, 0.9774, 0.9829, 0.9861, 0.9883, 0.9905, 0.9925, 0.9942, 0.9956, 0.9967, 0.997, 0.9977, 0.9982, 0.9985, 0.9986, 0.999, 0.9992, 0.9993, 0.9994, 0.9994, 0.9994, 0.9995, 0.9996, 0.9997, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9998, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999, 0.9999], "fylke": {"Oslo": [1.0, 726346], "Rogaland": [0.9967, 508011], "Møre og Romsdal": [0.7957, 272769], "Nordland": [0.8572, 242988], "Østfold": [0.9984, 315969], "Akershus": [1.0, 747977], "Buskerud": [0.9916, 272588], "Innlandet": [0.8641, 379087], "Vestfold": [1.0, 258961], "Telemark": [0.9417, 177718], "Agder": [0.9803, 323535], "Vestland": [0.9607, 657412], "Trøndelag": [0.9497, 488434], "Troms": [0.9698, 170929], "Finnmark": [0.3273, 75170]}, "median": 72.6, "med_sh": 47.0, "med_amb": 8.8, "luft_bef": 3202170}, "url_uten": "luft_uten_bodo.html", "url_med": "luft_med_bodo.html"}]};
+const nb = new Intl.NumberFormat("nb-NO");
+const pst = (x, d = 1) => (x * 100).toLocaleString("nb-NO", { minimumFractionDigits: d, maximumFractionDigits: d });
+const min = x => x.toLocaleString("nb-NO", { maximumFractionDigits: 1 });
+const NS = "http://www.w3.org/2000/svg";
+const el = (n, a = {}, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const h = (tag, attrs = {}, html = "") => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); e.innerHTML = html; return e; };
+const FARGE = { bil: "var(--s1)", amb: "var(--s2)", amk: "var(--s3)", luft: "var(--s4)" };
+const F = D.faste;
+let valg = "uten";
+
+document.getElementById("tot").textContent = nb.format(D.tot);
+document.getElementById("m-faste").textContent = `${F.amk} min AMK-vurdering og aktivering, ${min(F.sted)} min på stedet (15–20 min i sensitiviteten). Samme for alle, uansett bosted.`;
+document.getElementById("m-luft").textContent = `Ambulanse- og redningshelikopter fra 20 baser. Aktiveres når vurderingen på stedet er ferdig: ${F.heli} min aktivering, flytid i luftlinje med ${F.kmt} km/t, ${F.inn} min innlasting og flytid til sykehuset. Raskeste av bil og helikopter velges. Kapasitet, vær og mørke er ikke med.`;
+
+function kjede(u) {
+  const a = u.uten, c = s => `<span>${s}</span>`, pil = "<em>→</em>";
+  const bil = c(`Bil til sykehus <b>${min(a.med_sh)}</b>`);
+  const amb = c(`Ambulanse til hjem <b>${min(a.med_amb ?? 0)}</b>`);
+  const amk = c(`AMK <b>${F.amk}</b>`), sted = c(`På stedet <b>${min(F.sted)}</b>`);
+  if (u.id === "bil") return bil;
+  if (u.id === "amb") return amb + pil + bil;
+  if (u.id === "amk") return amk + pil + amb + pil + sted + pil + bil;
+  return amk + pil + amb + pil + sted + pil + bil + `<em>eller</em>` +
+    c(`Helikopter <b>${F.heli}</b> + fly + <b>${F.inn}</b> + fly`);
+}
+
+function trapp() {
+  const box = document.getElementById("trapp");
+  const x = v => Math.max(0, (v - 0.5) / 0.5 * 100);
+  for (const u of D.utgaver) {
+    const a = u.uten.andel[120], b = u.med.andel[120];
+    const r = h("div", { class: "trinn" });
+    r.appendChild(h("div", { class: "hode" },
+      `<div class="tittel"><i style="background:${FARGE[u.id]}"></i><h3>${u.navn}</h3></div>
+       <div class="kjede" aria-label="Tidsledd, median minutter">${kjede(u)}</div>`));
+    r.appendChild(h("div", { class: "maal" },
+      `<div class="spor" role="img" aria-label="${u.navn}: ${pst(a)} % med åtte sykehus, ${pst(b)} % med Bodø">
+         <div class="bak"></div>
+         ${[60, 70, 80, 90].map(t => `<div class="tolv" style="left:${x(t / 100)}%"></div>`).join("")}
+         <div class="fyll" style="width:${x(a)}%;background:${FARGE[u.id]}"></div>
+         <div class="bodo" style="left:calc(${x(b)}% - 1px)"></div>
+       </div>
+       <div class="tall">
+         <a href="${u.url_uten}"><b class="num">${pst(a)} %</b><span>åtte sykehus</span><span class="pil">↗</span></a>
+         <a href="${u.url_med}"><b class="num">${pst(b)} %</b><span>med Bodø</span><span class="pil">↗</span></a>
+       </div>`));
+    box.appendChild(r);
+  }
+  box.appendChild(h("div", { class: "skala", "aria-hidden": "true" },
+    "<span></span><div>" + ["50 %", "60 %", "70 %", "80 %", "90 %", "100 %"].map(s => `<span>${s}</span>`).join("") + "</div>"));
+}
+
+function tip(box) {
+  const t = document.createElement("div"); t.className = "tip"; t.hidden = true; box.appendChild(t);
+  return { vis(html, x, y) { t.innerHTML = html; t.style.left = x + "px"; t.style.top = y + "px"; t.hidden = false; }, skjul() { t.hidden = true; } };
+}
+
+function kurve() {
+  const box = document.getElementById("kurve");
+  box.querySelector("svg")?.remove(); box.querySelector(".tip")?.remove();
+  const W = 500, H = 300, m = { l: 42, r: 54, t: 10, b: 30 }, MAKS = 300;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Kumulativ andel etter minutter for fire utgaver" }, box);
+  const x = v => m.l + v / MAKS * (W - m.l - m.r), y = v => H - m.b - v * (H - m.t - m.b);
+  for (const v of [0, 0.25, 0.5, 0.75, 1]) {
+    el("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: v === 0 ? "var(--axis)" : "var(--line)" }, svg);
+    el("text", { x: m.l - 8, y: y(v) + 4, "text-anchor": "end" }, svg).textContent = v * 100 + " %";
+  }
+  for (const v of [0, 60, 120, 180, 240, 300]) el("text", { x: x(v), y: H - 10, "text-anchor": "middle" }, svg).textContent = v;
+  el("line", { x1: x(120), x2: x(120), y1: m.t, y2: H - m.b, stroke: "var(--ute)", "stroke-dasharray": "3 3" }, svg);
+  el("text", { x: x(120) - 6, y: m.t + 10, "text-anchor": "end", style: "fill:var(--ute)" }, svg).textContent = "120 min";
+  const serier = D.utgaver.map(u => ({ u, k: u[valg].kurve.slice(0, MAKS / 5 + 1) }));
+  for (const { u, k } of serier)
+    el("path", { d: "M" + k.map((v, i) => `${x(i * 5)},${y(v)}`).join("L"), fill: "none", stroke: FARGE[u.id], "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+  // Direkte etiketter ved 120 min, skjøvet fra hverandre
+  const lab = serier.map(({ u, k }) => ({ u, v: k[24], yy: y(k[24]) })).sort((a, b) => a.yy - b.yy);
+  for (let i = 1; i < lab.length; i++) lab[i].yy = Math.max(lab[i].yy, lab[i - 1].yy + 14);
+  for (const l of lab) {
+    el("circle", { cx: x(120), cy: y(l.v), r: 4, fill: FARGE[l.u.id], stroke: "var(--surface)", "stroke-width": 2 }, svg);
+    el("text", { x: x(120) + 9, y: l.yy + 4, style: "fill:var(--ink);font-weight:500" }, svg).textContent = pst(l.v) + " %";
+  }
+  const hår = el("line", { y1: m.t, y2: H - m.b, stroke: "var(--ink-2)", opacity: 0 }, svg);
+  const t = tip(box);
+  const flate = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" }, svg);
+  flate.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect(), sx = (e.clientX - r.left) / r.width * W;
+    const mm = Math.max(0, Math.min(MAKS, Math.round((sx - m.l) / (W - m.l - m.r) * MAKS / 5) * 5));
+    hår.setAttribute("x1", x(mm)); hår.setAttribute("x2", x(mm)); hår.setAttribute("opacity", 0.35);
+    const br = box.getBoundingClientRect();
+    t.vis(`<b>${mm} min</b><br>` + serier.map(({ u, k }) => `<i style="background:${FARGE[u.id]}"></i>${u.navn}: ${pst(k[mm / 5])} %`).join("<br>"),
+      e.clientX - br.left, r.top - br.top + 24);
+  });
+  flate.addEventListener("pointerleave", () => { hår.setAttribute("opacity", 0); t.skjul(); });
+}
+
+function varme() {
+  const tab = document.getElementById("varme");
+  const trinn = v => v >= 0.9 ? 4 : v >= 0.75 ? 3 : v >= 0.5 ? 2 : v >= 0.25 ? 1 : 0;
+  const fylker = [...D.fylkeorden].sort((a, b) => D.utgaver[0][valg].fylke[b][0] - D.utgaver[0][valg].fylke[a][0]);
+  tab.innerHTML = `<thead><tr><th>Fylke</th>${D.utgaver.map(u => `<th><span style="color:${FARGE[u.id]}">●</span> ${u.navn.replace("Bil hjem → sykehus", "Bil").replace("AMK og tid på stedet", "AMK + sted").replace("Luftambulanse", "Luft")}</th>`).join("")}</tr></thead><tbody>` +
+    fylker.map(f => `<tr><td>${f}</td>${D.utgaver.map(u => {
+      const [v, bef] = u[valg].fylke[f], s = trinn(v);
+      return `<td style="background:var(--h${s});color:var(--ht${s})" title="${f}, ${u.navn}: ${pst(v)} % av ${nb.format(bef)}">${Math.round(v * 100)}</td>`;
+    }).join("")}</tr>`).join("") + "</tbody>";
+}
+
+function alle() {
+  const t = document.getElementById("alle");
+  const rader = D.utgaver.flatMap(u => ["uten", "med"].map((k, i) => {
+    const a = u[k];
+    return `<tr class="${i === 0 ? "forste" : ""}">
+      <td class="${i === 0 ? "gr" : ""}">${i === 0 ? `<span style="color:${FARGE[u.id]}">●</span> ${u.navn}` : ""}</td>
+      <td style="text-align:left;font-family:var(--f-body)"><a href="${k === "uten" ? u.url_uten : u.url_med}">${k === "uten" ? "Åtte sykehus" : "Med Bodø"}</a></td>
+      <td>${pst(a.andel[60])}</td><td>${pst(a.andel[90])}</td><td class="hoved">${pst(a.andel[120])}</td><td>${pst(a.andel[180])}</td>
+      <td>${pst(a.sens[0])}–${pst(a.sens[1])}</td><td>${nb.format(a.utenfor)}</td><td>${Math.round(a.median)} min</td></tr>`;
+  })).join("");
+  t.innerHTML = `<thead><tr><th>Utgave</th><th style="text-align:left">Rapport</th><th>Innen 60</th><th>Innen 90</th><th>Innen 120</th><th>Innen 180</th><th>Spenn 120</th><th>Over 120 min</th><th>Median</th></tr></thead><tbody>${rader}</tbody>`;
+}
+
+function legende() {
+  document.getElementById("leg").innerHTML = D.utgaver.map(u => `<span><i style="border-color:${FARGE[u.id]}"></i>${u.navn}</span>`).join("");
+}
+
+function tegn() { kurve(); varme(); }
+document.querySelectorAll('input[name="bodo"]').forEach(i => i.addEventListener("change", e => { valg = e.target.value; tegn(); }));
+trapp(); legende(); alle(); tegn();
+</script>
+
+</body>
+</html>
