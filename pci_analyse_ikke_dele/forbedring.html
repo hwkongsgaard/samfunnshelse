@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Hvor kan minuttene hentes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Samme visuelle system som samlesiden. Seks tidselementer = kategoriske spor s1–s6 i fast rekkefølge langs kjeden. */
+:root {
+  --bg: #f2f4f6; --surface: #ffffff; --ink: #12161b; --ink-2: #4b525c; --muted: #747c87; --line: #e1e4e8;
+  --axis: #c3c7cd; --track: #e9ecf0; --inne: #2a78d6; --inne-mork: #184f95; --ute: #e34948;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300;
+  --h0: #edf3fb; --h1: #c4dcf8; --h2: #79aeee; --h3: #2a78d6; --h4: #184f95;
+  --ht0: #12161b; --ht1: #12161b; --ht2: #12161b; --ht3: #ffffff; --ht4: #ffffff;
+  --hover: rgba(42, 120, 214, 0.07);
+  --f-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #101317; --surface: #181c21; --ink: #eef0f2; --ink-2: #b7bdc6; --muted: #8a919b; --line: #2a3037;
+    --axis: #3a414a; --track: #232930; --inne: #3987e5; --inne-mork: #6da7ec; --ute: #e66767;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300;
+    --h0: #1b2633; --h1: #1f3d63; --h2: #2a5f9e; --h3: #3987e5; --h4: #8dbcf2;
+    --ht0: #eef0f2; --ht1: #eef0f2; --ht2: #ffffff; --ht3: #0b1220; --ht4: #0b1220;
+    --hover: rgba(57, 135, 229, 0.12);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #101317; --surface: #181c21; --ink: #eef0f2; --ink-2: #b7bdc6; --muted: #8a919b; --line: #2a3037;
+  --axis: #3a414a; --track: #232930; --inne: #3987e5; --inne-mork: #6da7ec; --ute: #e66767;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300;
+  --h0: #1b2633; --h1: #1f3d63; --h2: #2a5f9e; --h3: #3987e5; --h4: #8dbcf2;
+  --ht0: #eef0f2; --ht1: #eef0f2; --ht2: #ffffff; --ht3: #0b1220; --ht4: #0b1220;
+  --hover: rgba(57, 135, 229, 0.12);
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 64px; }
+.les { max-width: 68ch; display: grid; gap: 12px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; font-weight: 700; }
+h2 { font-size: 1.6rem; line-height: 1.2; font-weight: 600; }
+h3 { font-size: 1.05rem; line-height: 1.3; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--inne-mork); }
+a:focus-visible, input:focus-visible + label { outline: 2px solid var(--inne); outline-offset: 2px; }
+section { display: grid; gap: 22px; }
+header { display: grid; gap: 18px; }
+.etikett { font: 500 0.75rem/1 var(--f-data); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.ingress { font-size: 1.15rem; color: var(--ink-2); }
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+.lenker { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.88rem; }
+
+.verktoy { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+.velger { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 3px; gap: 2px; }
+.velger input { position: absolute; opacity: 0; pointer-events: none; }
+.velger label { padding: 5px 14px; border-radius: 4px; font-size: 0.85rem; color: var(--ink-2); cursor: pointer; }
+.velger input:checked + label { background: var(--ink); color: var(--bg); }
+
+/* Nøkkeltall */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.tile { padding: 22px 24px; display: grid; gap: 6px; align-content: start; }
+.tile + .tile { border-left: 1px solid var(--line); }
+.tile b { font: 700 2.6rem/1 var(--f-display); letter-spacing: -0.02em; }
+.tile span { font-size: 0.88rem; color: var(--ink-2); }
+.tile .pil { color: var(--muted); font-weight: 500; }
+
+.kort { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; position: relative; display: grid; gap: 14px; }
+.kort svg { display: block; width: 100%; height: auto; overflow: visible; }
+.kort text { fill: var(--muted); font: 11px var(--f-data); }
+.leg { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.8rem; color: var(--ink-2); }
+.leg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.leg .linje { width: 14px; height: 0; border-radius: 0; border-top: 2px solid; vertical-align: 3px; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font: 500 0.8rem/1.45 var(--f-body);
+  padding: 7px 10px; border-radius: 4px; white-space: nowrap; transform: translate(-50%, -110%); z-index: 2; }
+.tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.to { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+
+/* Spaker */
+.spaker { display: grid; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.spak { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px 32px; padding: 18px 24px; align-items: center; }
+.spak + .spak { border-top: 1px solid var(--line); }
+.spak .hode { display: grid; gap: 4px; }
+.spak .hode span { font-size: 0.85rem; color: var(--ink-2); }
+.stolpe { display: grid; grid-template-columns: minmax(0, 1fr) 8.5em; gap: 14px; align-items: center; }
+.stolpe .bak { height: 12px; background: var(--track); border-radius: 0 4px 4px 0; position: relative; }
+.stolpe .fyll { position: absolute; inset: 0 auto 0 0; background: var(--inne); border-radius: 0 4px 4px 0; }
+.stolpe .v { display: grid; gap: 0; text-align: right; }
+.stolpe .v b { font: 600 1.25rem/1.1 var(--f-display); }
+.stolpe .v small { font: 0.75rem var(--f-data); color: var(--muted); }
+
+/* Trappen (alle samlet) */
+.trapp { display: grid; gap: 0; }
+.trinn { display: grid; grid-template-columns: 15em minmax(0, 1fr) 4.5em; gap: 16px; align-items: center; padding: 7px 0; font-size: 0.88rem; }
+.trinn .n { color: var(--ink-2); }
+.trinn .n b { color: var(--ink); font-weight: 600; }
+.trinn .spor { position: relative; height: 22px; background: var(--track); border-radius: 4px; }
+.trinn .spor .a { position: absolute; inset: 0 auto 0 0; background: var(--inne); opacity: .35; border-radius: 4px 0 0 4px; }
+.trinn .spor .b { position: absolute; top: 0; bottom: 0; background: var(--inne); border-radius: 0 4px 4px 0; }
+.trinn .spor .tolv { position: absolute; top: -3px; bottom: -3px; border-left: 1px dashed var(--ink); opacity: .5; }
+.trinn .p { font: 500 0.88rem var(--f-data); text-align: right; }
+.trinn.sum .n b, .trinn.sum .p { font-weight: 700; }
+.akse { display: grid; grid-template-columns: 15em minmax(0, 1fr) 4.5em; gap: 16px; font: 0.72rem var(--f-data); color: var(--muted); }
+.akse div { display: flex; justify-content: space-between; }
+
+/* Fylker */
+.tabell { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.varme { width: 100%; border-collapse: separate; border-spacing: 2px; font-size: 0.8rem; padding: 10px 12px; }
+.varme th { font: 500 0.66rem/1.25 var(--f-data); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); padding: 4px 6px; text-align: center; vertical-align: bottom; min-width: 64px; }
+.varme th:first-child, .varme td:first-child { text-align: left; min-width: 0; }
+.varme td { padding: 5px 6px; text-align: center; font: 500 0.78rem var(--f-data); border-radius: 3px; }
+.varme td:first-child { font: 500 0.85rem var(--f-body); color: var(--ink-2); padding-left: 0; white-space: nowrap; }
+.varme td.skille, .varme th.skille { border-left: 2px solid var(--line); }
+.trinnskala { display: flex; gap: 2px; font: 0.7rem var(--f-data); color: var(--muted); align-items: center; flex-wrap: wrap; }
+.trinnskala i { display: inline-block; width: 26px; height: 10px; border-radius: 2px; }
+.trinnskala span { margin-right: 8px; }
+.notat { font-size: 0.85rem; color: var(--muted); }
+ul.metode { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: var(--ink-2); }
+ul.metode b { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 800px) {
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .tile + .tile { border-left: 0; border-top: 1px solid var(--line); }
+  .spak, .to { grid-template-columns: minmax(0, 1fr); }
+  .trinn, .akse { grid-template-columns: minmax(0, 1fr) 4em; }
+  .trinn .n { grid-column: 1 / -1; }
+  .akse > span:first-child { display: none; }
+  .wrap { gap: 48px; padding-block: 32px 56px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="etikett">Forbedringspotensial · full modell med luftambulanse og door-to-wire</div>
+    <h1>Hvor kan minuttene hentes?</h1>
+    <p class="ingress les" id="ingress"></p>
+    <div class="lenker">
+      <a id="lenke-samle">← Samleside for alle utgavene</a>
+      <a id="lenke-rapport">Rapporten for door-to-wire-utgaven</a>
+    </div>
+  </header>
+
+  <div class="verktoy">
+    <div class="velger" role="radiogroup" aria-label="Sykehusutvalg">
+      <input type="radio" name="bodo" id="b-uten" value="uten" checked><label for="b-uten">8 PCI-sentre</label>
+      <input type="radio" name="bodo" id="b-med" value="med"><label for="b-med">Med Bodø</label>
+    </div>
+    <span class="notat">Alle tall på siden følger valget.</span>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section>
+    <div class="les">
+      <div class="etikett">1 · Tidskjeden</div>
+      <h2>Hvor går tiden i dag?</h2>
+      <p id="kjede-tekst"></p>
+    </div>
+    <div class="kort" id="kjede-kort">
+      <div class="leg" id="kjede-leg"></div>
+      <svg id="kjede" role="img" aria-label="Gjennomsnittlige minutter per tidselement for grupper av befolkningen"></svg>
+      <p class="notat">Gjennomsnitt i minutter, vektet med befolkning. Hver gruppe bruker raskeste rute (bil eller helikopter) til det PCI-senteret som gir kortest tid inkludert door-to-wire. Stiplet linje: 120 min.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="les">
+      <div class="etikett">2 · Ett tiltak om gangen</div>
+      <h2>Hva gir hver forbedring alene?</h2>
+      <p id="spak-tekst"></p>
+    </div>
+    <div class="spaker" id="spaker"></div>
+  </section>
+
+  <section>
+    <div class="les">
+      <div class="etikett">3 · Alt samlet</div>
+      <h2>Trinn for trinn mot <span id="alle-h2"></span></h2>
+      <p id="trapp-tekst"></p>
+    </div>
+    <div class="kort">
+      <div class="trapp" id="trapp"></div>
+      <div class="akse"><span></span><div><span>50 %</span><span>75 %</span><span>100 %</span></div><span></span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="les">
+      <div class="etikett">4 · Minuttverdi</div>
+      <h2>Hva er ett spart minutt verdt?</h2>
+      <p id="minutt-tekst"></p>
+    </div>
+    <div class="to">
+      <div class="kort">
+        <h3>Minutter spart i hele kjeden</h3>
+        <div class="leg"><span><i class="linje" style="border-color:var(--s1)"></i>Alle pasienter (AMK, tid på stedet, door-to-wire)</span>
+          <span><i class="linje" style="border-color:var(--s2);border-top-style:dashed"></i>Kun helikopterruten (aktivering, innlasting, til sammen høyst 20 min)</span></div>
+        <svg id="minutt" role="img" aria-label="Andel innen 120 min etter antall minutter spart"></svg>
+      </div>
+      <div class="kort">
+        <h3>Tak på door-to-wire</h3>
+        <div class="leg"><span><i class="linje" style="border-color:var(--s6)"></i>Alle sykehus ned til høyst X min</span></div>
+        <svg id="tak" role="img" aria-label="Andel innen 120 min etter tak på door-to-wire"></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="les">
+      <div class="etikett">5 · Fylker</div>
+      <h2>Hvem tjener på hva?</h2>
+      <p id="fylke-tekst"></p>
+    </div>
+    <div class="tabell"><table class="varme" id="fylke"></table></div>
+    <div class="trinnskala" id="skala"></div>
+  </section>
+
+  <section class="les">
+    <div class="etikett">Forutsetninger og forbehold</div>
+    <h2>Slik er det regnet</h2>
+    <ul class="metode" id="metode"></ul>
+  </section>
+</div>
+
+<script>
+const D = {"grense": 120, "basis": {"amk": 6, "sted": 17.5, "akt": 15, "inn": 5, "kmt": 240, "samtidig": false}, "d2w": {"Arendal (SSHF)": 22, "Ahus": 24, "Ullevål": 31, "Rikshospitalet": 22, "Haukeland (Bergen)": 45, "SUS (Stavanger)": 35, "St. Olavs (Trondheim)": 28, "UNN Tromsø": 30, "Nordlandssykehuset Bodø": 27}, "elementer": [["amb", "Ambulanse til pasient"], ["amk", "AMK"], ["sted", "På stedet"], ["vent", "Venter på helikopter"], ["trans", "Transport til sykehus"], ["d2w", "Door-to-wire"]], "samleside": "index.html", "uten": {"tot": 5617894, "andel": 0.7351868867586323, "bef120": 4130202, "kjede": [{"navn": "Alle", "bef": 5617894, "tot": 102.82173923880363, "amb": 11.136497183054637, "amk": 6.0, "sted": 17.5, "vent": 19.35138935337169, "trans": 21.399240016555876, "d2w": 27.434612685821413}, {"navn": "Innen 120 min", "bef": 4130202, "tot": 87.52820424773459, "amb": 9.27364842596216, "amk": 6.0, "sted": 17.5, "vent": 13.27732568178252, "trans": 14.709719979469913, "d2w": 26.767510160519993}, {"navn": "120–150 min", "bef": 1045035, "tot": 133.4261846236349, "amb": 14.058393217387987, "amk": 6.0, "sted": 17.5, "vent": 36.392305958338554, "trans": 30.73141371825336, "d2w": 28.744071729654987}, {"navn": "Over 150 min", "bef": 442657, "tot": 173.26606119563735, "amb": 21.61968854792926, "amk": 6.0, "sted": 17.5, "vent": 35.79472051102513, "trans": 61.784054651496945, "d2w": 30.567597485186045}, {"navn": "Helikopterpasienter", "bef": 3299938, "tot": 122.52003806213864, "amb": 13.124179155625415, "amk": 6.0, "sted": 17.5, "vent": 32.94427172267197, "trans": 26.07530132634938, "d2w": 26.87628585749187}, {"navn": "Bilpasienter", "bef": 2317956, "tot": 74.77842658641569, "amb": 8.306750944040056, "amk": 6.0, "sted": 17.5, "vent": 0.0, "trans": 14.742205799117183, "d2w": 28.229469843258457}], "spaker": [{"id": "amk", "navn": "Raskere AMK-utalarmering", "tekst": "AMK-vurdering og utalarmering 6 → 3 min", "andel": 0.7578535657668158, "pp": 0.022666679008183532, "bef": 127339, "spart": 3.0, "spart_luft": 3.0}, {"id": "sted", "navn": "Kortere tid på stedet", "tekst": "Prehospitalt EKG og rask avreise: 17.5 → 10 min", "andel": 0.7912345800757365, "pp": 0.05604769331710424, "bef": 314870, "spart": 7.5, "spart_luft": 7.5}, {"id": "samtidig", "navn": "Helikopter varsles samtidig med ambulansen", "tekst": "Helikopteret aktiveres når AMK er ferdig, ikke etter vurderingen på stedet", "andel": 0.9020777180915126, "pp": 0.1668908313328803, "bef": 937575, "spart": 17.40187287751102, "spart_luft": 17.78604346859974}, {"id": "akt", "navn": "Raskere helikopteraktivering", "tekst": "Fra alarm til avgang 15 → 10 min", "andel": 0.7730297154058087, "pp": 0.03784282864717636, "bef": 212597, "spart": 3.0859806181494442, "spart_luft": 4.7533875677309485}, {"id": "inn", "navn": "Raskere innlasting", "tekst": "Innlasting i helikopteret 5 → 3 min", "andel": 0.750058651872036, "pp": 0.014871765113403712, "bef": 83548, "spart": 1.1990831192144646, "spart_luft": 1.9616043214199017}, {"id": "d2w", "navn": "Door-to-wire som de beste", "tekst": "Alle PCI-sentre ned til 22 min (Arendal og Rikshospitalet i dag)", "andel": 0.7785364052792737, "pp": 0.043349518520641395, "bef": 243533, "spart": 6.1060443244092015, "spart_luft": 5.407008856680717}], "trapp": [{"id": "samtidig", "andel": 0.9020777180915126}, {"id": "sted", "andel": 0.9202930849175865}, {"id": "d2w", "andel": 0.9501350506079325}, {"id": "akt", "andel": 0.9534923585243865}, {"id": "amk", "andel": 0.9564315382241103}, {"id": "inn", "andel": 0.9580139817518807}], "alle": {"andel": 0.9580139817518807, "bef": 5382021, "median": 61.87549810965285, "luft": 5494743, "trenger": 1919726}, "median": 99.0072271715776, "luft": 3299938, "trenger": 1063201, "minutt": {"x": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], "felles": [0.7351868867586323, 0.7427733595543099, 0.7503242318206788, 0.7578535657668158, 0.7652472616962869, 0.7731959698776801, 0.7805389350528864, 0.7879399290908657, 0.7945607375290455, 0.8015192169877182, 0.808140025425898, 0.8147129511521577, 0.8208408702620591, 0.827548543991752, 0.8343516271399923, 0.841522107750698, 0.8484115221825118, 0.8555588624491669, 0.8624755112859018, 0.8691039738378831, 0.8745161443060335, 0.8799258227371325, 0.8855357541455926, 0.8910771545351336, 0.8962940561000261, 0.9007521323827042, 0.905058372407881, 0.9093614083854199, 0.9134252088060045, 0.9175913607483516, 0.9212058824890609], "heli": [0.7351868867586323, 0.7426847142363313, 0.750058651872036, 0.7575717875773377, 0.7650267164172196, 0.7730297154058087, 0.7804967484256556, 0.787918390770634, 0.794527451034142, 0.8015072908103997, 0.808139669420605, 0.8147129511521577, 0.8208408702620591, 0.827548543991752, 0.8343516271399923, 0.841522107750698, 0.8484115221825118, 0.8555588624491669, 0.8624755112859018, 0.8691039738378831, 0.8745161443060335, null, null, null, null, null, null, null, null, null, null]}, "tak": {"x": [45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10], "y": [0.7351868867586323, 0.7358535066699372, 0.736694747177501, 0.7374742207667143, 0.7386118356807729, 0.7403761979133106, 0.7424502847508336, 0.7444483644582828, 0.7464478681869042, 0.7479194160658781, 0.7494927814586747, 0.7516327292754189, 0.753485024815349, 0.7552614912278516, 0.7566022071616161, 0.7583144146187165, 0.760802713614746, 0.7629531635876362, 0.7657257328101954, 0.7684828158025053, 0.7706727823629281, 0.7728511787513257, 0.7755877914392831, 0.7785364052792737, 0.7856205546064059, 0.7918445951454406, 0.7986142137961307, 0.8048161820069941, 0.8110414685645546, 0.8176857733520781, 0.8249890439371053, 0.8330360095793904, 0.8408973184613309, 0.8485866767867105, 0.8568465335942614, 0.8648986613132964]}, "fylke": [{"navn": "Oslo", "bef": 726346, "na": 0.9999944929826832, "alle": 1.0, "amk": 1.0, "sted": 1.0, "samtidig": 1.0, "akt": 1.0, "inn": 0.9999972464913416, "d2w": 0.9999944929826832}, {"navn": "Rogaland", "bef": 508011, "na": 0.912037337774182, "alle": 0.9994960739039115, "amk": 0.9331471168931381, "sted": 0.9620913720372196, "samtidig": 0.9948032621340877, "akt": 0.9470976022172748, "inn": 0.9257870400444085, "d2w": 0.975205261303397}, {"navn": "Møre og Romsdal", "bef": 272769, "na": 0.002152004076709597, "alle": 0.9766762352026807, "amk": 0.005004234352144122, "sted": 0.0207758212993412, "samtidig": 0.47955229516550635, "akt": 0.011951504753106109, "inn": 0.0034534716188423173, "d2w": 0.015720261466662267}, {"navn": "Nordland", "bef": 242988, "na": 0.0, "alle": 0.27839234859334616, "amk": 0.0, "sted": 0.015305282565394176, "samtidig": 0.16910300097124137, "akt": 0.0009136253642155168, "inn": 0.0, "d2w": 0.016815645217047755}, {"navn": "Østfold", "bef": 315969, "na": 0.9611575819146815, "alle": 0.9999968351325604, "amk": 0.96926913716219, "sted": 0.9820615313527593, "samtidig": 0.9995980618351801, "akt": 0.9761812076501176, "inn": 0.9661517427342555, "d2w": 0.9643794169681202}, {"navn": "Akershus", "bef": 747977, "na": 0.9975440421296377, "alle": 1.0, "amk": 0.9984491501744037, "sted": 0.9995240495362825, "samtidig": 1.0, "akt": 0.9990320557985072, "inn": 0.9981002089636446, "d2w": 0.9977579524504095}, {"navn": "Buskerud", "bef": 272588, "na": 0.9284304518173947, "alle": 0.9999669831393898, "amk": 0.9485193772286381, "sted": 0.9660146448119507, "samtidig": 0.9964928756951883, "akt": 0.9585931882548021, "inn": 0.9435521739768442, "d2w": 0.9288670080854623}, {"navn": "Innlandet", "bef": 379087, "na": 0.24155668751500314, "alle": 0.9765805738524402, "amk": 0.32939404411124623, "sted": 0.45858602378873453, "samtidig": 0.9292062244286932, "akt": 0.3891428616650004, "inn": 0.29749635307989986, "d2w": 0.2500217628143408}, {"navn": "Vestfold", "bef": 258961, "na": 0.9356466803881666, "alle": 1.0, "amk": 0.9536262217090604, "sted": 0.9770930757913354, "samtidig": 1.0, "akt": 0.9618822911558111, "inn": 0.948845579064029, "d2w": 0.9364421669672267}, {"navn": "Telemark", "bef": 177718, "na": 0.7095229520926412, "alle": 0.9984132164440293, "amk": 0.7553877491306452, "sted": 0.8399261751764031, "samtidig": 0.9926287714243914, "akt": 0.7881756490619971, "inn": 0.7393454799176223, "d2w": 0.7095398327687685}, {"navn": "Agder", "bef": 323535, "na": 0.8119832475620876, "alle": 0.999984545721483, "amk": 0.8573971904121656, "sted": 0.8958721622081073, "samtidig": 0.9967236929543944, "akt": 0.8795369898156304, "inn": 0.8452501274977978, "d2w": 0.8367008206221892}, {"navn": "Vestland", "bef": 657412, "na": 0.6276840094187511, "alle": 0.9922134065091601, "amk": 0.653608391693489, "sted": 0.7198043236204997, "samtidig": 0.8576448254671347, "akt": 0.6810645379153407, "inn": 0.6407640870565185, "d2w": 0.8382156090853224}, {"navn": "Trøndelag", "bef": 488434, "na": 0.7719753334124979, "alle": 0.9906517564297326, "amk": 0.8064999570054501, "sted": 0.8509235638796644, "samtidig": 0.9651416568052184, "akt": 0.8277658803441202, "inn": 0.7963163907508486, "d2w": 0.8374478435162171}, {"navn": "Troms", "bef": 170929, "na": 0.729308660320952, "alle": 0.9923945029807698, "amk": 0.8019294560899555, "sted": 0.8455206547747895, "samtidig": 0.9530623826267046, "akt": 0.8280982162184298, "inn": 0.7814648187259038, "d2w": 0.8495866704889165}, {"navn": "Finnmark", "bef": 75170, "na": 0.0, "alle": 0.550977783690302, "amk": 0.0, "sted": 0.0, "samtidig": 0.27242250897964615, "akt": 0.0, "inn": 0.0, "d2w": 0.0}], "url": "d2w_uten_bodo.html"}, "med": {"tot": 5617894, "andel": 0.7486494049193524, "bef120": 4205833, "kjede": [{"navn": "Alle", "bef": 5617894, "tot": 100.66279076714719, "amb": 11.136497183054637, "amk": 6.0, "sted": 17.5, "vent": 19.156233546823373, "trans": 19.52438601778787, "d2w": 27.345674019481322}, {"navn": "Innen 120 min", "bef": 4205833, "tot": 87.36469220043332, "amb": 9.260558097615641, "amk": 6.0, "sted": 17.5, "vent": 13.220606358023502, "trans": 14.61183685740041, "d2w": 26.77169088739377}, {"navn": "120–150 min", "bef": 1128332, "tot": 133.27869207597482, "amb": 13.839709245509903, "amk": 6.0, "sted": 17.5, "vent": 36.80978514934269, "trans": 30.579051979325225, "d2w": 28.55014570179699}, {"navn": "Over 150 min", "bef": 283729, "tot": 168.07929254717624, "amb": 28.194203087896472, "amk": 6.0, "sted": 17.5, "vent": 36.93795314396674, "trans": 48.383008221251465, "d2w": 31.064128094061587}, {"navn": "Helikopterpasienter", "bef": 3248673, "tot": 119.6669460180472, "amb": 13.201271116177912, "amk": 6.0, "sted": 17.5, "vent": 33.126661102948106, "trans": 23.118480830536864, "d2w": 26.720532968384322}, {"navn": "Bilpasienter", "bef": 2369221, "tot": 74.60431582901053, "amb": 8.305281636830205, "amk": 6.0, "sted": 17.5, "vent": 0.0, "trans": 14.596167511528767, "d2w": 28.202866680651574}], "spaker": [{"id": "amk", "navn": "Raskere AMK-utalarmering", "tekst": "AMK-vurdering og utalarmering 6 → 3 min", "andel": 0.7720161683363909, "pp": 0.023366763417038472, "bef": 131272, "spart": 3.0, "spart_luft": 3.0}, {"id": "sted", "navn": "Kortere tid på stedet", "tekst": "Prehospitalt EKG og rask avreise: 17.5 → 10 min", "andel": 0.8084732463802272, "pp": 0.05982384146087483, "bef": 336084, "spart": 7.5, "spart_luft": 7.5}, {"id": "samtidig", "navn": "Helikopter varsles samtidig med ambulansen", "tekst": "Helikopteret aktiveres når AMK er ferdig, ikke etter vurderingen på stedet", "andel": 0.9321090785977806, "pp": 0.1834596736784282, "bef": 1030657, "spart": 17.27649711530928, "spart_luft": 17.72560580345067}, {"id": "akt", "navn": "Raskere helikopteraktivering", "tekst": "Fra alarm til avgang 15 → 10 min", "andel": 0.7882482296746788, "pp": 0.03959882475532639, "bef": 222462, "spart": 3.040638418419652, "spart_luft": 4.749300359467276}, {"id": "inn", "navn": "Raskere innlasting", "tekst": "Innlasting i helikopteret 5 → 3 min", "andel": 0.7639204299689528, "pp": 0.015271025049600429, "bef": 85791, "spart": 1.1808671349228856, "spart_luft": 1.9609709788352658}, {"id": "d2w", "navn": "Door-to-wire som de beste", "tekst": "Alle PCI-sentre ned til 22 min (Arendal og Rikshospitalet i dag)", "andel": 0.7937549195481438, "pp": 0.04510551462879142, "bef": 253398, "spart": 6.018613377504363, "spart_luft": 5.262238212484373}], "trapp": [{"id": "samtidig", "andel": 0.9321090785977806}, {"id": "sted", "andel": 0.9509004619880689}, {"id": "d2w", "andel": 0.9794488824459842}, {"id": "akt", "andel": 0.9817771570627712}, {"id": "amk", "andel": 0.9847095726619264}, {"id": "inn", "andel": 0.9863107064675838}], "alle": {"andel": 0.9863107064675838, "bef": 5540989, "median": 61.25164205915645, "luft": 5486597, "trenger": 2017001}, "median": 98.29903185457502, "luft": 3248673, "trenger": 1078431, "minutt": {"x": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], "felles": [0.7486494049193524, 0.7564149483774525, 0.7641860099175954, 0.7720161683363909, 0.7798002240697315, 0.7884144841465502, 0.7965429750009523, 0.8047307407366533, 0.8121838895500698, 0.8203629331560902, 0.8284417612721066, 0.83623133508749, 0.8439411637172222, 0.8516671905877896, 0.8587248175205869, 0.8661776103287103, 0.8736492714173675, 0.8811268065933604, 0.8883309297042629, 0.8952897651682286, 0.9011476542633235, 0.9068581571670807, 0.9128548883264797, 0.9184827980022408, 0.9239852158121887, 0.9286878677312175, 0.9330578327038567, 0.9374196095547549, 0.9416485964313317, 0.9458912895116924, 0.9494954870989022], "heli": [0.7486494049193524, 0.7563263030594739, 0.7639204299689528, 0.7717343901469127, 0.7795796787906643, 0.7882482296746788, 0.7965007883737215, 0.8047092024164215, 0.8121506030551662, 0.8203510069787717, 0.8284414052668135, 0.83623133508749, 0.8439411637172222, 0.8516671905877896, 0.8587248175205869, 0.8661776103287103, 0.8736492714173675, 0.8811268065933604, 0.8883309297042629, 0.8952897651682286, 0.9011476542633235, null, null, null, null, null, null, null, null, null, null]}, "tak": {"x": [45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10], "y": [0.7486494049193524, 0.7493160248306572, 0.750157265338221, 0.7509367389274344, 0.7520743538414929, 0.7538387160740306, 0.7559128029115537, 0.7579108826190027, 0.7599103863476242, 0.7613819342265981, 0.7629552996193948, 0.7650952474361389, 0.7669475429760689, 0.7687240093885715, 0.770064725322336, 0.7717769327794366, 0.774265231775466, 0.7764156817483563, 0.7791882509709155, 0.782124404625648, 0.7845345604598449, 0.7870137813209007, 0.7901407538127276, 0.7937549195481438, 0.8016245945544719, 0.8086012302830918, 0.8161303862265824, 0.8233799000123534, 0.8308752354530007, 0.8384549441481096, 0.8471959421092673, 0.8561948659052663, 0.8644086200273625, 0.8725130805244813, 0.8814504154047762, 0.8899386496078424]}, "fylke": [{"navn": "Oslo", "bef": 726346, "na": 0.9999944929826832, "alle": 1.0, "amk": 1.0, "sted": 1.0, "samtidig": 1.0, "akt": 1.0, "inn": 0.9999972464913416, "d2w": 0.9999944929826832}, {"navn": "Rogaland", "bef": 508011, "na": 0.912037337774182, "alle": 0.9994960739039115, "amk": 0.9331471168931381, "sted": 0.9620913720372196, "samtidig": 0.9948032621340877, "akt": 0.9470976022172748, "inn": 0.9257870400444085, "d2w": 0.975205261303397}, {"navn": "Møre og Romsdal", "bef": 272769, "na": 0.002152004076709597, "alle": 0.9766762352026807, "amk": 0.005004234352144122, "sted": 0.0207758212993412, "samtidig": 0.47955229516550635, "akt": 0.011951504753106109, "inn": 0.0034534716188423173, "d2w": 0.015720261466662267}, {"navn": "Nordland", "bef": 242988, "na": 0.31125405369812503, "alle": 0.9324740316394226, "amk": 0.3274400381911864, "sted": 0.413855828271355, "samtidig": 0.8631496205573937, "akt": 0.35276639175597146, "inn": 0.32048496222035655, "d2w": 0.3686684116088037}, {"navn": "Østfold", "bef": 315969, "na": 0.9611575819146815, "alle": 0.9999968351325604, "amk": 0.96926913716219, "sted": 0.9820615313527593, "samtidig": 0.9995980618351801, "akt": 0.9761812076501176, "inn": 0.9661517427342555, "d2w": 0.9643794169681202}, {"navn": "Akershus", "bef": 747977, "na": 0.9975440421296377, "alle": 1.0, "amk": 0.9984491501744037, "sted": 0.9995240495362825, "samtidig": 1.0, "akt": 0.9990320557985072, "inn": 0.9981002089636446, "d2w": 0.9977579524504095}, {"navn": "Buskerud", "bef": 272588, "na": 0.9284304518173947, "alle": 0.9999669831393898, "amk": 0.9485193772286381, "sted": 0.9660146448119507, "samtidig": 0.9964928756951883, "akt": 0.9585931882548021, "inn": 0.9435521739768442, "d2w": 0.9288670080854623}, {"navn": "Innlandet", "bef": 379087, "na": 0.24155668751500314, "alle": 0.9765805738524402, "amk": 0.32939404411124623, "sted": 0.45858602378873453, "samtidig": 0.9292062244286932, "akt": 0.3891428616650004, "inn": 0.29749635307989986, "d2w": 0.2500217628143408}, {"navn": "Vestfold", "bef": 258961, "na": 0.9356466803881666, "alle": 1.0, "amk": 0.9536262217090604, "sted": 0.9770930757913354, "samtidig": 1.0, "akt": 0.9618822911558111, "inn": 0.948845579064029, "d2w": 0.9364421669672267}, {"navn": "Telemark", "bef": 177718, "na": 0.7095229520926412, "alle": 0.9984132164440293, "amk": 0.7553877491306452, "sted": 0.8399261751764031, "samtidig": 0.9926287714243914, "akt": 0.7881756490619971, "inn": 0.7393454799176223, "d2w": 0.7095398327687685}, {"navn": "Agder", "bef": 323535, "na": 0.8119832475620876, "alle": 0.999984545721483, "amk": 0.8573971904121656, "sted": 0.8958721622081073, "samtidig": 0.9967236929543944, "akt": 0.8795369898156304, "inn": 0.8452501274977978, "d2w": 0.8367008206221892}, {"navn": "Vestland", "bef": 657412, "na": 0.6276840094187511, "alle": 0.9922134065091601, "amk": 0.653608391693489, "sted": 0.7198043236204997, "samtidig": 0.8576448254671347, "akt": 0.6810645379153407, "inn": 0.6407640870565185, "d2w": 0.8382156090853224}, {"navn": "Trøndelag", "bef": 488434, "na": 0.7719753334124979, "alle": 0.9906517564297326, "amk": 0.8064999570054501, "sted": 0.8509235638796644, "samtidig": 0.9651416568052184, "akt": 0.8277658803441202, "inn": 0.7963163907508486, "d2w": 0.8374478435162171}, {"navn": "Troms", "bef": 170929, "na": 0.729308660320952, "alle": 0.9925934159797343, "amk": 0.8019294560899555, "sted": 0.8455323555394345, "samtidig": 0.9534602086246337, "akt": 0.8280982162184298, "inn": 0.7814648187259038, "d2w": 0.8495866704889165}, {"navn": "Finnmark", "bef": 75170, "na": 0.0, "alle": 0.550977783690302, "amk": 0.0, "sted": 0.0, "samtidig": 0.27242250897964615, "akt": 0.0, "inn": 0.0, "d2w": 0.0}], "url": "d2w_med_bodo.html"}};
+const fmt = new Intl.NumberFormat("nb-NO");
+const pct = (x, d = 1) => (x * 100).toLocaleString("nb-NO", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
+const pp = x => "+" + (x * 100).toLocaleString("nb-NO", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " pp";
+const tus = n => n >= 1e6 ? (n / 1e6).toLocaleString("nb-NO", { maximumFractionDigits: 2 }) + " mill." : fmt.format(Math.round(n / 1000) * 1000);
+const min = x => x.toLocaleString("nb-NO", { maximumFractionDigits: 1 });
+const FARGE = ["var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)", "var(--s5)", "var(--s6)"];
+const NS = "http://www.w3.org/2000/svg";
+const B = D.basis;
+let V = "uten";
+
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tip(kort) {
+  let t = kort.querySelector(".tip");
+  if (!t) { t = document.createElement("div"); t.className = "tip"; t.hidden = true; kort.appendChild(t); }
+  return t;
+}
+function visTip(kort, evt, html) {
+  const t = tip(kort), r = kort.getBoundingClientRect();
+  t.innerHTML = html; t.hidden = false;
+  const x = Math.min(Math.max(evt.clientX - r.left, 90), r.width - 90);
+  t.style.left = x + "px"; t.style.top = (evt.clientY - r.top - 6) + "px";
+}
+const skjulTip = kort => { const t = kort.querySelector(".tip"); if (t) t.hidden = true; };
+const spak = id => D[V].spaker.find(s => s.id === id);
+
+function tiles() {
+  const u = D[V], st = [...u.spaker].sort((a, b) => b.pp - a.pp)[0];
+  document.getElementById("tiles").innerHTML = `
+    <div class="tile"><div class="etikett">I dag</div><b class="num">${pct(u.andel)}</b><span>${tus(u.bef120)} innen ${D.grense} min · median ${Math.round(u.median)} min</span></div>
+    <div class="tile"><div class="etikett">Største enkelttiltak</div><b class="num">${pp(st.pp)}</b><span>${st.navn.toLowerCase()} · ${tus(st.bef)} flere</span></div>
+    <div class="tile"><div class="etikett">Alle tiltak samlet</div><b class="num">${pct(u.alle.andel)}</b><span>${tus(u.alle.bef - u.bef120)} flere · median ${Math.round(u.alle.median)} min</span></div>`;
+  document.getElementById("ingress").textContent =
+    `I den fulle modellen rekker ${pct(u.andel)} av befolkningen fram til åpnet kransåre innen ${D.grense} minutter fra 113-samtalen. ` +
+    `Siden bryter tiden opp i seks elementer og regner hva realistiske forbedringer i hvert ledd gir, hver for seg og samlet. ` +
+    `Det meste av gevinsten ligger hos dem som venter på helikopter.`;
+  document.getElementById("lenke-samle").href = D.samleside;
+  document.getElementById("lenke-rapport").href = u.url;
+}
+
+function kjede() {
+  const u = D[V], svg = document.getElementById("kjede"), kort = document.getElementById("kjede-kort");
+  svg.innerHTML = "";
+  document.getElementById("kjede-leg").innerHTML = D.elementer.map(([k, n], i) => `<span><i style="background:${FARGE[i]}"></i>${n}</span>`).join("");
+  const smal = kort.clientWidth < 620;
+  const W = smal ? 420 : 900, L = smal ? 0 : 190, R = 34, rad = smal ? 50 : 40, top = 10;
+  const maks = 180, x = v => L + v / maks * (W - L - R);
+  const H = top + u.kjede.length * rad + 26;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  [0, 30, 60, 90, 120, 150, 180].forEach(v => {
+    el("line", { x1: x(v), x2: x(v), y1: top - 4, y2: H - 22, stroke: v === 120 ? "var(--ink)" : "var(--line)",
+      "stroke-dasharray": v === 120 ? "4 4" : "", opacity: v === 120 ? 0.6 : 1 }, svg);
+    el("text", { x: x(v), y: H - 6, "text-anchor": "middle", style: "" }, svg).textContent = v;
+  });
+  u.kjede.forEach((g, r) => {
+    const y = top + r * rad + (smal ? 20 : 8), h = smal ? 20 : 22;
+    const t = el("text", { x: smal ? 0 : L - 12, y: smal ? y - 6 : y + h / 2 + 4, "text-anchor": smal ? "start" : "end",
+      style: `fill:var(--ink-2);font:500 13px var(--f-body)` }, svg);
+    t.textContent = g.navn + (smal ? ` · ${tus(g.bef)}` : "");
+    let acc = 0;
+    D.elementer.forEach(([k, n], i) => {
+      const v = g[k]; if (v < 0.05) return;
+      const x0 = x(acc), x1 = x(acc + v); acc += v;
+      const last = D.elementer.slice(i + 1).every(([kk]) => g[kk] < 0.05);
+      const rr = el("rect", { x: x0 + (i ? 1 : 0), y, width: Math.max(x1 - x0 - (i ? 1 : 0) - (last ? 0 : 1), 1), height: h,
+        fill: FARGE[i], rx: last ? 4 : 0 }, svg);
+      if (last) el("rect", { x: x0 + (i ? 1 : 0), y, width: Math.min(6, x1 - x0), height: h, fill: FARGE[i] }, svg);
+      const hit = el("rect", { x: x0, y: y - 6, width: x1 - x0, height: h + 12, fill: "transparent" }, svg);
+      hit.addEventListener("pointermove", e => visTip(kort, e, `<i style="background:${FARGE[i]}"></i>${n}: <b>${min(v)} min</b><br>${g.navn} · snitt totalt ${Math.round(g.tot)} min`));
+      hit.addEventListener("pointerleave", () => skjulTip(kort));
+    });
+    el("text", { x: x(acc) + 8, y: y + h / 2 + 4, style: `fill:var(--ink);font:500 12px var(--f-data)` }, svg).textContent = Math.round(g.tot);
+  });
+  const ute = u.kjede[2];
+  document.getElementById("kjede-tekst").textContent =
+    `De ${tus(ute.bef)} som havner mellom ${D.grense} og 150 minutter bruker i snitt ${Math.round(ute.vent)} minutter på å vente på helikopteret ` +
+    `(aktivering, flytid fra basen og innlasting), mer enn på selve transporten (${Math.round(ute.trans)} min). ` +
+    `Faste ledd (AMK ${min(B.amk)} min, ${min(B.sted)} min på stedet og door-to-wire på ${Math.round(ute.d2w)} min) utgjør ytterligere ${Math.round(B.amk + B.sted + ute.d2w)} minutter.`;
+}
+
+function spaker() {
+  const u = D[V], liste = [...u.spaker].sort((a, b) => b.pp - a.pp), maks = Math.max(...liste.map(s => s.pp));
+  document.getElementById("spaker").innerHTML = liste.map(s => `
+    <div class="spak">
+      <div class="hode"><h3>${s.navn}</h3><span>${s.tekst}</span></div>
+      <div class="stolpe">
+        <div class="bak" title="${pp(s.pp)}"><div class="fyll" style="width:${s.pp / maks * 100}%"></div></div>
+        <div class="v"><b class="num">${pp(s.pp)}</b><small>${tus(s.bef)} pers.</small></div>
+      </div>
+    </div>`).join("");
+  const sam = spak("samtidig"), sted = spak("sted");
+  document.getElementById("spak-tekst").textContent =
+    `Å varsle helikopteret samtidig med ambulansen gir ${pp(sam.pp)}, ${sam.pp > liste.filter(s => s.id !== "samtidig").reduce((a, s) => a + s.pp, 0) ? "mer enn" : "nesten like mye som"} de fem andre tiltakene til sammen. ` +
+    `Helikopteret er da i lufta mens ambulansen kjører og pasienten vurderes, i stedet for å starte aktiveringen når vurderingen er ferdig. ` +
+    `Kortere tid på stedet (${pp(sted.pp)}) og raskere door-to-wire (${pp(spak("d2w").pp)}) er de neste.`;
+}
+
+function trapp() {
+  const u = D[V], lo = 0.5, x = v => (v - lo) / (1 - lo) * 100;
+  let forrige = u.andel;
+  const rader = [`<div class="trinn"><span class="n"><b>I dag</b></span><div class="spor"><div class="b" style="left:0;width:${x(u.andel)}%;border-radius:4px"></div></div><span class="p">${pct(u.andel)}</span></div>`];
+  u.trapp.forEach((t, i) => {
+    const s = spak(t.id);
+    rader.push(`<div class="trinn${i === u.trapp.length - 1 ? " sum" : ""}"><span class="n">+ ${s.navn.toLowerCase()}</span>
+      <div class="spor" title="${pp(t.andel - forrige)}"><div class="a" style="width:${x(forrige)}%"></div><div class="b" style="left:calc(${x(forrige)}% + 2px);width:max(2px, calc(${x(t.andel) - x(forrige)}% - 2px))"></div></div>
+      <span class="p">${pct(t.andel)}</span></div>`);
+    forrige = t.andel;
+  });
+  document.getElementById("trapp").innerHTML = rader.join("");
+  document.getElementById("alle-h2").textContent = pct(u.alle.andel, 0);
+  document.getElementById("trapp-tekst").textContent =
+    `Tiltakene overlapper: summen av hvert tiltak alene er ${pp(u.spaker.reduce((a, s) => a + s.pp, 0))}, men samlet gir de ${pp(u.alle.andel - u.andel)}, ` +
+    `fordi den samme pasienten bare kan flyttes under ${D.grense} min én gang. ` +
+    `I dag rekker ${tus(u.trenger)} fram innen ${D.grense} min bare fordi helikopteret brukes. Med alle tiltakene er tallet ${tus(u.alle.trenger)}. ` +
+    `Det er dette tallet, ikke andelen, som sier noe om behovet for kapasitet i luftambulansen.`;
+}
+
+function linje(id, xs, serier, opt) {
+  const svg = document.getElementById(id), kort = svg.closest(".kort");
+  svg.innerHTML = "";
+  const W = 460, H = 280, L = 44, R = 14, T = 10, Bn = 34;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const xmin = Math.min(...xs), xmax = Math.max(...xs);
+  const X = v => opt.snu ? L + (xmax - v) / (xmax - xmin) * (W - L - R) : L + (v - xmin) / (xmax - xmin) * (W - L - R);
+  const ymin = opt.ymin, Y = v => T + (1 - (v - ymin) / (1 - ymin)) * (H - T - Bn);
+  for (let v = ymin; v <= 1.0001; v += 0.05) {
+    el("line", { x1: L, x2: W - R, y1: Y(v), y2: Y(v), stroke: "var(--line)" }, svg);
+    el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end" }, svg).textContent = Math.round(v * 100) + " %";
+  }
+  opt.xtikk.forEach(v => el("text", { x: X(v), y: H - Bn + 18, "text-anchor": "middle" }, svg).textContent = v);
+  el("text", { x: (L + W - R) / 2, y: H - 2, "text-anchor": "middle" }, svg).textContent = opt.xnavn;
+  serier.forEach(s => el("path", { d: xs.map((v, i) => s.y[i] == null ? "" : (i ? "L" : "M") + X(v).toFixed(1) + "," + Y(s.y[i]).toFixed(1)).join(""),
+    fill: "none", stroke: s.farge, "stroke-width": 2, "stroke-dasharray": s.stiplet ? "5 4" : "", "stroke-linejoin": "round" }, svg));
+  const kryss = el("line", { y1: T, y2: H - Bn, stroke: "var(--axis)", visibility: "hidden" }, svg);
+  const prikker = serier.map(s => el("circle", { r: 4, fill: s.farge, stroke: "var(--surface)", "stroke-width": 2, visibility: "hidden" }, svg));
+  const hit = el("rect", { x: L, y: T, width: W - L - R, height: H - T - Bn, fill: "transparent" }, svg);
+  hit.addEventListener("pointermove", e => {
+    const r = svg.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * W;
+    let i = 0, best = 1e9;
+    xs.forEach((v, j) => { const d = Math.abs(X(v) - px); if (d < best) { best = d; i = j; } });
+    kryss.setAttribute("x1", X(xs[i])); kryss.setAttribute("x2", X(xs[i])); kryss.setAttribute("visibility", "visible");
+    prikker.forEach((p, k) => { const yv = serier[k].y[i]; p.setAttribute("visibility", yv == null ? "hidden" : "visible"); if (yv != null) { p.setAttribute("cx", X(xs[i])); p.setAttribute("cy", Y(yv)); } });
+    visTip(kort, e, opt.tip(i));
+  });
+  hit.addEventListener("pointerleave", () => { kryss.setAttribute("visibility", "hidden"); prikker.forEach(p => p.setAttribute("visibility", "hidden")); skjulTip(kort); });
+}
+
+function minutt() {
+  const u = D[V], m = u.minutt, t = u.tak, a0 = u.andel;
+  linje("minutt", m.x, [{ y: m.felles, farge: "var(--s1)" }, { y: m.heli, farge: "var(--s2)", stiplet: true }],
+    { ymin: 0.7, xtikk: [0, 5, 10, 15, 20, 25, 30], xnavn: "minutter spart",
+      tip: i => `<b>${m.x[i]} min spart</b><br><i style="background:var(--s1)"></i>Alle: ${pct(m.felles[i])}<br><i style="background:var(--s2)"></i>Kun helikopter: ${m.heli[i] == null ? "–" : pct(m.heli[i])}` });
+  linje("tak", t.x, [{ y: t.y, farge: "var(--s6)" }],
+    { ymin: 0.7, snu: true, xtikk: [45, 40, 35, 30, 25, 20, 15, 10], xnavn: "tak på door-to-wire (min)",
+      tip: i => `<b>Høyst ${t.x[i]} min</b><br>${pct(t.y[i])} innen ${D.grense} min` });
+  const per = (m.felles[10] - a0) / 10 * u.tot;
+  document.getElementById("minutt-tekst").textContent =
+    `De første ti minuttene spart flytter i snitt ${tus(per)} personer per minutt innenfor ${D.grense} min. ` +
+    `Et minutt spart i AMK, på stedet eller i door-to-wire er like mye verdt, fordi det treffer alle pasienter likt. ` +
+    `Et minutt spart bare på helikopterruten gir nesten det samme, fordi de som ligger like over grensen nesten alle er helikopterpasienter. ` +
+    `Door-to-wire på høyst 20 min overalt gir ${pct(t.y[t.x.indexOf(20)])}.`;
+}
+
+function fylke() {
+  const u = D[V], ids = [...u.spaker].sort((a, b) => b.pp - a.pp).map(s => s.id);
+  const trinn = [0.5, 0.75, 0.9, 0.98], bin = v => trinn.filter(t => v >= t).length;
+  const celle = (v, skille) => { const b = bin(v); return `<td class="${skille ? "skille" : ""}" style="background:var(--h${b});color:var(--ht${b})">${Math.round(v * 100)}</td>`; };
+  const kort = { samtidig: "Samtidig varsling", sted: "Kortere på stedet", d2w: "D2W som beste", akt: "Raskere aktivering", amk: "Raskere AMK", inn: "Raskere innlasting" };
+  const rader = [...u.fylke].sort((a, b) => a.na - b.na);
+  document.getElementById("fylke").innerHTML =
+    `<thead><tr><th>Fylke</th><th>I dag</th>${ids.map((k, i) => `<th class="${i ? "" : "skille"}">${kort[k]}</th>`).join("")}<th class="skille">Alle</th></tr></thead><tbody>` +
+    rader.map(f => `<tr><td>${f.navn}</td>${celle(f.na)}${ids.map((k, i) => celle(f[k], !i)).join("")}${celle(f.alle, true)}</tr>`).join("") + "</tbody>";
+  document.getElementById("skala").innerHTML = ["under 50", "50–75", "75–90", "90–98", "98–100"].map((t, i) => `<i style="background:var(--h${i})"></i><span>${t}</span>`).join("") + "<span>% innen 120 min</span>";
+  const fm = rader.find(f => f.navn === "Møre og Romsdal"), fi = rader.find(f => f.navn === "Finnmark"), no = rader.find(f => f.navn === "Nordland");
+  document.getElementById("fylke-tekst").textContent =
+    `Møre og Romsdal går fra ${Math.round(fm.na * 100)} til ${Math.round(fm.alle * 100)} % med alle tiltak, men trenger mer enn samtidig varsling alene (${Math.round(fm.samtidig * 100)} %). ` +
+    (V === "uten"
+      ? `Finnmark (${Math.round(fi.alle * 100)} %) og Nordland (${Math.round(no.alle * 100)} %) blir liggende langt under 90 % selv med alle tiltak. For Nordland hjelper et PCI-senter i Bodø mer (velg «Med Bodø» over).`
+      : `Med PCI i Bodø og alle tiltak når Nordland ${Math.round(no.alle * 100)} %. Finnmark (${Math.round(fi.alle * 100)} %) blir liggende langt under, fordi avstanden til Tromsø er for lang også i lufta.`);
+}
+
+function metode() {
+  const u = D[V];
+  document.getElementById("metode").innerHTML = [
+    `<b>Grunnlaget</b> er door-to-wire-utgaven: ambulanse fra nærmeste stasjon, AMK ${min(B.amk)} min, ${min(B.sted)} min på stedet, helikopter aktivert etter vurderingen (${B.akt} min aktivering, ${B.inn} min innlasting, ${B.kmt} km/t i luftlinje), og sykehusets median door-to-wire fra Norsk hjerteinfarktregister 2024. Siden gjenskaper modellens tider eksakt for alle ${fmt.format(225238)} befolkningsruter.`,
+    `<b>Tiltakene</b> endrer bare ett parameter om gangen og regner raskeste rute og sykehus på nytt. Pasienten kan derfor bytte både mellom bil og helikopter og mellom sykehus.`,
+    `<b>Samtidig varsling</b>: helikopteret aktiveres når AMK er ferdig, ikke når vurderingen på stedet er ferdig. Det letter når det er klart og flyr fra basen. Pasienten kan tidligst lastes når både ambulansens vurdering er ferdig og helikopteret har landet. At helikopterlegen kunne startet vurderingen selv, er ikke regnet med.`,
+    `<b>Door-to-wire som de beste</b>: sykehus over 22 min settes ned til 22 min, som Arendal og Rikshospitalet har i dag. Raskere sykehus beholder sin tid.`,
+    `<b>Kapasitet er ikke modellert.</b> Modellen gir hver pasient det nærmeste helikopteret, uansett om det er i bruk. Samtidig varsling betyr flere oppdrag som avbrytes når ambulansen har vurdert pasienten. Med alle tiltak er helikopteret raskest for ${tus(u.alle.luft)} personer, men i de fleste tilfellene er gevinsten liten. Det relevante tallet er de ${tus(u.alle.trenger)} som bare rekker ${D.grense} min med helikopter.`,
+    `<b>Ikke med</b>: vær og mørke som stenger luftambulansen, ventetid på ledig ambulanse, pasientens egen forsinkelse før 113-samtalen, og trombolyse som alternativ der PCI ikke kan nås i tide.`
+  ].map(t => `<li>${t}</li>`).join("");
+}
+
+function tegn() { tiles(); kjede(); spaker(); trapp(); minutt(); fylke(); metode(); }
+document.querySelectorAll('input[name="bodo"]').forEach(i => i.addEventListener("change", e => {
+  V = e.target.value;
+  try { localStorage.setItem("forbedring-bodo", V); } catch (_) {}
+  tegn();
+}));
+try { const s = localStorage.getItem("forbedring-bodo"); if (s === "med" || s === "uten") { V = s; document.getElementById("b-" + s).checked = true; } } catch (_) {}
+tegn();
+let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(kjede, 150); });
+</script>
+
+</body>
+</html>
