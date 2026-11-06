@@ -274,7 +274,6 @@ a:focus-visible { outline: 2px solid var(--inne); outline-offset: 2px; }
       <li><b>Ambulanse:</b> 299 ambulansestasjoner fra oppgitt GeoJSON-fil (102 i Helse Sør-Øst, 79 i Helse Nord, 66 i Helse Midt-Norge, 52 i Helse Vest). Kjøretiden er korteste vei fra nærmeste stasjon til hjemmet i samme vegnett og med samme fart som bilene, uten utrykningskjøring. Flere stasjonskoordinater ligger midt i et område snarere enn ved selve stasjonen. 11 ligger over 5 km fra veg (lengst: Andenes, 16 km i sjøen), og de er koblet til nærmeste kjørbare veg. Stasjonene er antatt å ha ledig bil, og utalarmering, tid på stedet og ambulansebåt er ikke med.</li><li><b>Beregning:</b> Dijkstras korteste vei fra hvert sykehus i det reverserte vegnettet, altså tid <i>til</i> sykehuset. Hver rute kobles til nærmeste vegpunkt, og avstanden dit legges til med 25 km/t × 1,3 omvegsfaktor. 3 293 personer bor mer enn 2 km fra kjørbar veg.</li>
       <li><b>Avgrensning:</b> Bil, uten luftambulanse, fly og ambulansebåt. Andre sykehus enn de åtte er ikke med. Kjøringen er normal fart uten utrykning.</li>
     </ul>
-    <p class="notat">Skript og data: <span class="num">~/hdir_prosjekter/reisetid/</span> (01_bygg_veinett.py → 02_reisetid.py → 03_figurer.py → 04_rapport.py, alle med --ambulanse). Ruteresultatene ligger i resultater_ambulanse/ruter_reisetid.parquet.</p>
   </section>
 </div>
 
