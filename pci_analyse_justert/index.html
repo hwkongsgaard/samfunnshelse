@@ -59,7 +59,7 @@ body {
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.wrap { max-width: 1080px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 64px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px; display: grid; gap: 64px; }
 .les { max-width: 68ch; display: grid; gap: 12px; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
 h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); line-height: 1.05; font-weight: 700; }
@@ -144,6 +144,11 @@ table.data { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
 ul.metode { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; color: var(--ink-2); }
 ul.metode b { color: var(--ink); font-weight: 600; }
 
+/* Toppnavigasjon */
+.topp { max-width: 1080px; margin: 0 auto; padding-top: 20px; display: grid; gap: 12px; }
+.avsender { font-size: 0.85rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline; }
+.avsender b { font: 700 0.95rem var(--f-display); color: var(--ink); letter-spacing: -0.005em; }
+
 @media (max-width: 800px) {
   .trinn, .to { grid-template-columns: minmax(0, 1fr); }
   .trinn { padding: 20px 18px; }
@@ -151,6 +156,10 @@ ul.metode b { color: var(--ink); font-weight: 600; }
   .wrap { gap: 48px; padding-block: 32px 56px; }
 }
 </style>
+
+<div class="topp">
+  <div class="avsender"><b>Helsedirektoratet</b><span>Avdeling Samfunnshelse</span></div>
+</div>
 
 <div class="wrap">
   <header class="les">
