@@ -119,7 +119,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
     <div class="figur" id="f-ekg" aria-hidden="true"></div>
     <div class="tre">
       <div class="boks"><span class="etikett">Mål 1</span><h3>Nødsamtale → wire-gjennombrudd</h3><p>Under 120 minutter fra nødsamtalen til blodåren er åpnet.</p></div>
-      <div class="boks"><span class="etikett">Mål 2</span><h3>Diagnose → sykehus</h3><p>Under 90 minutter fra diagnosen er stilt til pasienten er på PCI-sykehuset.</p></div>
+      <div class="boks"><span class="etikett">Mål 2</span><h3>Diagnose → sykehus</h3><p>Under 90 minutter fra diagnosen er stilt til pasienten er på PCI-sykehuset. En egen utgave bruker 60 minutter.</p></div>
       <div class="boks"><span class="etikett">Grunnlag</span><h3>5 617 894 innbyggere</h3><p>Hver befolket rute på 250 × 250 meter får sin egen reisetid.</p></div>
     </div>
     <p class="hint">Bla med piltastene, mellomrom eller knappene nederst.</p>
@@ -209,7 +209,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
           <dt>Sensitivitet</dt><dd>±5 minutter i rapportene.</dd>
           <dt>Før</dt><dd>Tidligere utgaver antok fast 17,5 minutter.</dd>
         </dl>
-        <p>Tiden på stedet er det største enkeltleddet for pasienter som kjøres med bil, og det koster mye: et tiltak som setter et tak på 15 minutter på stedet, løfter door-to-wire-andelen fra 51,5 til 56,7 %.</p>
+        <p>Tiden på stedet er det største enkeltleddet for pasienter som kjøres med bil, og det koster mye: et tiltak som setter et tak på 15 minutter på stedet, løfter door-to-wire-andelen fra 52,1 til 57,0 %.</p>
       </div>
       <div class="boks"><h3>Tid på stedet, per fylke</h3><div class="figur" id="f-sted"></div></div>
     </div>
@@ -249,7 +249,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
     <p>Pasienten får det raskeste av bil og helikopter. Eksempelet under viser en pasient 60 km fra helikopterbasen og 150 km fra sykehuset. Trykk videre for å se leddene.</p>
     <div class="figur" id="f-heli"></div>
     <div class="tre">
-      <dl class="fakta boks"><dt>Varsling</dt><dd><span class="num">17</span> min etter at ambulansen er fremme. Median for hjertepasienter fløyet til sykehus, AMK-data 2025 (n = 136).</dd></dl>
+      <dl class="fakta boks"><dt>Varsling</dt><dd><span class="num">17</span> min etter at ambulansen er fremme. Median, AMK-data 2025 (n = 136 av 718 med fullstendige tidspunkter). Alle 428 med ambulansens ankomst: 19 min.</dd></dl>
       <dl class="fakta boks"><dt>Helikopter</dt><dd><span class="num">9</span> min reaksjonstid og <span class="num">12</span> min på stedet for ambulansehelikopter, <span class="num">12</span> og <span class="num">22</span> for redningshelikopter. Fra 20 baser.</dd></dl>
       <dl class="fakta boks"><dt>Flytid</dt><dd>Luftlinje med <span class="num">240</span> km/t, pluss <span class="num">12</span> min per flyetappe for landing og forflytning.</dd></dl>
     </div>
@@ -267,14 +267,14 @@ nav button:disabled { opacity: 0.4; cursor: default; }
         <p>Når pasienten er på sykehuset, går det fortsatt tid før blodåren er åpnet. Hvert sykehus får sin målte median.</p>
         <dl class="fakta">
           <dt>Utvalg</dt><dd>STEMI-pasienter under 85 år, innlagt direkte ved et invasivt sykehus.</dd>
-          <dt>Spenn</dt><dd><span class="num">22–45</span> min. Nasjonal median <span class="num">27</span>.</dd>
+          <dt>Spenn</dt><dd><span class="num">21–40</span> min. Nasjonal median <span class="num">28</span>.</dd>
           <dt>Gjelder</dt><dd>Bare målet nødsamtale → wire. Diagnose → sykehus stopper ved ankomst.</dd>
         </dl>
-        <p>Hvis alle sykehusene var like raske som Arendal og Rikshospitalet (22 min), ville andelen innen 120 minutter øke fra 51,5 til 53,8 %.</p>
+        <p>Hvis alle sykehusene var like raske som Rikshospitalet (21 min), ville andelen innen 120 minutter øke fra 52,1 til 54,1 %.</p>
       </div>
       <div class="boks"><h3>Median door-to-wire, minutter</h3><div class="figur" id="f-d2w"></div></div>
     </div>
-    <p class="kilde"><b>Kilde:</b> Norsk hjerteinfarktregister, årsrapport 2024, tabell 15. Antall pasienter per sykehus i parentes i figuren.</p>
+    <p class="kilde"><b>Kilde:</b> Norsk hjerteinfarktregister, årsrapport 2025, tabell 19. Antall pasienter per sykehus i parentes i figuren.</p>
   </div>
 </section>
 
@@ -285,9 +285,9 @@ nav button:disabled { opacity: 0.4; cursor: default; }
     <h2>Halvparten når wire-gjennombrudd innen 120 minutter</h2>
     <div class="to">
       <div style="display:grid;gap:16px;min-width:0">
-        <div class="stor num">51,5 %<small>åtte sykehus</small></div>
-        <p>Med Bodø som niende PCI-sykehus er andelen <b class="num">52,5 %</b>. Hvert ledd i kjeden flytter andelen: figuren viser hvordan den endrer seg når leddene legges til ett for ett.</p>
-        <p>De som når målet, bruker i snitt <b class="num">89</b> minutter. Pasientene der helikopteret er raskest bruker <b class="num">157</b> minutter i snitt, og <b class="num">41</b> av dem går med til å vente på helikopteret etter at tiden på stedet er over.</p>
+        <div class="stor num">52,1 %<small>åtte sykehus</small></div>
+        <p>Med Bodø som niende PCI-sykehus er andelen <b class="num">53,1 %</b>. Hvert ledd i kjeden flytter andelen: figuren viser hvordan den endrer seg når leddene legges til ett for ett.</p>
+        <p>De som når målet, bruker i snitt <b class="num">89</b> minutter. Pasientene der helikopteret er raskest bruker <b class="num">156</b> minutter i snitt, og <b class="num">41</b> av dem går med til å vente på helikopteret etter at tiden på stedet er over.</p>
       </div>
       <div class="boks"><h3>Andel innen målet når leddene legges til</h3><div class="figur" id="f-trapp"></div></div>
     </div>
@@ -302,7 +302,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
     <div class="to">
       <div style="display:grid;gap:16px;min-width:0">
         <div class="stor num">77,5 %<small>åtte sykehus</small></div>
-        <p>Med Bodø er andelen <b class="num">78,9 %</b>. Klokken starter når diagnosen er stilt og helikopteret varsles, <b>17 minutter</b> etter at ambulansen er hos pasienten.</p>
+        <p>Med Bodø er andelen <b class="num">78,9 %</b>. Med 60 minutter som mål er andelen <b class="num">51,1 %</b>, og <b class="num">52,1 %</b> med Bodø. Klokken starter når diagnosen er stilt og helikopteret varsles, <b>17 minutter</b> etter at ambulansen er hos pasienten.</p>
         <ul class="liste">
           <li><b>Resten av tiden på stedet:</b> fylkets målte tid minus 17, altså 6–17 minutter.</li>
           <li><b>Venter på helikopter:</b> bare når helikopteret er raskest og ennå ikke har kommet.</li>
@@ -383,7 +383,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
           <tr><td>AMK- og stedstid</td><td>NPR / AMK-data, indeks 5 og 4.2</td><td>Ledd 1 og 3 per fylke</td></tr>
           <tr><td>Varsling av helikopter</td><td>AMK-data 2025, 136 hendelser der helikopteret leverte pasienten</td><td>17 minutter</td></tr>
           <tr><td>Helikoptertider</td><td>Luftambulansetjenesten HF, I21, 2023–2025</td><td>Reaksjon, tid på stedet, kalibrering</td></tr>
-          <tr><td>Door-to-wire</td><td>Norsk hjerteinfarktregister, årsrapport 2024, tabell 15</td><td>Ledd 5 per sykehus</td></tr>
+          <tr><td>Door-to-wire</td><td>Norsk hjerteinfarktregister, årsrapport 2025, tabell 19</td><td>Ledd 5 per sykehus</td></tr>
           <tr><td>Befolkningsframskriving</td><td>SSB tabell 14288, hovedalternativet</td><td>2040 og 2050</td></tr>
         </tbody>
       </table>
@@ -398,7 +398,7 @@ nav button:disabled { opacity: 0.4; cursor: default; }
     <h2>Samtidig varsling av helikopteret gir mest</h2>
     <p>Hvis helikopteret varsles når AMK er ferdig, i stedet for 17 minutter etter at ambulansen er fremme, er det i lufta mens ambulansen kjører. Ingen andre enkelttiltak er i nærheten.</p>
     <div class="boks"><h3>Andel innen målet med hvert tiltak alene</h3><div class="figur" id="f-tiltak"></div></div>
-    <p class="kilde">Med alle tiltakene samtidig når <b>87,6 %</b> wire-gjennombrudd innen 120 minutter og <b>96,0 %</b> sykehuset innen 90 minutter etter diagnosen. Detaljene står på de to forbedringssidene.</p>
+    <p class="kilde">Med alle tiltakene samtidig når <b>87,7 %</b> wire-gjennombrudd innen 120 minutter og <b>96,0 %</b> sykehuset innen 90 minutter etter diagnosen. Detaljene står på de to forbedringssidene.</p>
   </div>
 </section>
 
@@ -407,17 +407,18 @@ nav button:disabled { opacity: 0.4; cursor: default; }
   <div class="innhold">
     <span class="etikett">Videre</span>
     <h2>Hvor gir et nytt PCI-senter mest?</h2>
-    <p>Hvert akuttsykehus uten PCI er testet som nytt senter, i tillegg til de åtte og Bodø. Det nye senteret får nasjonal median door-to-wire på 27 minutter.</p>
+    <p>Hvert akuttsykehus uten PCI er testet som nytt senter, i tillegg til de åtte og Bodø. Det nye senteret får nasjonal median door-to-wire på 28 minutter (årsrapport 2025).</p>
     <div class="tabell">
       <table>
         <thead><tr><th>Nytt senter</th><th style="text-align:right">Flere innen wire-målet</th><th style="text-align:right">Flere innen diagnosemålet</th><th>Hvem det hjelper</th></tr></thead>
         <tbody>
-          <tr><td><b>Tønsberg</b></td><td class="tall">289 000</td><td class="tall">226 000</td><td>Vestfold og Telemark</td></tr>
-          <tr><td>Kalnes (Østfold)</td><td class="tall">221 000</td><td class="tall">164 000</td><td>Østfold</td></tr>
-          <tr><td>Skien</td><td class="tall">218 000</td><td class="tall">218 000</td><td>Telemark og Vestfold</td></tr>
-          <tr><td>Moelv (Mjøssykehuset)</td><td class="tall">187 000</td><td class="tall">210 000</td><td>Innlandet</td></tr>
-          <tr><td><b>Molde</b></td><td class="tall">72 000</td><td class="tall">299 000</td><td>Møre og Romsdal</td></tr>
-          <tr><td>Ålesund</td><td class="tall">123 000</td><td class="tall">271 000</td><td>Møre og Romsdal</td></tr>
+          <tr><td><b>Tønsberg</b></td><td class="tall">279 000</td><td class="tall">226 000</td><td>Vestfold og Telemark</td></tr>
+          <tr><td>Kalnes (Østfold)</td><td class="tall">211 000</td><td class="tall">164 000</td><td>Østfold</td></tr>
+          <tr><td>Skien</td><td class="tall">209 000</td><td class="tall">218 000</td><td>Telemark og Vestfold</td></tr>
+          <tr><td>Drammen</td><td class="tall">187 000</td><td class="tall">204 000</td><td>Buskerud</td></tr>
+          <tr><td>Moelv (Mjøssykehuset)</td><td class="tall">185 000</td><td class="tall">210 000</td><td>Innlandet</td></tr>
+          <tr><td><b>Molde</b></td><td class="tall">65 000</td><td class="tall">299 000</td><td>Møre og Romsdal</td></tr>
+          <tr><td>Ålesund</td><td class="tall">120 000</td><td class="tall">271 000</td><td>Møre og Romsdal</td></tr>
         </tbody>
       </table>
     </div>
@@ -461,9 +462,9 @@ const LEDD = [
   { id: "ambr", navn: "Utrykning", min: 1.5, farge: "--s1", tekst: "Ambulansen rykker ut: 1,5 minutter fra alarm." },
   { id: "amb", navn: "Kjører til pasient", min: 11.1, farge: "--s2", tekst: "Ambulansen kjører fra nærmeste stasjon: 11,1 minutter i snitt." },
   { id: "sted", navn: "På stedet", min: 27.4, farge: "--s3", tekst: "Undersøkelse, EKG og diagnose: 27,4 minutter. Helikopteret varsles etter 17 av dem." },
-  { id: "vent", navn: "Venter på helikopter", min: 17.3, farge: "--s4", tekst: "Der helikopteret er raskest, venter pasienten til det har landet og lastet: 17,3 minutter i snitt for alle." },
-  { id: "trans", navn: "Transport", min: 32.6, farge: "--s6", tekst: "Bil eller helikopter til PCI-sykehuset: 32,6 minutter." },
-  { id: "d2w", navn: "Door-to-wire", min: 27.5, farge: "--s5", tekst: "Fra innleggelse til wire-gjennombrudd: 27,5 minutter. Samlet blir det 120,5 minutter i snitt, rett over målet." },
+  { id: "vent", navn: "Venter på helikopter", min: 17.6, farge: "--s4", tekst: "Der helikopteret er raskest, venter pasienten til det har landet og lastet: 17,6 minutter i snitt for alle." },
+  { id: "trans", navn: "Transport", min: 32.3, farge: "--s6", tekst: "Bil eller helikopter til PCI-sykehuset: 32,3 minutter." },
+  { id: "d2w", navn: "Door-to-wire", min: 27.0, farge: "--s5", tekst: "Fra innleggelse til wire-gjennombrudd: 27,0 minutter. Samlet blir det 120,1 minutter i snitt, rett over målet." },
 ];
 
 // Forsiden: en stilisert EKG-kurve med ST-heving
@@ -490,7 +491,7 @@ const LEDD = [
     pkt.push(t); t += l.min;
   });
   pkt.push(t);
-  const merke = [[0, "Nødsamtale"], [15.7, "Ambulansen fremme"], [32.7, "Diagnose, helikopter varslet"], [93, "Ankomst sykehus"], [120.5, "Wire"]];
+  const merke = [[0, "Nødsamtale"], [15.7, "Ambulansen fremme"], [32.7, "Diagnose, helikopter varslet"], [93.1, "Ankomst sykehus"], [120.1, "Wire"]];
   merke.forEach(([v, navn], i) => {
     el("line", { x1: x(v), x2: x(v), y1: 60, y2: 106, style: "stroke:var(--ink);stroke-width:1.5" }, s);
     el("text", { x: x(v), y: i % 2 ? 50 : 30, "text-anchor": i === 0 ? "start" : i === merke.length - 1 ? "end" : "middle", "font-size": 15 }, s, navn);
@@ -503,8 +504,8 @@ const LEDD = [
     el("text", { x: x(a) + 8, y: y + 24, "font-size": 15 }, s, navn);
     el("text", { x: x(b), y: y + 24, "text-anchor": "end", "font-size": 14, class: "data", style: "fill:var(--muted)" }, s, mal);
   }
-  klokke(0, 120.5, 140, "Nødsamtale → wire-gjennombrudd", "mål 120 min", "--ink");
-  klokke(32.7, 93, 190, "Diagnose → sykehus", "mål 90 min", "--s6");
+  klokke(0, 120.1, 140, "Nødsamtale → wire-gjennombrudd", "mål 120 min", "--ink");
+  klokke(32.7, 93.1, 190, "Diagnose → sykehus", "mål 90 (60) min", "--s6");
   document.getElementById("f-klokker").appendChild(s);
 })();
 
@@ -516,7 +517,7 @@ const kjede = (function () {
   // akse og mål
   [0, 30, 60, 90, 120].forEach(v => {
     el("line", { x1: x(v), x2: x(v), y1: 40, y2: 130, style: "stroke:var(--line);stroke-width:1" }, s);
-    el("text", { x: x(v), y: 152, "text-anchor": "middle", "font-size": 13, class: "data", style: "fill:var(--muted)" }, s, v + " min");
+    el("text", { x: x(v), y: 152, "text-anchor": v === 0 ? "start" : "middle", "font-size": 13, class: "data", style: "fill:var(--muted)" }, s, v + " min");
   });
   el("line", { x1: x(120), x2: x(120), y1: 30, y2: 136, style: "stroke:var(--ute);stroke-width:2;stroke-dasharray:5 4" }, s);
   el("text", { x: x(120), y: 22, "text-anchor": "middle", "font-size": 13, class: "data", style: "fill:var(--ute)" }, s, "mål 120");
@@ -532,7 +533,7 @@ const kjede = (function () {
     return g;
   });
   // korte ledd får navn under
-  el("text", { x: x(0), y: 176, "font-size": 13, style: "fill:var(--muted)" }, s, "AMK 3,1 · utrykning 1,5 · kjøring til pasient 11,1 · på stedet 27,4 · venter på helikopter 17,3 · transport 32,6 · door-to-wire 27,5");
+  el("text", { x: x(0), y: 176, "font-size": 13, style: "fill:var(--muted)" }, s, "AMK 3,1 · utrykning 1,5 · kjøring til pasient 11,1 · på stedet 27,4 · venter på helikopter 17,6 · transport 32,3 · door-to-wire 27,0");
   document.getElementById("f-kjede").appendChild(s);
   const tekst = document.getElementById("kjede-tekst");
   return {
@@ -614,8 +615,8 @@ const heli = (function () {
 
 // Ark 9: door-to-wire per sykehus
 (function d2w() {
-  const D = [["Haukeland", 45, 47], ["SUS", 35, 75], ["Ullevål", 31, 199], ["UNN Tromsø", 30, 33], ["St. Olavs", 28, 93],
-    ["Bodø", 27, 13], ["Ahus", 24, 94], ["Arendal", 22, 72], ["Rikshospitalet", 22, 167]];
+  const D = [["SUS", 40, 80], ["Haukeland", 39, 105], ["Ullevål", 33, 168], ["St. Olavs", 29, 79], ["UNN Tromsø", 28, 35],
+    ["Ahus", 26, 132], ["Bodø", 25, 8], ["Arendal", 22, 108], ["Rikshospitalet", 21, 136]];
   const W = 520, rad = 26, H = D.length * rad + 30, L = 120, R = 70, maks = 50;
   const x = v => L + v / maks * (W - L - R);
   const s = svg(W, H, "Median door-to-wire per sykehus");
@@ -625,8 +626,8 @@ const heli = (function () {
     el("rect", { x: L, y: y + 4, width: x(v) - L, height: 16, rx: 3, style: "fill:var(--s5)" }, s);
     el("text", { x: x(v) + 6, y: y + 16, "font-size": 12, class: "data" }, s, `${v} (${antall})`);
   });
-  el("line", { x1: x(27), x2: x(27), y1: 0, y2: H - 22, style: "stroke:var(--ink);stroke-dasharray:3 3" }, s);
-  el("text", { x: x(27), y: H - 6, "text-anchor": "middle", "font-size": 12, class: "data", style: "fill:var(--muted)" }, s, "nasjonal median 27");
+  el("line", { x1: x(28), x2: x(28), y1: 0, y2: H - 22, style: "stroke:var(--ink);stroke-dasharray:3 3" }, s);
+  el("text", { x: x(28), y: H - 6, "text-anchor": "middle", "font-size": 12, class: "data", style: "fill:var(--muted)" }, s, "nasjonal median 28");
   s.style.minWidth = "0";
   document.getElementById("f-d2w").appendChild(s);
 })();
@@ -634,7 +635,7 @@ const heli = (function () {
 // Ark 10: trappen
 (function trapp() {
   const D = [["Bil hjem → sykehus", 79.3, "--s1"], ["+ ambulanse til hjemmet", 75.4, "--s2"], ["+ AMK og tid på stedet", 64.4, "--s3"],
-    ["+ luftambulanse", 75.3, "--s4"], ["+ door-to-wire", 51.5, "--s5"]];
+    ["+ luftambulanse", 75.3, "--s4"], ["+ door-to-wire", 52.1, "--s5"]];
   const W = 520, rad = 40, H = D.length * rad + 30, L = 190, R = 60;
   const x = v => L + v / 100 * (W - L - R);
   const s = svg(W, H, "Andel innen 120 minutter når leddene legges til");
@@ -684,11 +685,11 @@ const heli = (function () {
 // Ark 15: tiltakene
 (function tiltak() {
   const D = [
-    ["Samtidig varsling av helikopteret", 51.5, 74.6, 77.5, 94.0],
-    ["Kortere tid på stedet", 51.5, 56.7, 77.5, 78.4],
-    ["Kortere skadestedstid for helikopteret", 51.5, 53.0, 77.5, 83.7],
-    ["Raskere helikopterreaksjon", 51.5, 52.3, 77.5, 81.6],
-    ["Door-to-wire som de beste", 51.5, 53.8, null, null],
+    ["Samtidig varsling av helikopteret", 52.1, 75.1, 77.5, 94.0],
+    ["Kortere tid på stedet", 52.1, 57.0, 77.5, 78.4],
+    ["Kortere skadestedstid for helikopteret", 52.1, 53.6, 77.5, 83.7],
+    ["Raskere helikopterreaksjon", 52.1, 52.9, 77.5, 81.6],
+    ["Door-to-wire som de beste", 52.1, 54.1, null, null],
   ];
   const W = 1100, rad = 34, H = D.length * rad + 44, L = 300, M = 690, B = 330, maks = 100;
   const s = svg(W, H, "Andel innen målet i dag og med hvert tiltak");
@@ -706,7 +707,7 @@ const heli = (function () {
       el("text", { x: kol(x0, til) + 6, y: y + 15, "font-size": 12, class: "data", style: "fill:var(--ink)" }, s, pst(til));
     });
   });
-  el("text", { x: L, y: H - 4, "font-size": 12, style: "fill:var(--muted)" }, s, "Strek = i dag (51,5 % og 77,5 %). Søyle = med tiltaket alene.");
+  el("text", { x: L, y: H - 4, "font-size": 12, style: "fill:var(--muted)" }, s, "Strek = i dag (52,1 % og 77,5 %). Søyle = med tiltaket alene.");
   document.getElementById("f-tiltak").appendChild(s);
 })();
 
