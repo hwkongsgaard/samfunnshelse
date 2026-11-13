@@ -1,0 +1,138 @@
+<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Legevakt: kommunenes utgifter 2023 og tilgjengelighet</title><style>
+:root{--color-fg:#1f2328;--color-fg-muted:#5b616b;--color-bg:#fafaf8;--color-panel:#fff;--color-border-line:#e3e3df;--color-ok:#1f7a4d;--color-warn:#b45309;--color-bad:#b42318;
+--font-anthropic-sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-anthropic-serif:Georgia,"Times New Roman",serif;
+--cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.05rem;--cds-font-size-title:1.9rem;--cds-font-weight-medium:600;
+--cds-gap-xs:.25rem;--cds-gap-sm:.5rem;--cds-gap-md:1rem;--cds-gap-lg:1.5rem;--cds-pad-xs:.25rem;--cds-pad-sm:.5rem;--cds-pad-lg:1.25rem;--cds-radius:10px;
+--cds-chart-grid:#ececea;--cds-chart-axis:#9a9a96;--cds-chart-reference:#777;--cds-chart-muted:#c4c4c0;--cds-surface-popover:#fff;--cds-border:#ddd;--cds-shadow-popover:0 4px 14px rgba(0,0,0,.12);--cds-text-secondary:#5b616b;--cds-dur-slow:.3s}
+@media (prefers-color-scheme:dark){:root{--color-fg:#ececea;--color-fg-muted:#a3a39e;--color-bg:#1a1a19;--color-panel:#242423;--color-border-line:#3a3a38;--cds-chart-grid:#333331;--cds-chart-axis:#777;--cds-chart-muted:#555552;--cds-surface-popover:#2c2c2b;--cds-border:#444;--cds-text-secondary:#a3a39e;--color-ok:#4ade80;--color-bad:#f87171}}
+body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(--font-anthropic-sans)}
+#dash-root{max-width:1400px;margin:0 auto;padding:clamp(1rem,3vw,2.5rem)}
+.dash-skeleton:empty{background:var(--cds-chart-grid);border-radius:var(--cds-radius)}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script><script>
+window.__D={"fylker": [{"fylke": "Agder", "innbyggere": 319850, "a_kr": 47176482, "b_kr": 93912971, "c_kr": 53434797, "total_kr": 194524250, "a_per_innb": 147.0, "b_per_innb": 294.0, "c_per_innb": 167.0, "per_innb": 824.0, "kommune_per_innb": 608.0, "stat_per_innb": 162, "innbyggere_per_innb": 54}, {"fylke": "Akershus", "innbyggere": 728803, "a_kr": 147449201, "b_kr": 141997186, "c_kr": 136264617, "total_kr": 425711004, "a_per_innb": 202.0, "b_per_innb": 195.0, "c_per_innb": 187.0, "per_innb": 758.0, "kommune_per_innb": 584.0, "stat_per_innb": 132, "innbyggere_per_innb": 42}, {"fylke": "Buskerud", "innbyggere": 269819, "a_kr": 15347646, "b_kr": 100110899, "c_kr": 55346298, "total_kr": 170804843, "a_per_innb": 57.0, "b_per_innb": 371.0, "c_per_innb": 205.0, "per_innb": 888.0, "kommune_per_innb": 633.0, "stat_per_innb": 202, "innbyggere_per_innb": 53}, {"fylke": "Finnmark", "innbyggere": 75053, "a_kr": 99358587, "b_kr": 2701517, "c_kr": 2424294, "total_kr": 104484398, "a_per_innb": 1324.0, "b_per_innb": 36.0, "c_per_innb": 32.0, "per_innb": 2091.0, "kommune_per_innb": 1392.0, "stat_per_innb": 633, "innbyggere_per_innb": 66}, {"fylke": "Innlandet", "innbyggere": 376304, "a_kr": 48161796, "b_kr": 84162932, "c_kr": 133988589, "total_kr": 266313317, "a_per_innb": 128.0, "b_per_innb": 224.0, "c_per_innb": 356.0, "per_innb": 915.0, "kommune_per_innb": 708.0, "stat_per_innb": 154, "innbyggere_per_innb": 53}, {"fylke": "Møre og Romsdal", "innbyggere": 270624, "a_kr": 35015959, "b_kr": 81477363, "c_kr": 85465130, "total_kr": 201958452, "a_per_innb": 129.0, "b_per_innb": 301.0, "c_per_innb": 316.0, "per_innb": 929.0, "kommune_per_innb": 746.0, "stat_per_innb": 139, "innbyggere_per_innb": 44}, {"fylke": "Nordland", "innbyggere": 243081, "a_kr": 89817151, "b_kr": 108280103, "c_kr": 40115347, "total_kr": 238212600, "a_per_innb": 369.0, "b_per_innb": 445.0, "c_per_innb": 165.0, "per_innb": 1337.0, "kommune_per_innb": 980.0, "stat_per_innb": 307, "innbyggere_per_innb": 50}, {"fylke": "Oslo", "innbyggere": 717710, "a_kr": 211727268, "b_kr": 0, "c_kr": 0, "total_kr": 211727268, "a_per_innb": 295.0, "b_per_innb": 0.0, "c_per_innb": 0.0, "per_innb": 438.0, "kommune_per_innb": 295.0, "stat_per_innb": 113, "innbyggere_per_innb": 30}, {"fylke": "Rogaland", "innbyggere": 499417, "a_kr": 51534498, "b_kr": 153857531, "c_kr": 80322826, "total_kr": 285714855, "a_per_innb": 103.0, "b_per_innb": 308.0, "c_per_innb": 161.0, "per_innb": 751.0, "kommune_per_innb": 572.0, "stat_per_innb": 133, "innbyggere_per_innb": 46}, {"fylke": "Telemark", "innbyggere": 177093, "a_kr": 55736962, "b_kr": 44212485, "c_kr": 26558819, "total_kr": 126508266, "a_per_innb": 315.0, "b_per_innb": 250.0, "c_per_innb": 150.0, "per_innb": 929.0, "kommune_per_innb": 714.0, "stat_per_innb": 167, "innbyggere_per_innb": 48}, {"fylke": "Troms", "innbyggere": 169610, "a_kr": 116505219, "b_kr": 31214586, "c_kr": 17826622, "total_kr": 165546427, "a_per_innb": 687.0, "b_per_innb": 184.0, "c_per_innb": 105.0, "per_innb": 1274.0, "kommune_per_innb": 976.0, "stat_per_innb": 240, "innbyggere_per_innb": 58}, {"fylke": "Trøndelag", "innbyggere": 482956, "a_kr": 80184217, "b_kr": 152552988, "c_kr": 78518634, "total_kr": 311255839, "a_per_innb": 166.0, "b_per_innb": 316.0, "c_per_innb": 163.0, "per_innb": 819.0, "kommune_per_innb": 644.0, "stat_per_innb": 135, "innbyggere_per_innb": 40}, {"fylke": "Vestfold", "innbyggere": 256432, "a_kr": 84984860, "b_kr": 52000000, "c_kr": 27658161, "total_kr": 164643021, "a_per_innb": 331.0, "b_per_innb": 203.0, "c_per_innb": 108.0, "per_innb": 807.0, "kommune_per_innb": 642.0, "stat_per_innb": 118, "innbyggere_per_innb": 47}, {"fylke": "Vestland", "innbyggere": 651299, "a_kr": 351522617, "b_kr": 102325712, "c_kr": 108490577, "total_kr": 562338905, "a_per_innb": 540.0, "b_per_innb": 157.0, "c_per_innb": 167.0, "per_innb": 1057.0, "kommune_per_innb": 863.0, "stat_per_innb": 147, "innbyggere_per_innb": 47}, {"fylke": "Østfold", "innbyggere": 312152, "a_kr": 8400544, "b_kr": 171193072, "c_kr": 20197711, "total_kr": 199791327, "a_per_innb": 27.0, "b_per_innb": 548.0, "c_per_innb": 65.0, "per_innb": 858.0, "kommune_per_innb": 640.0, "stat_per_innb": 161, "innbyggere_per_innb": 57}, {"fylke": "Hele landet", "innbyggere": 5550203, "a_kr": 1442923007, "b_kr": 1319999345, "c_kr": 866612421, "total_kr": 3629534773, "a_per_innb": 260.0, "b_per_innb": 238.0, "c_per_innb": 156.0, "per_innb": 858.0, "kommune_per_innb": 654.0, "stat_per_innb": 158, "innbyggere_per_innb": 46}], "legevakter": [{"legevakt": "Oslo", "fylke": "Oslo", "anrop_2023": 224162.0, "andel_2min_2023": 0.4342, "andel_2min_2026": 0.3128, "endring_anrop": 0.2044, "fylke_kr_per_innb": 438.0}, {"legevakt": "Haugesund", "fylke": "Rogaland", "anrop_2023": 45249.0, "andel_2min_2023": 0.7868, "andel_2min_2026": 0.8001, "endring_anrop": 0.4551, "fylke_kr_per_innb": 751.0}, {"legevakt": "Drammen", "fylke": "Buskerud", "anrop_2023": 77997.0, "andel_2min_2023": 0.3819, "andel_2min_2026": 0.5747, "endring_anrop": 0.142, "fylke_kr_per_innb": 888.0}, {"legevakt": "Elverum", "fylke": "Innlandet", "anrop_2023": 10443.0, "andel_2min_2023": 0.8576, "andel_2min_2026": 0.8333, "endring_anrop": 0.5076, "fylke_kr_per_innb": 915.0}, {"legevakt": "Vefsn", "fylke": "Nordland", "anrop_2023": "", "andel_2min_2023": "", "andel_2min_2026": 0.9321, "endring_anrop": "", "fylke_kr_per_innb": 1337.0}, {"legevakt": "Asker og Bærum", "fylke": "Akershus", "anrop_2023": 71726.0, "andel_2min_2023": 0.6475, "andel_2min_2026": 0.5959, "endring_anrop": 0.0838, "fylke_kr_per_innb": 758.0}, {"legevakt": "Sandnessjøen", "fylke": "Nordland", "anrop_2023": 25363.0, "andel_2min_2023": 0.968, "andel_2min_2026": 0.924, "endring_anrop": 0.2548, "fylke_kr_per_innb": 1337.0}, {"legevakt": "Follo", "fylke": "Akershus", "anrop_2023": 60876.0, "andel_2min_2023": 0.4711, "andel_2min_2026": 0.4959, "endring_anrop": 0.0932, "fylke_kr_per_innb": 758.0}, {"legevakt": "Gjøvik", "fylke": "Innlandet", "anrop_2023": 54886.0, "andel_2min_2023": 0.6777, "andel_2min_2026": 0.6638, "endring_anrop": 0.0945, "fylke_kr_per_innb": 915.0}, {"legevakt": "Tønsberg", "fylke": "Vestfold", "anrop_2023": 54297.0, "andel_2min_2023": 0.6381, "andel_2min_2026": 0.5427, "endring_anrop": 0.1013, "fylke_kr_per_innb": 807.0}, {"legevakt": "Hå", "fylke": "Rogaland", "anrop_2023": 28703.0, "andel_2min_2023": 0.8388, "andel_2min_2026": 0.8326, "endring_anrop": 0.1768, "fylke_kr_per_innb": 751.0}, {"legevakt": "Bergen", "fylke": "Vestland", "anrop_2023": 166562.0, "andel_2min_2023": 0.4817, "andel_2min_2026": 0.4327, "endring_anrop": 0.0297, "fylke_kr_per_innb": 1057.0}, {"legevakt": "Stavanger", "fylke": "Rogaland", "anrop_2023": 99938.0, "andel_2min_2023": 0.5159, "andel_2min_2026": 0.6757, "endring_anrop": 0.0342, "fylke_kr_per_innb": 751.0}, {"legevakt": "Trondheim", "fylke": "Trøndelag", "anrop_2023": 105448.0, "andel_2min_2023": 0.3382, "andel_2min_2026": 0.3845, "endring_anrop": 0.0212, "fylke_kr_per_innb": 819.0}, {"legevakt": "Kristiansand", "fylke": "Agder", "anrop_2023": 88994.0, "andel_2min_2023": 0.6182, "andel_2min_2026": 0.6304, "endring_anrop": 0.0416, "fylke_kr_per_innb": 824.0}, {"legevakt": "Tromsø", "fylke": "Troms", "anrop_2023": 63522.0, "andel_2min_2023": 0.612, "andel_2min_2026": 0.6092, "endring_anrop": -0.044, "fylke_kr_per_innb": 1274.0}, {"legevakt": "Fredrikstad", "fylke": "Østfold", "anrop_2023": 47598.0, "andel_2min_2023": 0.6252, "andel_2min_2026": 0.5771, "endring_anrop": 0.0382, "fylke_kr_per_innb": 858.0}, {"legevakt": "Sandnes", "fylke": "Rogaland", "anrop_2023": 66140.0, "andel_2min_2023": 0.7322, "andel_2min_2026": 0.7469, "endring_anrop": 0.0158, "fylke_kr_per_innb": 751.0}, {"legevakt": "Alta", "fylke": "Finnmark", "anrop_2023": 22389.0, "andel_2min_2023": 0.7494, "andel_2min_2026": 0.7844, "endring_anrop": -0.0255, "fylke_kr_per_innb": 2091.0}, {"legevakt": "Arendal", "fylke": "Agder", "anrop_2023": 65834.0, "andel_2min_2023": 0.4184, "andel_2min_2026": 0.5379, "endring_anrop": 0.0177, "fylke_kr_per_innb": 824.0}, {"legevakt": "Nes", "fylke": "Akershus", "anrop_2023": 16850.0, "andel_2min_2023": 0.7539, "andel_2min_2026": 0.7749, "endring_anrop": 0.0661, "fylke_kr_per_innb": 758.0}, {"legevakt": "Kvam", "fylke": "Vestland", "anrop_2023": 6466.0, "andel_2min_2023": 0.8215, "andel_2min_2026": 0.8166, "endring_anrop": -0.0266, "fylke_kr_per_innb": 1057.0}, {"legevakt": "Kongsvinger", "fylke": "Innlandet", "anrop_2023": 24147.0, "andel_2min_2023": 0.7084, "andel_2min_2026": 0.7135, "endring_anrop": 0.1051, "fylke_kr_per_innb": 915.0}, {"legevakt": "Jessheim (Ullensaker)", "fylke": "Akershus", "anrop_2023": 38364.0, "andel_2min_2023": 0.7019, "andel_2min_2026": 0.7085, "endring_anrop": 0.0876, "fylke_kr_per_innb": 758.0}, {"legevakt": "Nordreisa (Nord-Troms)", "fylke": "Troms", "anrop_2023": 5928.0, "andel_2min_2023": 0.877, "andel_2min_2026": 0.8892, "endring_anrop": 0.0061, "fylke_kr_per_innb": 1274.0}]};
+(function(){const cb=[],calcs={},out={};
+function res(id){if(window.__D[id])return window.__D[id];if(out[id])return out[id];const c=calcs[id];if(!c)return null;out[id]=c.fn(...c.inputs.map(res));return out[id];}
+window.dash={colors:["#3b6fd4","#d9822b","#2e9e6a","#c2410c","#8b5cf6","#0891b2","#be185d","#65a30d"],
+ data:id=>{const d=res(id);return d?{status:"ok",data:d,columns:d.length?Object.keys(d[0]):[],meta:[]}:{status:"missing",data:[]}},
+ calc:(id,o)=>{calcs[id]=o},loader:()=>{},onData:f=>{cb.push(f);f()},params:()=>({}),setParams:()=>{},resetParams:()=>{},setLink:()=>{},refresh:()=>{}};
+let t;addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(()=>cb.forEach(f=>f()),150)});})();
+</script></head><body><div id="dash-root"><style>
+.lk{font-family:var(--font-anthropic-sans);display:flex;flex-direction:column;gap:var(--cds-gap-lg)}
+.lk h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.lk .take{color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 0;max-width:64rem;line-height:1.5}
+.lk .take b{color:var(--color-fg);font-weight:var(--cds-font-weight-medium)}
+.lk .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:var(--cds-gap-md)}
+.lk .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);min-width:0}
+.lk .k-l{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.lk .k-v{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);font-variant-numeric:tabular-nums;margin-top:var(--cds-gap-xs)}
+.lk .k-d{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-top:var(--cds-gap-xs)}
+.lk .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,30rem),1fr));gap:var(--cds-gap-md)}
+.lk h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.lk .note{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:var(--cds-gap-xs) 0 var(--cds-gap-md);line-height:1.45}
+.lk .chart{position:relative;min-height:300px}
+.lk .legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-bottom:var(--cds-gap-sm)}
+.lk .sw{display:inline-block;width:.6rem;height:.6rem;border-radius:2px;margin-right:var(--cds-gap-xs);vertical-align:middle}
+.lk .tip{position:absolute;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);pointer-events:none;white-space:nowrap;z-index:2}
+.lk .tip-h{color:var(--cds-text-secondary);margin-bottom:2px}
+.lk svg text{font-size:var(--cds-font-size-caption);fill:var(--color-fg-muted);font-family:var(--font-anthropic-sans)}
+.lk svg text.lab{fill:var(--color-fg)}
+.lk .fail{display:flex;align-items:center;justify-content:center;gap:var(--cds-gap-sm);min-height:inherit;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.lk .fail::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)}
+.lk .tbl{overflow-x:auto}
+.lk table{border-collapse:collapse;width:100%;font-size:var(--cds-font-size-caption);font-variant-numeric:tabular-nums}
+.lk th,.lk td{text-align:right;padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.lk th:first-child,.lk td:first-child,.lk th:nth-child(2),.lk td:nth-child(2){text-align:left}
+.lk th{color:var(--color-fg-muted);font-weight:var(--cds-font-weight-medium)}
+.lk .up{color:var(--color-bad)} .lk .dn{color:var(--color-ok)}
+.lk ul.merk{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.5;margin:0;padding-left:1.1rem}
+.lk [data-dash-source-state=empty]{color:transparent}
+</style>
+<div class="lk">
+  <header id="topp">
+    <h1>Legevakt: kommunenes utgifter 2023 og tilgjengelighet</h1>
+    <p class="take">Legevakt kostet i snitt <b data-source="fylker" data-field="per_innb" data-where="fylke=Hele landet">—</b> kr per innbygger i 2023, når kommunenes, statens og innbyggernes utgifter legges sammen (SSB). Oslo lå på <b data-source="fylker" data-field="per_innb" data-where="fylke=Oslo">—</b> kr – lavest i landet – og har samtidig lavest andel anrop besvart innen 2 minutter. Utgiftene finnes bare per fylke, så for andre legevakter enn Oslo er sammenligningen grov.</p>
+  </header>
+
+  <section class="kpis" id="nokkeltall">
+    <div class="card"><div class="k-l">Samlede utgifter per innbygger, hele landet</div><div class="k-v" data-source="fylker" data-field="per_innb" data-where="fylke=Hele landet">—</div><div class="k-d">kr, 2023 – kommune, stat og egenandeler</div></div>
+    <div class="card"><div class="k-l">Oslo</div><div class="k-v" data-source="fylker" data-field="per_innb" data-where="fylke=Oslo">—</div><div class="k-d">kr per innbygger, 2023</div></div>
+    <div class="card"><div class="k-l">Oslo: utgift per anrop til legevakten</div><div class="k-v" data-source="oslo_per_anrop" data-field="kr_per_anrop" data-row="0">—</div><div class="k-d">kr, samlede utgifter 2023 delt på anrop til Oslo legevakt 2023</div></div>
+    <div class="card"><div class="k-l">Høyest: Finnmark</div><div class="k-v" data-source="fylker" data-field="per_innb" data-where="fylke=Finnmark">—</div><div class="k-d">kr per innbygger, 2023</div></div>
+  </section>
+
+  <section class="grid">
+    <div class="card" id="kort-fylke"><h2>Utgifter til legevakt per innbygger, etter fylke</h2>
+      <p class="note">Fordelt på hvem som betaler: kommunenes netto driftsutgifter, statens refusjoner og tilskudd, og innbyggernes egenandeler. Stiplet linje = landssnitt. Kilde: SSB Rapporter 2024/38 (tabell 4.6 og 6.3) og SSBs artikkel om legevaktutgifter 2023.</p>
+      <div class="legend" id="lgF"></div>
+      <div class="chart" id="cF" data-source="fylker"></div></div>
+    <div class="card" id="kort-scatter"><h2>Utgift i fylket mot tilgjengelighet ved legevakten</h2>
+      <p class="note">Hvert punkt er en legevakt: fylkets samlede utgift per innbygger (2023) mot andel anrop besvart innen 2 minutter jan–okt 2026. Stiplet linje = kravet på 80 %. Fylkestallet er et grovt mål for den enkelte legevakten.</p>
+      <div class="chart" id="cS" data-source="legevakter"></div></div>
+  </section>
+
+  <div class="card" id="kort-tabell"><h2>Legevaktene</h2>
+    <p class="note">Fylke etter fylkesinndelingen for 2024. Andel ≤2 min er av alle anrop. Endring i anrop er jan–okt 2026 mot jan–okt 2025.</p>
+    <div class="tbl"><table id="tbl" data-source="legevakter" data-row-key="legevakt"><thead><tr>
+      <th data-field="legevakt">Legevakt</th><th data-field="fylke">Fylke</th><th data-field="fylke_kr_per_innb">Fylkets utgift kr/innb. 2023</th><th data-field="anrop_2023">Anrop 2023</th><th data-field="andel_2min_2023">≤2 min 2023</th><th data-field="andel_2min_2026">≤2 min 2026</th><th data-field="endring_anrop">Endring anrop</th>
+    </tr></thead><tbody></tbody></table></div></div>
+
+  <div class="card" id="kort-forbehold"><h2>Forbehold</h2>
+    <ul class="merk">
+      <li>SSB publiserer ikke utgiftene per kommune. Bare Oslo kan kobles direkte, fordi Oslo er både én kommune og ett fylke. For de andre er fylkessnittet brukt, og det dekker mange kommuner med ulik organisering.</li>
+      <li>Utgiftene er samlede utgifter: kommunenes netto driftsutgifter, statens refusjoner og tilskudd og innbyggernes egenandeler. I Oslo er skadelegevakten drevet av spesialisthelsetjenesten og ikke med i tallet.</li>
+      <li>SSB oppgir usikkerhet i tallene, særlig for daglegevakt, og har estimert eller justert tall for 31 kommuner.</li>
+      <li>«Nes» er plassert i Akershus (Nes på Romerike). Vefsn har ingen anrop for 2023. Med kommunetallene fra SSB kan utgiftene summeres per legevakt.</li>
+    </ul></div>
+</div>
+<script>
+const nf=o=>new Intl.NumberFormat("nb-NO",o);
+const fN=v=>nf({maximumFractionDigits:0}).format(v),fP=v=>nf({style:"percent",minimumFractionDigits:1,maximumFractionDigits:1}).format(v),fP0=v=>nf({style:"percent",maximumFractionDigits:0}).format(v),fS=v=>(v>0?"+":"")+fP(v);
+dash.calc("oslo_per_anrop",{inputs:["fylker","legevakter"],title:"Oslo: utgift per anrop",description:"Oslos samlede utgifter til legevakt 2023 (kr per innbygger ganger innbyggere) delt på antall anrop til Oslo legevakt i 2023.",
+ fn:(fylker,legevakter)=>{const f=fylker.find(r=>r.fylke==="Oslo"),l=legevakter.find(r=>r.legevakt==="Oslo");return f&&l?[{navn:"Oslo",kr_per_anrop:(+f.per_innb)*(+f.innbyggere)/(+l.anrop_2023)}]:[];}});
+const C=()=>dash.colors;
+function fail(el){el.replaceChildren();const d=document.createElement("div");d.className="fail";d.textContent="Failed to load";el.appendChild(d);}
+function ready(el,id){const st=dash.data(id);if(st.status==="ok"&&st.data)return st;if(["error","connect","missing"].includes(st.status))fail(el);else el.replaceChildren();return null;}
+function txtW(svg,arr){const g=svg.append("g");const w=d3.max(g.selectAll("text").data(arr).join("text").text(d=>d).nodes(),n=>{try{return n.getComputedTextLength()}catch(e){return String(n.textContent).length*7}})||0;g.remove();return w;}
+function base(el,H){el.replaceChildren();const W=Math.max(280,el.clientWidth||600);const svg=d3.select(el).append("svg").attr("width","100%").attr("height",H).attr("viewBox",`0 0 ${W} ${H}`);const tip=document.createElement("div");tip.className="tip";tip.hidden=true;el.appendChild(tip);return {svg,W,tip};}
+function showTip(t,el,x,y,title,lines){t.replaceChildren();const h=document.createElement("div");h.className="tip-h";h.textContent=title;t.appendChild(h);for(const l of lines){const r=document.createElement("div");if(l.c){const s=document.createElement("span");s.className="sw";s.style.background=l.c;r.appendChild(s);}const n=document.createElement("span");n.textContent=l.n+": ";const v=document.createElement("b");v.textContent=l.v;r.append(n,v);t.appendChild(r);}t.hidden=false;const W=el.clientWidth,tw=t.offsetWidth;let left=x+14;if(left+tw>W)left=x-tw-14;t.style.left=Math.max(0,left)+"px";t.style.top=Math.max(0,y-20)+"px";}
+
+function marks(){const fmt={per_innb:fN,kr_per_anrop:fN};
+ document.querySelectorAll(".lk [data-field][data-source]:not(table):not(th)").forEach(el=>{if(!el.dataset.where&&el.dataset.row==null)return;const st=dash.data(el.dataset.source);if(st.status!=="ok"||!st.data||!st.data.length){el.textContent="—";return;}
+  let r;if(el.dataset.row!=null)r=st.data[+el.dataset.row];else{const w=new URLSearchParams(el.dataset.where);r=st.data.find(o=>[...w].every(([k,v])=>String(o[k])===v));}
+  const f=fmt[el.dataset.field]||fN;el.textContent=r&&r[el.dataset.field]!=null&&r[el.dataset.field]!==""?f(+r[el.dataset.field]):"—";});}
+
+function drawF(){const el=document.getElementById("cF");const keys=[["kommune_per_innb","Kommunene",C()[0]],["stat_per_innb","Staten",C()[1]],["innbyggere_per_innb","Egenandeler",C()[2]]];
+ const lg=document.getElementById("lgF");lg.replaceChildren();for(const [,n,c] of keys){const s=document.createElement("span");const i=document.createElement("i");i.className="sw";i.style.background=c;s.append(i,document.createTextNode(n));lg.appendChild(s);}
+ const st=ready(el,"fylker");if(!st)return;const all=st.data;const land=all.find(r=>r.fylke==="Hele landet");const rows=all.filter(r=>r.fylke!=="Hele landet").map(r=>({...r,t:+r.per_innb})).sort((a,b)=>b.t-a.t);
+ const H=rows.length*24+30,{svg,W,tip}=base(el,H);const ml=txtW(svg,rows.map(r=>r.fylke))+10;const vw=txtW(svg,rows.map(r=>fN(r.t)))+8;
+ const x=d3.scaleLinear([0,d3.max(rows,r=>r.t)],[ml,W-10-vw]).nice();const y=d3.scaleBand(rows.map(r=>r.fylke),[6,H-22]).padding(.2);const g=svg.append("g");
+ const t=x.ticks(Math.max(2,Math.floor(W/110)));g.selectAll("line.gl").data(t).join("line").attr("x1",d=>x(d)).attr("x2",d=>x(d)).attr("y1",6).attr("y2",H-22).attr("stroke","var(--cds-chart-grid)");
+ g.selectAll("text.xl").data(t).join("text").attr("x",d=>x(d)).attr("y",H-6).attr("text-anchor","middle").text(fN);
+ g.selectAll("text.yl").data(rows).join("text").attr("x",ml-6).attr("y",r=>y(r.fylke)+y.bandwidth()/2).attr("dy","0.32em").attr("text-anchor","end").text(r=>r.fylke);
+ for(const r of rows){let x0=0;for(const [k,,c] of keys){const v=+r[k];if(v>0)g.append("rect").attr("x",x(x0)).attr("y",y(r.fylke)).attr("width",Math.max(0,x(x0+v)-x(x0)-1)).attr("height",y.bandwidth()).attr("fill",c);x0+=v;}}
+ g.selectAll("text.lab").data(rows).join("text").attr("class","lab").attr("x",r=>x(r.t)+4).attr("y",r=>y(r.fylke)+y.bandwidth()/2).attr("dy","0.32em").text(r=>fN(r.t));
+ if(land){g.append("line").attr("x1",x(+land.per_innb)).attr("x2",x(+land.per_innb)).attr("y1",6).attr("y2",H-22).attr("stroke","var(--cds-chart-reference)").attr("stroke-dasharray","4 4");}
+ g.selectAll("rect.hit").data(rows).join("rect").attr("x",ml).attr("y",r=>y(r.fylke)).attr("width",W-ml).attr("height",y.bandwidth()).attr("fill","transparent")
+  .on("pointermove",(e,r)=>{const [mx,my]=d3.pointer(e,el);showTip(tip,el,mx,my,r.fylke,[{n:"Totalt",v:fN(r.t)+" kr/innb."},...keys.map(([k,n,c])=>({n,v:fN(+r[k])+" kr/innb.",c})),{n:"Innbyggere",v:fN(+r.innbyggere)}]);}).on("pointerleave",()=>tip.hidden=true);}
+
+function drawS(){const el=document.getElementById("cS");const st=ready(el,"legevakter");if(!st)return;const rows=st.data.filter(r=>r.andel_2min_2026!==""&&r.andel_2min_2026!=null).map(r=>({...r,x:+r.fylke_kr_per_innb,y:+r.andel_2min_2026}));
+ const H=320,{svg,W,tip}=base(el,H);const y=d3.scaleLinear([Math.min(.25,d3.min(rows,r=>r.y)-.05),1],[H-28,10]).nice();const ml=txtW(svg,y.ticks(5).map(fP0))+10;
+ const x=d3.scaleLinear([d3.min(rows,r=>r.x)*.9,d3.max(rows,r=>r.x)*1.05],[ml+6,W-14]).nice();const g=svg.append("g");
+ for(const d of y.ticks(5)){g.append("line").attr("x1",ml).attr("x2",W-8).attr("y1",y(d)).attr("y2",y(d)).attr("stroke","var(--cds-chart-grid)");g.append("text").attr("x",ml-6).attr("y",y(d)).attr("dy","0.32em").attr("text-anchor","end").text(fP0(d));}
+ const xt=x.ticks(Math.max(2,Math.floor(W/100))).filter(d=>x(d)>ml+16&&x(d)<W-24);g.selectAll("text.xl").data(xt).join("text").attr("x",d=>x(d)).attr("y",H-12).attr("text-anchor","middle").text(fN);
+ g.append("text").attr("x",W-14).attr("y",H-0).attr("text-anchor","end").text("kr per innbygger i fylket");
+ g.append("line").attr("x1",ml).attr("x2",W-8).attr("y1",y(.8)).attr("y2",y(.8)).attr("stroke","var(--cds-chart-reference)").attr("stroke-dasharray","4 4");
+ const show=new Set(["Oslo","Bergen","Trondheim","Alta","Drammen","Stavanger","Tromsø","Haugesund"]);
+ g.selectAll("circle").data(rows).join("circle").attr("cx",r=>x(r.x)).attr("cy",r=>y(r.y)).attr("r",r=>r.legevakt==="Oslo"?6:4.5).attr("fill",r=>r.legevakt==="Oslo"?C()[1]:C()[0]).attr("fill-opacity",.85)
+  .on("pointermove",(e,r)=>{const [mx,my]=d3.pointer(e,el);showTip(tip,el,mx,my,r.legevakt+" ("+r.fylke+")",[{n:"Fylkets utgift",v:fN(r.x)+" kr/innb."},{n:"≤2 min 2026",v:fP(r.y)},{n:"Endring anrop",v:r.endring_anrop!==""?fS(+r.endring_anrop):"–"}]);}).on("pointerleave",()=>tip.hidden=true);
+ g.selectAll("text.lab").data(rows.filter(r=>show.has(r.legevakt))).join("text").attr("class","lab").attr("x",r=>x(r.x)+7).attr("y",r=>y(r.y)).attr("dy","0.32em").text(r=>r.legevakt);}
+
+function drawT(){const tb=document.querySelector("#tbl tbody");tb.replaceChildren();const st=dash.data("legevakter");if(st.status!=="ok"||!st.data)return;
+ for(const r of [...st.data].sort((a,b)=>(+b.anrop_2023||0)-(+a.anrop_2023||0))){const tr=document.createElement("tr");const e=r.endring_anrop===""?null:+r.endring_anrop;
+  const cells=[[r.legevakt],[r.fylke],[fN(+r.fylke_kr_per_innb)],[r.anrop_2023!==""?fN(+r.anrop_2023):"–"],[r.andel_2min_2023!==""?fP(+r.andel_2min_2023):"–"],[r.andel_2min_2026!==""?fP(+r.andel_2min_2026):"–"],[e!=null?fS(e):"–",e>0?"up":"dn"]];
+  for(const [v,c] of cells){const td=document.createElement("td");td.textContent=v;if(c&&v!=="–")td.className=c;tr.appendChild(td);}tb.appendChild(tr);}}
+dash.onData(()=>{marks();drawF();drawS();drawT();});
+</script>
+
+<p style="font-size:.75rem;color:var(--color-fg-muted)">Kilder: SSB Rapporter 2024/38 og legevaktsentralenes månedseksport. Lokal kopi laget 13.11.2026; d3 lastes fra cdnjs.</p></div></body></html>
