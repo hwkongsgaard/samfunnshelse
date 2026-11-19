@@ -1,0 +1,311 @@
+<!doctype html><html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Legevakt 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one 16:9 slide at a time, letterboxed on a stage; under 720px the slides stack and scroll. */
+:root{
+  --stage:#D9DEEA; --paper:#F3F5FA; --ink:#121B3A; --muted:#5F6A88; --line:#D5DBE8;
+  --svar:#2B59E0; --vent:#E8A013; --alarm:#D43A2C; --ghost:#B4BDD2;
+  --night:#0D1532; --night-ink:#EEF1FA; --night-muted:#9AA6CC;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --text:"Instrument Sans",system-ui,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --stage:#05081A; --paper:#0F1838; --ink:#EBEFFA; --muted:#9AA5C6; --line:#27325C;
+  --svar:#7396FF; --vent:#FFB938; --alarm:#FF6F5E; --ghost:#46527F; --night:#090F27; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --stage:#05081A; --paper:#0F1838; --ink:#EBEFFA; --muted:#9AA5C6; --line:#27325C;
+  --svar:#7396FF; --vent:#FFB938; --alarm:#FF6F5E; --ghost:#46527F; --night:#090F27; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--stage);color:var(--ink);font-family:var(--text);overflow:hidden}
+.stage{height:100%;container-type:size}
+.deck{height:100%;display:grid;place-items:center;position:relative}
+.slide{position:absolute;box-sizing:border-box;width:min(100cqw,177.78cqh);height:min(56.25cqw,100cqh);font-size:min(1.5cqw,2.667cqh);
+  background:var(--paper);display:none;flex-direction:column;overflow:hidden;
+  padding-block:4.6em 3.6em;padding-left:max(16px,6%,env(safe-area-inset-left,0px));padding-right:max(16px,6%,env(safe-area-inset-right,0px))}
+.slide.on{display:flex}
+.slide h1,.slide h2{font-family:var(--display);text-wrap:balance;margin:0}
+.slide h1{font-weight:800;font-size:5.4em;line-height:.95;letter-spacing:-.03em;max-width:13ch}
+.slide h2{font-weight:700;font-size:2.5em;line-height:1.05;letter-spacing:-.02em;max-width:26ch}
+.slide .sub{font-size:1.1em;line-height:1.45;color:var(--muted);margin:.7em 0 0;max-width:62ch}
+.fig{flex:1;min-height:0;margin-top:1.2em;position:relative}
+.fig svg{display:block;font-family:var(--text)}
+.fig text{fill:var(--muted)}
+.fig text.v{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.fig text.hot{fill:var(--alarm);font-weight:600}
+.key{display:flex;flex-wrap:wrap;gap:.3em 1.5em;font-size:.95em;color:var(--muted);margin-top:.9em}
+.key i{display:inline-block;width:.75em;height:.75em;border-radius:50%;margin-right:.45em}
+.note{font-size:.9em;color:var(--muted);margin:.8em 0 0;max-width:80ch;line-height:1.4}
+/* title */
+.slide.title{background:var(--night);color:var(--night-ink);justify-content:flex-end}
+.title canvas{position:absolute;inset:0;width:100%;height:100%}
+.title>:not(canvas){position:relative}
+.title .sub{color:var(--night-muted);font-size:1.25em;max-width:46ch}
+.title .who{color:var(--night-muted);font-size:.95em;margin:2.2em 0 0}
+.title .key{color:var(--night-muted)}
+/* number row */
+.tall3{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5em;margin-top:2.2em}
+.tall3 div{min-width:0;border-top:.22em solid var(--ink);padding-top:1em}
+.tall3 div.hot{border-color:var(--alarm)}
+.tall3 b{display:block;font-family:var(--display);font-weight:800;font-size:5em;line-height:.9;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tall3 div.hot b{color:var(--alarm)}
+.tall3 span{display:block;margin-top:.7em;font-size:1.15em;line-height:1.35;color:var(--muted);max-width:22ch}
+.pts{list-style:none;margin:1.6em 0 0;padding:0;display:grid;gap:.9em;max-width:74ch}
+.pts li{font-size:1.25em;line-height:1.4;padding-left:1.2em;position:relative}
+.pts li::before{content:"";position:absolute;left:0;top:.5em;width:.5em;height:.5em;border-radius:50%;background:var(--svar)}
+.pts li.hot::before{background:var(--alarm)}
+.pts.sm li{font-size:1.05em}
+.two{display:grid;grid-template-columns:1.1fr 1fr;gap:3em;flex:1;min-height:0;margin-top:.4em}
+.two>*{min-width:0;display:flex;flex-direction:column}
+.nav{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;z-index:5;
+  font:500 13px var(--text);color:var(--muted);font-variant-numeric:tabular-nums}
+.nav button{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;width:34px;height:34px;cursor:pointer}
+.nav button:focus-visible{outline:2px solid var(--svar);outline-offset:2px}
+.slide.on.anim h2,.slide.on.anim h1,.slide.on.anim .sub,.slide.on.anim .pts li,.slide.on.anim .tall3 div{animation:inn .6s cubic-bezier(.2,.8,.2,1) both}
+.slide.on.anim .sub{animation-delay:.08s}
+.slide.on.anim .pts li:nth-child(2),.slide.on.anim .tall3 div:nth-child(2){animation-delay:.14s}
+.slide.on.anim .pts li:nth-child(3),.slide.on.anim .tall3 div:nth-child(3){animation-delay:.28s}
+.slide.on.anim .pts li:nth-child(4){animation-delay:.42s}.slide.on.anim .pts li:nth-child(5){animation-delay:.56s}
+@keyframes inn{from{opacity:0;transform:translateY(.8em)}}
+@media (prefers-reduced-motion:reduce){.slide.on.anim *{animation:none!important}}
+@container (max-width:720px){
+  .slide{width:100cqw;height:100cqh;font-size:max(12.5px,2.7cqw);padding-block:2.6em 4.4em;overflow-y:auto}
+  .slide h1{font-size:3.3em}.slide h2{font-size:1.8em}
+  .fig{min-height:190px}
+  .tall3,.two{grid-template-columns:1fr;gap:1.4em}
+  .tall3{margin-top:1.4em}.tall3 b{font-size:3.2em}.tall3 div{padding-top:.7em}
+  .two{flex:none}.two .fig{flex:none;height:11em}
+}
+@media print{html,body{height:auto}body{overflow:visible}.nav{display:none}.stage{container-type:normal;height:auto}.deck{display:block;height:auto}
+  .slide{position:relative;display:flex!important;width:297mm;height:167mm;font-size:11pt;page-break-after:always}}
+</style>
+
+<style>body{margin:0}</style></head><body><div class="stage"><div class="deck" id="deck">
+
+<section class="slide title" id="s1"><canvas id="flyt" aria-hidden="true"></canvas>
+  <h1>Hvem får svar på legevakten?</h1>
+  <p class="sub">Pågangen på legevakt i 2026: anrop, svartid, konsultasjoner og utgifter.</p>
+  <p class="key"><span><i style="background:var(--svar)"></i>besvart innen 2 minutter</span><span><i style="background:var(--vent)"></i>venter lenger eller gir opp</span><span>Oslo legevakt: <b id="osloTall">31</b> av 100 anrop besvart i tide</span></p>
+  <p class="who">Avdeling samfunnshelse, Helsedirektoratet<br>Håvard Wahl Kongsgård. Data til og med oktober 2026.</p>
+</section>
+
+<section class="slide" id="s2"><h2>Tre tall forteller det meste</h2>
+  <div class="tall3">
+    <div><b data-tell="5.4" data-pre="+" data-suf=" %">+5,4 %</b><span>flere anrop til legevakt i Norge, januar–oktober 2026</span></div>
+    <div class="hot"><b data-tell="31" data-suf=" %">31 %</b><span>av anropene i Oslo besvart innen 2 minutter. Kravet er 80 %.</span></div>
+    <div><b data-tell="438" data-suf=" kr">438 kr</b><span>per innbygger til legevakt i Oslo. Landet bruker 858 kr.</span></div>
+  </div>
+  <ul class="pts sm">
+    <li>Økningen startet i mai og gjelder bare legevakten. 113 og fastlegene er uendret.</li>
+    <li class="hot">Oslo har størst økning blant de store og tar minst av den unna.</li>
+  </ul>
+</section>
+
+<section class="slide" id="s3"><h2>Noe skjedde i mai</h2>
+  <p class="sub">Anrop til alle legevaktsentraler, endring mot samme måned året før.</p>
+  <div class="fig" id="fBrudd"></div>
+</section>
+
+<section class="slide" id="s4"><h2>Oslo øker mest av de store</h2>
+  <p class="sub">Endring i anrop, januar–oktober 2026 mot samme periode 2025. Stjerne betyr at én måned trolig er ufullstendig.</p>
+  <div class="fig tall" id="fRang"></div>
+</section>
+
+<section class="slide" id="s5"><h2>Oslo legevakt fikk 27&nbsp;000 anrop i oktober</h2>
+  <p class="key"><span><i style="background:var(--ghost)"></i>2024</span><span><i style="background:var(--svar)"></i>2025</span><span><i style="background:var(--alarm)"></i>2026</span></p>
+  <div class="fig" id="fOslo"></div>
+  <p class="note">Anrop per måned. I oktober 2026 fikk 16 % svar innen 2 minutter.</p>
+</section>
+
+<section class="slide" id="s6"><h2>Av 100 som ringer, får 31 svar i tide i Oslo</h2>
+  <p class="sub">Andel av alle anrop besvart innen 2 minutter, januar–oktober 2026. Kravet er 80 av 100.</p>
+  <div class="fig" id="fHundre"></div>
+</section>
+
+<section class="slide" id="s7"><h2>Ingen av de store når kravet</h2>
+  <p class="key"><span><i style="background:var(--ghost)"></i>2025</span><span><i style="background:var(--ink)"></i>2026</span><span>Andel besvart innen 2 minutter, januar–oktober</span></p>
+  <div class="fig tall" id="fKrav"></div>
+</section>
+
+<section class="slide" id="s8"><h2>113 er flatt. Det er legevakten som øker.</h2>
+  <p class="key"><span><i style="background:var(--vent)"></i>Legevakt 116 117</span><span><i style="background:var(--svar)"></i>113</span><span>Anrop i Norge, endring mot samme måned året før</span></p>
+  <div class="fig" id="fAmk"></div>
+</section>
+
+<section class="slide" id="s9"><h2>Legevakten tar flere konsultasjoner. Fastlegene tar like mange som før.</h2>
+  <p class="key"><span><i style="background:var(--vent)"></i>Legevakt</span><span><i style="background:var(--svar)"></i>Fastlege</span><span>Konsultasjoner i Norge 2026, endring mot samme måned 2025. Kilde: Helfo.</span></p>
+  <div class="fig" id="fKons"></div>
+</section>
+
+<section class="slide" id="s10"><h2>Kan KI forklare økningen?</h2>
+  <div class="two">
+    <ul class="pts sm">
+      <li>Søk etter ChatGPT flatet ut i 2026. Søk på feber, influensa og omgangssyke viser ingen sommerbølge.</li>
+      <li>46 % har brukt KI til helseråd. Bare 3 % sier de kontakter helsetjenesten oftere, og 12 % sjeldnere.</li>
+      <li>113 er flatt. Mer sykdom eller helseangst ville trolig vist seg der også.</li>
+    </ul>
+    <div><p class="sub" style="margin-top:1.6em">Prognosefeil for anrop i Oslo 2026. Modellen blir dårligere når søkedata legges til.</p><div class="fig" id="fModell"></div></div>
+  </div>
+</section>
+
+<section class="slide" id="s11"><h2>Oslo bruker minst per innbygger</h2>
+  <p class="key"><span><i style="background:var(--ink)"></i>Kommunene</span><span><i style="background:var(--svar)"></i>Staten</span><span><i style="background:var(--ghost)"></i>Egenandeler</span><span>Kroner per innbygger 2023. Kilde: SSB.</span></p>
+  <div class="fig tall" id="fKost"></div>
+</section>
+
+<section class="slide" id="s12"><h2>Hva dataene peker mot</h2>
+  <ul class="pts">
+    <li>Henvendelsene til legevakt økte over hele landet fra mai 2026.</li>
+    <li class="hot">Oslo har ikke kapasitet til å ta økningen. Ubesvarte anrop fører til nye oppringninger, og volumet vokser videre.</li>
+    <li>Årsaken til økningen er ikke funnet. KI, sykdomsbølger og fastlegenes aktivitet forklarer den ikke.</li>
+    <li>Neste steg: bemanning og vaktplaner i Oslo, gjentatte oppringninger og utgifter per kommune fra SSB.</li>
+  </ul>
+</section>
+
+<section class="slide" id="s13"><h2>Forbehold og kilder</h2>
+  <ul class="pts sm">
+    <li>Anrop: legevaktsentralenes månedstall til og med oktober 2026. Andelen innen 2 minutter er regnet av alle anrop. Bodø er utelatt på grunn av hull i tallene.</li>
+    <li>113: Helsedirektoratets tall fra AMK-sentralene, til og med september 2026.</li>
+    <li>Konsultasjoner: Helfos åpne data. De siste månedene kan få etterregistreringer.</li>
+    <li>Utgifter: SSB Rapporter 2024/38. Bare fylkestall er publisert, så Oslo er den eneste legevakten som kan kobles direkte.</li>
+    <li>Prognoser: NeuralProphet trent på 2020–2025. Analysen viser sammenhenger, ikke årsaker.</li>
+  </ul>
+</section>
+
+</div>
+<nav class="nav" aria-label="Lysbilder"><button id="prev" aria-label="Forrige lysbilde">‹</button><span id="cnt"></span><button id="next" aria-label="Neste lysbilde">›</button></nav></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+const D={"norge_yoy": [{"ds": "2025-01-01", "v": -0.009694801717950785}, {"ds": "2025-02-01", "v": 0.03314958607472396}, {"ds": "2025-03-01", "v": -0.10130578027702553}, {"ds": "2025-04-01", "v": 0.08353336533845424}, {"ds": "2025-05-01", "v": -0.1153505873516274}, {"ds": "2025-06-01", "v": -0.0362560661553174}, {"ds": "2025-07-01", "v": 0.024112717868326694}, {"ds": "2025-08-01", "v": 0.004206344099858539}, {"ds": "2025-09-01", "v": -0.05711546253615596}, {"ds": "2025-10-01", "v": -0.027503825704610185}, {"ds": "2025-11-01", "v": 0.016105179473589804}, {"ds": "2025-12-01", "v": 0.03109316820463004}, {"ds": "2026-01-01", "v": -0.0036888766181973898}, {"ds": "2026-02-01", "v": -0.07689689199629768}, {"ds": "2026-03-01", "v": -0.03471785028790786}, {"ds": "2026-04-01", "v": 0.015103110012514742}, {"ds": "2026-05-01", "v": 0.12585619933218495}, {"ds": "2026-06-01", "v": 0.07452774255175476}, {"ds": "2026-07-01", "v": 0.05355300764250659}, {"ds": "2026-08-01", "v": 0.12697923257434396}, {"ds": "2026-09-01", "v": 0.15427392247798144}, {"ds": "2026-10-01", "v": 0.129549435681233}], "endring": [{"n": "Oslo", "e": 0.20440055778819488, "a25": 0.4117618213534082, "a26": 0.3127989340431168, "c26": 234062}, {"n": "Haugesund", "e": 0.45510253609998785, "a25": 0.8219384965416818, "a26": 0.8001119313680525, "c26": 47966}, {"n": "Drammen", "e": 0.14199887989409898, "a25": 0.5655425691156254, "a26": 0.5747022781988408, "c26": 67290}, {"n": "Elverum", "e": 0.5076025459688827, "a25": 0.8602391884724186, "a26": 0.833292641022634, "c26": 17054}, {"n": "Asker og Bærum", "e": 0.08383714411261112, "a25": 0.6009518872069942, "a26": 0.5958729623934014, "c26": 71530}, {"n": "Sandnessjøen", "e": 0.2548119632810186, "a25": 0.9662762856578816, "a26": 0.9239602517207472, "c26": 25425}, {"n": "Follo", "e": 0.09323847647734929, "a25": 0.5727331199714637, "a26": 0.4958884333025179, "c26": 55167}, {"n": "Gjøvik", "e": 0.09449409998357838, "a25": 0.7288093790320688, "a26": 0.6638077848033437, "c26": 46655}, {"n": "Tønsberg", "e": 0.10131916014268949, "a25": 0.6298699322464029, "a26": 0.5426726701593443, "c26": 46001}, {"n": "Hå", "e": 0.17684356351236152, "a25": 0.8573688352514919, "a26": 0.8326045547154436, "c26": 22087}, {"n": "Bergen", "e": 0.029662487678231875, "a25": 0.5349079713163121, "a26": 0.43274700290574203, "c26": 148327}, {"n": "Stavanger", "e": 0.0341615318359505, "a25": 0.7199262346783276, "a26": 0.6756582307189626, "c26": 78043}, {"n": "Trondheim", "e": 0.021247398908947668, "a25": 0.48388337326359604, "a26": 0.38452551269907703, "c26": 90794}, {"n": "Kristiansand", "e": 0.04161734293660424, "a25": 0.651550584040505, "a26": 0.6304014842605398, "c26": 73033}, {"n": "Tromsø", "e": -0.04403822185292894, "a25": 0.6946602285002077, "a26": 0.6091860864841374, "c26": 46020}, {"n": "Fredrikstad", "e": 0.03822059719683124, "a25": 0.5897599609993905, "a26": 0.5771064517643744, "c26": 42593}, {"n": "Sandnes", "e": 0.01578114822741239, "a25": 0.772951171489718, "a26": 0.746879385522965, "c26": 54583}, {"n": "Arendal", "e": 0.017690948360494785, "a25": 0.5072717514235224, "a26": 0.5379086126063553, "c26": 51831}, {"n": "Jessheim (Ullensaker)", "e": 0.08763738653829423, "a25": 0.6779213206507554, "a26": 0.7085431969070789, "c26": 37505}, {"n": "Norge (alle)", "e": 0.05387495186333546, "a25": 0.6622934078376415, "a26": 0.6282158622061393, "c26": 2654574}], "oslo": [{"ds": "2024-01-01", "v": 21727, "a": 0.3759}, {"ds": "2024-02-01", "v": 21809, "a": 0.2912}, {"ds": "2024-03-01", "v": 23341, "a": 0.3045}, {"ds": "2024-04-01", "v": 18262, "a": 0.4574}, {"ds": "2024-05-01", "v": 19170, "a": 0.3266}, {"ds": "2024-06-01", "v": 17487, "a": 0.3541}, {"ds": "2024-07-01", "v": 16324, "a": 0.5198}, {"ds": "2024-08-01", "v": 17782, "a": 0.3419}, {"ds": "2024-09-01", "v": 17844, "a": 0.318}, {"ds": "2024-10-01", "v": 17765, "a": 0.3073}, {"ds": "2024-11-01", "v": 17549, "a": 0.2723}, {"ds": "2024-12-01", "v": 20856, "a": 0.2832}, {"ds": "2025-01-01", "v": 21472, "a": 0.352}, {"ds": "2025-02-01", "v": 21323, "a": 0.2168}, {"ds": "2025-03-01", "v": 19888, "a": 0.3419}, {"ds": "2025-04-01", "v": 17757, "a": 0.5668}, {"ds": "2025-05-01", "v": 19085, "a": 0.4608}, {"ds": "2025-06-01", "v": 18432, "a": 0.3906}, {"ds": "2025-07-01", "v": 17783, "a": 0.5073}, {"ds": "2025-08-01", "v": 19321, "a": 0.4688}, {"ds": "2025-09-01", "v": 19317, "a": 0.4182}, {"ds": "2025-10-01", "v": 19961, "a": 0.4421}, {"ds": "2025-11-01", "v": 21752, "a": 0.2564}, {"ds": "2025-12-01", "v": 25269, "a": 0.1682}, {"ds": "2026-01-01", "v": 23252, "a": 0.284}, {"ds": "2026-02-01", "v": 21185, "a": 0.3343}, {"ds": "2026-03-01", "v": 20911, "a": 0.4025}, {"ds": "2026-04-01", "v": 21397, "a": 0.4433}, {"ds": "2026-05-01", "v": 23848, "a": 0.369}, {"ds": "2026-06-01", "v": 23700, "a": 0.2863}, {"ds": "2026-07-01", "v": 21653, "a": 0.4203}, {"ds": "2026-08-01", "v": 26005, "a": 0.2768}, {"ds": "2026-09-01", "v": 24881, "a": 0.2181}, {"ds": "2026-10-01", "v": 27230, "a": 0.1585}], "store": [{"n": "Oslo", "e": 0.20440055778819488, "a25": 0.4117618213534082, "a26": 0.3127989340431168, "c26": 234062}, {"n": "Bergen", "e": 0.029662487678231875, "a25": 0.5349079713163121, "a26": 0.43274700290574203, "c26": 148327}, {"n": "Stavanger", "e": 0.0341615318359505, "a25": 0.7199262346783276, "a26": 0.6756582307189626, "c26": 78043}, {"n": "Trondheim", "e": 0.021247398908947668, "a25": 0.48388337326359604, "a26": 0.38452551269907703, "c26": 90794}, {"n": "Kristiansand", "e": 0.04161734293660424, "a25": 0.651550584040505, "a26": 0.6304014842605398, "c26": 73033}, {"n": "Tromsø", "e": -0.04403822185292894, "a25": 0.6946602285002077, "a26": 0.6091860864841374, "c26": 46020}, {"n": "Drammen", "e": 0.14199887989409898, "a25": 0.5655425691156254, "a26": 0.5747022781988408, "c26": 67290}, {"n": "Asker og Bærum", "e": 0.08383714411261112, "a25": 0.6009518872069942, "a26": 0.5958729623934014, "c26": 71530}, {"n": "Fredrikstad", "e": 0.03822059719683124, "a25": 0.5897599609993905, "a26": 0.5771064517643744, "c26": 42593}, {"n": "Sandnes", "e": 0.01578114822741239, "a25": 0.772951171489718, "a26": 0.746879385522965, "c26": 54583}, {"n": "Norge (alle)", "e": 0.05387495186333546, "a25": 0.6622934078376415, "a26": 0.6282158622061393, "c26": 2654574}], "amk": [{"ds": "2025-01-01", "lv": -0.009694801717950785, "amk": -0.011423786123970991}, {"ds": "2025-02-01", "lv": 0.03314958607472396, "amk": -0.0042194819509506765}, {"ds": "2025-03-01", "lv": -0.10130578027702553, "amk": 0.009574763077625725}, {"ds": "2025-04-01", "lv": 0.08353336533845424, "amk": 0.03299364166884411}, {"ds": "2025-05-01", "lv": -0.1153505873516274, "amk": -0.05231361712135463}, {"ds": "2025-06-01", "lv": -0.0362560661553174, "amk": -0.007499274510103349}, {"ds": "2025-07-01", "lv": 0.024112717868326694, "amk": 0.08406843509653106}, {"ds": "2025-08-01", "lv": 0.004206344099858539, "amk": 0.031537450722733285}, {"ds": "2025-09-01", "lv": -0.05711546253615596, "amk": 0.012011482271437002}, {"ds": "2025-10-01", "lv": -0.027503825704610185, "amk": 0.03969205009931209}, {"ds": "2025-11-01", "lv": 0.016105179473589804, "amk": 0.035314573169702435}, {"ds": "2025-12-01", "lv": 0.03109316820463004, "amk": 0.07437770859082882}, {"ds": "2026-01-01", "lv": -0.0036888766181973898, "amk": 0.05012307003803973}, {"ds": "2026-02-01", "lv": -0.07689689199629768, "amk": 0.0022311005032946696}, {"ds": "2026-03-01", "lv": -0.03471785028790786, "amk": -0.017869260348337468}, {"ds": "2026-04-01", "lv": 0.015103110012514742, "amk": 0.002647599453616367}, {"ds": "2026-05-01", "lv": 0.12585619933218495, "amk": 0.02413413366835737}, {"ds": "2026-06-01", "lv": 0.07452774255175476, "amk": 0.02146748330306858}, {"ds": "2026-07-01", "lv": 0.05355300764250659, "amk": -0.05071960154055544}, {"ds": "2026-08-01", "lv": 0.12697923257434396, "amk": -0.0017834394904459039}, {"ds": "2026-09-01", "lv": 0.15427392247798144, "amk": 3.16927075079132e-05}], "kons": [{"t": "Legevakt", "ds": "2026-01-01", "v": -0.011627212455452285}, {"t": "Legevakt", "ds": "2026-02-01", "v": -0.10291509530119258}, {"t": "Legevakt", "ds": "2026-03-01", "v": -0.055330713433828005}, {"t": "Legevakt", "ds": "2026-04-01", "v": -0.0005284650492433096}, {"t": "Legevakt", "ds": "2026-05-01", "v": 0.09991001799640076}, {"t": "Legevakt", "ds": "2026-06-01", "v": -0.0030739539603270583}, {"t": "Legevakt", "ds": "2026-07-01", "v": 0.03867806201324275}, {"t": "Legevakt", "ds": "2026-08-01", "v": 0.0411904715069733}, {"t": "Legevakt", "ds": "2026-09-01", "v": 0.010452007164682309}, {"t": "Fastlege", "ds": "2026-01-01", "v": -0.0517072784183209}, {"t": "Fastlege", "ds": "2026-02-01", "v": -0.02529226588993405}, {"t": "Fastlege", "ds": "2026-03-01", "v": 0.016004569698940818}, {"t": "Fastlege", "ds": "2026-04-01", "v": 0.04724790031445525}, {"t": "Fastlege", "ds": "2026-05-01", "v": -0.06982450384278194}, {"t": "Fastlege", "ds": "2026-06-01", "v": 0.0916448352461392}, {"t": "Fastlege", "ds": "2026-07-01", "v": -0.015294841782112822}, {"t": "Fastlege", "ds": "2026-08-01", "v": 0.04983593692243815}, {"t": "Fastlege", "ds": "2026-09-01", "v": -0.010531571482460644}], "fylker": [{"fylke": "Agder", "kommune_per_innb": 608.0, "stat_per_innb": 162, "innbyggere_per_innb": 54, "per_innb": 824.0}, {"fylke": "Akershus", "kommune_per_innb": 584.0, "stat_per_innb": 132, "innbyggere_per_innb": 42, "per_innb": 758.0}, {"fylke": "Buskerud", "kommune_per_innb": 633.0, "stat_per_innb": 202, "innbyggere_per_innb": 53, "per_innb": 888.0}, {"fylke": "Finnmark", "kommune_per_innb": 1392.0, "stat_per_innb": 633, "innbyggere_per_innb": 66, "per_innb": 2091.0}, {"fylke": "Innlandet", "kommune_per_innb": 708.0, "stat_per_innb": 154, "innbyggere_per_innb": 53, "per_innb": 915.0}, {"fylke": "Møre og Romsdal", "kommune_per_innb": 746.0, "stat_per_innb": 139, "innbyggere_per_innb": 44, "per_innb": 929.0}, {"fylke": "Nordland", "kommune_per_innb": 980.0, "stat_per_innb": 307, "innbyggere_per_innb": 50, "per_innb": 1337.0}, {"fylke": "Oslo", "kommune_per_innb": 295.0, "stat_per_innb": 113, "innbyggere_per_innb": 30, "per_innb": 438.0}, {"fylke": "Rogaland", "kommune_per_innb": 572.0, "stat_per_innb": 133, "innbyggere_per_innb": 46, "per_innb": 751.0}, {"fylke": "Telemark", "kommune_per_innb": 714.0, "stat_per_innb": 167, "innbyggere_per_innb": 48, "per_innb": 929.0}, {"fylke": "Troms", "kommune_per_innb": 976.0, "stat_per_innb": 240, "innbyggere_per_innb": 58, "per_innb": 1274.0}, {"fylke": "Trøndelag", "kommune_per_innb": 644.0, "stat_per_innb": 135, "innbyggere_per_innb": 40, "per_innb": 819.0}, {"fylke": "Vestfold", "kommune_per_innb": 642.0, "stat_per_innb": 118, "innbyggere_per_innb": 47, "per_innb": 807.0}, {"fylke": "Vestland", "kommune_per_innb": 863.0, "stat_per_innb": 147, "innbyggere_per_innb": 47, "per_innb": 1057.0}, {"fylke": "Østfold", "kommune_per_innb": 640.0, "stat_per_innb": 161, "innbyggere_per_innb": 57, "per_innb": 858.0}, {"fylke": "Hele landet", "kommune_per_innb": 654.0, "stat_per_innb": 158, "innbyggere_per_innb": 46, "per_innb": 858.0}], "modell": [{"n": "Trend og sesong", "feil": 0.158, "over": 0.23}, {"n": "+ symptomsøk", "feil": 0.248, "over": 0.33}, {"n": "+ symptomsøk og ChatGPT", "feil": 0.245, "over": 0.32}]};
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let ANIM=true;
+const MND=["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"];
+const nf=o=>new Intl.NumberFormat("nb-NO",o);
+const fP0=v=>nf({style:"percent",maximumFractionDigits:0}).format(v),fP1=v=>nf({style:"percent",minimumFractionDigits:1,maximumFractionDigits:1}).format(v);
+const fS=v=>(v>0?"+":"")+fP1(v),fS0=v=>(v>0?"+":"")+fP0(v),fN=v=>nf({maximumFractionDigits:0}).format(v);
+const lab=d=>MND[+d.slice(5,7)-1]+" "+d.slice(2,4);
+const c=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const dur=ms=>(RM||!ANIM)?0:ms, del=ms=>(RM||!ANIM)?0:ms;
+function stage(id){const el=document.getElementById(id);el.replaceChildren();const W=Math.max(260,el.clientWidth),H=Math.max(180,el.clientHeight);
+  const fs=Math.max(11,parseFloat(getComputedStyle(el).fontSize)*.95);const s=d3.select(el).append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("width","100%").attr("height","100%").style("font-size",fs+"px");return {s,W,H,fs};}
+const wide=(arr,fs)=>d3.max(arr,t=>String(t).length)*fs*.56;
+function yGrid(g,y,x0,x1,fmt,n){for(const t of y.ticks(n||5)){g.append("line").attr("x1",x0).attr("x2",x1).attr("y1",y(t)).attr("y2",y(t)).attr("stroke",t===0?c("--muted"):c("--line"));
+  g.append("text").attr("x",x0-8).attr("y",y(t)).attr("dy",".32em").attr("text-anchor","end").text(fmt(t));}}
+function vBars(sel,y){return sel.attr("y",y(0)).attr("height",0).transition().duration(dur(700)).delay((d,i)=>del(i*30)).ease(d3.easeCubicOut).attr("y",r=>y(Math.max(0,r.v))).attr("height",r=>Math.abs(y(r.v)-y(0)));}
+function drawLine(p,i){const L=p.node().getTotalLength();p.attr("stroke-dasharray",L).attr("stroke-dashoffset",L).transition().duration(dur(1500)).delay(del(i*250)).ease(d3.easeCubicInOut).attr("stroke-dashoffset",0);}
+const fadeIn=(sel,ms)=>sel.attr("opacity",0).transition().duration(dur(400)).delay(del(ms)).attr("opacity",1);
+
+const draw={
+fBrudd(){const {s,W,H,fs}=stage("fBrudd"),d=D.norge_yoy,ml=wide(["−10 %"],fs)+14,mb=fs*1.9;
+  const y=d3.scaleLinear([d3.min(d,r=>r.v),d3.max(d,r=>r.v)],[H-mb,fs*1.6]).nice(),x=d3.scaleBand(d.map(r=>r.ds),[ml,W-4]).padding(.24);
+  yGrid(s,y,ml,W-4,fP0);const hot=r=>r.ds>="2026-05";
+  vBars(s.selectAll("rect").data(d).join("rect").attr("x",r=>x(r.ds)).attr("width",x.bandwidth()).attr("rx",2).attr("fill",r=>hot(r)?c("--vent"):c("--ghost")),y);
+  const step=W<520?4:2;s.selectAll("text.x").data(d.filter((r,i)=>i%step===0)).join("text").attr("x",r=>x(r.ds)+x.bandwidth()/2).attr("y",H-4).attr("text-anchor","middle").text(r=>lab(r.ds));
+  if(x.bandwidth()>fs*1.9)fadeIn(s.selectAll("text.v").data(d.filter(hot)).join("text").attr("class","v").attr("x",r=>x(r.ds)+x.bandwidth()/2).attr("y",r=>y(r.v)-6).attr("text-anchor","middle").text(r=>fS0(r.v)),900);},
+fRang(){const {s,W,H,fs}=stage("fRang"),star=new Set(["Elverum","Hå","Sandnessjøen"]);
+  const d=D.endring.filter(r=>r.e!=null).map(r=>({...r,l:r.n.replace(" (Ullensaker)","").replace(" (alle)","")+(star.has(r.n)?" *":"")})).sort((a,b)=>b.e-a.e);
+  const ml=wide(d.map(r=>r.l),fs)+16,mr=wide(["+50,8 %"],fs)+10;
+  const x=d3.scaleLinear([Math.min(0,d3.min(d,r=>r.e)),d3.max(d,r=>r.e)],[ml,W-mr]),y=d3.scaleBand(d.map(r=>r.n),[0,H]).padding(.26);
+  const col=r=>r.n==="Oslo"?c("--alarm"):r.n==="Norge (alle)"?c("--ink"):c("--ghost");
+  s.append("line").attr("x1",x(0)).attr("x2",x(0)).attr("y1",0).attr("y2",H).attr("stroke",c("--muted"));
+  s.selectAll("rect").data(d).join("rect").attr("y",r=>y(r.n)).attr("height",y.bandwidth()).attr("rx",2).attr("fill",col).attr("x",x(0)).attr("width",0)
+    .transition().duration(dur(800)).delay((r,i)=>del(i*35)).ease(d3.easeCubicOut).attr("x",r=>x(Math.min(0,r.e))).attr("width",r=>Math.abs(x(r.e)-x(0)));
+  s.selectAll("text.n").data(d).join("text").attr("class",r=>r.n==="Oslo"?"hot":r.n==="Norge (alle)"?"v":"").attr("x",r=>r.e<0?x(r.e)-8:ml-10).attr("y",r=>y(r.n)+y.bandwidth()/2).attr("dy",".32em").attr("text-anchor","end").text(r=>r.l);
+  fadeIn(s.selectAll("text.e").data(d).join("text").attr("class","v").attr("x",r=>x(Math.max(0,r.e))+7).attr("y",r=>y(r.n)+y.bandwidth()/2).attr("dy",".32em").text(r=>fS(r.e)),700);},
+fOslo(){const {s,W,H,fs}=stage("fOslo"),d=D.oslo,ml=wide(["25 000"],fs)+14,mb=fs*1.9,mr=wide(["27 230"],fs)+14;
+  const y=d3.scaleLinear([10000,d3.max(d,r=>r.v)],[H-mb,fs]).nice(),x=d3.scalePoint(d3.range(12),[ml+fs,W-mr]);
+  yGrid(s,y,ml,W-4,fN,4);MND.forEach((n,i)=>{if(W>=520||i%2===0)s.append("text").attr("x",x(i)).attr("y",H-4).attr("text-anchor","middle").text(n);});
+  [["2024","--ghost",2],["2025","--svar",2.4],["2026","--alarm",3.6]].forEach(([yr,col,w],i)=>{const p=d.filter(r=>r.ds.startsWith(yr)),X=r=>x(+r.ds.slice(5,7)-1);
+    drawLine(s.append("path").attr("d",d3.line().x(X).y(r=>y(r.v))(p)).attr("fill","none").attr("stroke",c(col)).attr("stroke-width",w).attr("stroke-linejoin","round").attr("stroke-linecap","round"),i);
+    if(yr==="2026"){const l=p[p.length-1];fadeIn(s.append("circle").attr("cx",X(l)).attr("cy",y(l.v)).attr("r",6).attr("fill",c(col)),1900);
+      fadeIn(s.append("text").attr("class","hot").attr("x",X(l)+11).attr("y",y(l.v)).attr("dy",".32em").text(fN(l.v)),1900);}});},
+fHundre(){const {s,W,H,fs}=stage("fHundre"),get=n=>Math.round(D.store.find(r=>r.n===n).a26*100);
+  const sets=[["Norge",get("Norge (alle)")],["Oslo legevakt",get("Oslo")]],stack=W<560,cols=stack?20:10,rows=100/cols;
+  const pw=stack?W:W/2,ph=stack?H/2:H,head=fs*2.6,cell=Math.min((pw-fs*2)/cols,(ph-head-fs)/rows);
+  sets.forEach(([name,n],k)=>{const ox=stack?0:k*pw,oy=stack?k*ph:0,g=s.append("g").attr("transform",`translate(${ox},${oy})`);
+    g.append("text").attr("class",k?"hot":"v").attr("x",0).attr("y",fs*1.3).style("font-size","1.25em").text(name+": "+n+" av 100");
+    g.selectAll("circle").data(d3.range(100)).join("circle").attr("cx",i=>(i%cols)*cell+cell/2).attr("cy",i=>head+Math.floor(i/cols)*cell+cell/2)
+      .attr("fill",i=>i<n?c("--svar"):c("--vent")).attr("r",0).transition().duration(dur(350)).delay(i=>del(i*14+k*300)).ease(d3.easeBackOut.overshoot(2)).attr("r",cell*.36);
+    if(!stack){const ky=head+8*cell;g.append("line").attr("x1",0).attr("x2",cols*cell).attr("y1",ky).attr("y2",ky).attr("stroke",c("--ink")).attr("stroke-dasharray","5 4");
+      g.append("text").attr("class","v").attr("x",cols*cell+8).attr("y",ky).attr("dy",".32em").text("krav 80");}});},
+fKrav(){const {s,W,H,fs}=stage("fKrav"),d=[...D.store].map(r=>({...r,l:r.n.replace(" (alle)","")})).sort((a,b)=>b.a26-a.a26),ml=wide(d.map(r=>r.l),fs)+16,mb=fs*2;
+  const x=d3.scaleLinear([0,1],[ml,W-fs*3.2]),y=d3.scalePoint(d.map(r=>r.n),[fs,H-mb-fs]).padding(.2);
+  for(const t of [0,.2,.4,.6,.8,1]){s.append("line").attr("x1",x(t)).attr("x2",x(t)).attr("y1",0).attr("y2",H-mb).attr("stroke",t===.8?c("--ink"):c("--line")).attr("stroke-dasharray",t===.8?"5 4":null);
+    s.append("text").attr("class",t===.8?"v":"").attr("x",x(t)).attr("y",H-4).attr("text-anchor","middle").text(t===.8?"krav 80 %":fP0(t));}
+  d.forEach((r,i)=>{const yy=y(r.n),hot=r.n==="Oslo",col=hot?c("--alarm"):c("--ink");
+    s.append("text").attr("class",hot?"hot":r.n==="Norge (alle)"?"v":"").attr("x",ml-12).attr("y",yy).attr("dy",".32em").attr("text-anchor","end").text(r.l);
+    s.append("line").attr("y1",yy).attr("y2",yy).attr("stroke",c("--ghost")).attr("stroke-width",3).attr("x1",x(r.a25)).attr("x2",x(r.a25)).transition().duration(dur(800)).delay(del(200+i*50)).attr("x2",x(r.a26));
+    s.append("circle").attr("cy",yy).attr("cx",x(r.a25)).attr("r",fs*.42).attr("fill",c("--ghost"));
+    s.append("circle").attr("cy",yy).attr("r",fs*.5).attr("fill",col).attr("cx",x(r.a25)).transition().duration(dur(800)).delay(del(200+i*50)).attr("cx",x(r.a26));
+    fadeIn(s.append("text").attr("class",hot?"hot":"v").attr("x",x(Math.max(r.a25,r.a26))+fs*.9).attr("y",yy).attr("dy",".32em").text(fP0(r.a26)),900+i*50);});},
+fAmk(){const {s,W,H,fs}=stage("fAmk"),d=D.amk,ml=wide(["−10 %"],fs)+14,mb=fs*1.9,mr=wide(["+15,4 %"],fs)+14;
+  const y=d3.scaleLinear([d3.min(d,r=>Math.min(r.lv,r.amk)),d3.max(d,r=>Math.max(r.lv,r.amk))],[H-mb,fs]).nice(),x=d3.scalePoint(d.map(r=>r.ds),[ml+fs,W-mr]);
+  yGrid(s,y,ml,W-4,fP0);const step=W<520?6:3;d.filter((r,i)=>i%step===0).forEach(r=>s.append("text").attr("x",x(r.ds)).attr("y",H-4).attr("text-anchor","middle").text(lab(r.ds)));
+  const x0=x("2026-05-01");s.insert("rect",":first-child").attr("x",x0).attr("y",fs).attr("width",W-mr-x0).attr("height",H-mb-fs).attr("fill",c("--vent")).attr("opacity",.1);
+  s.append("text").attr("class","v").attr("x",x0+6).attr("y",fs*2.1).text("fra mai 2026");
+  [["amk","--svar"],["lv","--vent"]].forEach(([k,col],i)=>{drawLine(s.append("path").attr("d",d3.line().x(r=>x(r.ds)).y(r=>y(r[k]))(d)).attr("fill","none").attr("stroke",c(col)).attr("stroke-width",3.4).attr("stroke-linejoin","round").attr("stroke-linecap","round"),i);
+    const l=d[d.length-1];fadeIn(s.append("circle").attr("cx",x(l.ds)).attr("cy",y(l[k])).attr("r",5.5).attr("fill",c(col)),1700);
+    fadeIn(s.append("text").attr("class","v").attr("x",x(l.ds)+10).attr("y",y(l[k])).attr("dy",".32em").text(fS(l[k])),1700);});},
+fKons(){const {s,W,H,fs}=stage("fKons"),d=D.kons,ds=[...new Set(d.map(r=>r.ds))].sort(),ml=wide(["−10 %"],fs)+14,mb=fs*1.9;
+  const y=d3.scaleLinear([d3.min(d,r=>r.v),d3.max(d,r=>r.v)],[H-mb,fs]).nice(),x=d3.scaleBand(ds,[ml,W-4]).padding(.22),xs=d3.scaleBand(["Legevakt","Fastlege"],[0,x.bandwidth()]).padding(.1);
+  yGrid(s,y,ml,W-4,fP0);ds.forEach(dd=>s.append("text").attr("x",x(dd)+x.bandwidth()/2).attr("y",H-4).attr("text-anchor","middle").text(MND[+dd.slice(5,7)-1]));
+  vBars(s.selectAll("rect").data(d).join("rect").attr("x",r=>x(r.ds)+xs(r.t)).attr("width",xs.bandwidth()).attr("rx",2).attr("fill",r=>r.t==="Legevakt"?c("--vent"):c("--svar")),y);},
+fModell(){const {s,W,H,fs}=stage("fModell"),d=D.modell,bh=Math.min(fs*1.5,H/(d.length*2.6)),row=bh+fs*2,x=d3.scaleLinear([0,d3.max(d,r=>r.feil)],[0,W-wide(["24,8 %"],fs)-12]);
+  d.forEach((r,i)=>{const yy=i*row+fs*1.2;s.append("text").attr("class",i?"":"v").attr("x",0).attr("y",yy).text(r.n);
+    s.append("rect").attr("x",0).attr("y",yy+fs*.5).attr("height",bh).attr("rx",2).attr("fill",i?c("--ghost"):c("--ink")).attr("width",0).transition().duration(dur(800)).delay(del(i*150)).ease(d3.easeCubicOut).attr("width",x(r.feil));
+    fadeIn(s.append("text").attr("class","v").attr("x",x(r.feil)+8).attr("y",yy+fs*.5+bh/2).attr("dy",".32em").text(fP1(r.feil)),700+i*150);});},
+fKost(){const {s,W,H,fs}=stage("fKost"),d=D.fylker.filter(r=>r.fylke!=="Hele landet").sort((a,b)=>b.per_innb-a.per_innb),land=D.fylker.find(r=>r.fylke==="Hele landet");
+  const ml=wide(d.map(r=>r.fylke),fs)+16,mr=wide(["2 091 kr"],fs)+12,mb=fs*1.6,x=d3.scaleLinear([0,d3.max(d,r=>r.per_innb)],[ml,W-mr]),y=d3.scaleBand(d.map(r=>r.fylke),[0,H-mb]).padding(.24);
+  const keys=[["kommune_per_innb","--ink"],["stat_per_innb","--svar"],["innbyggere_per_innb","--ghost"]];
+  d.forEach((r,i)=>{let x0=0;const hot=r.fylke==="Oslo";for(const [k,col] of keys){const a=x0,b=x0+r[k];
+      s.append("rect").attr("y",y(r.fylke)).attr("height",y.bandwidth()).attr("fill",hot&&k==="kommune_per_innb"?c("--alarm"):c(col)).attr("x",x(0)).attr("width",0)
+        .transition().duration(dur(900)).delay(del(i*35)).ease(d3.easeCubicOut).attr("x",x(a)).attr("width",Math.max(0,x(b)-x(a)-1));x0=b;}
+    s.append("text").attr("class",hot?"hot":"").attr("x",ml-10).attr("y",y(r.fylke)+y.bandwidth()/2).attr("dy",".32em").attr("text-anchor","end").text(r.fylke);
+    fadeIn(s.append("text").attr("class",hot?"hot":"v").attr("x",x(r.per_innb)+7).attr("y",y(r.fylke)+y.bandwidth()/2).attr("dy",".32em").text(fN(r.per_innb)+" kr"),800+i*35);});
+  s.append("line").attr("x1",x(land.per_innb)).attr("x2",x(land.per_innb)).attr("y1",0).attr("y2",H-mb).attr("stroke",c("--ink")).attr("stroke-dasharray","5 4");
+  s.append("text").attr("class","v").attr("x",x(land.per_innb)).attr("y",H-3).attr("text-anchor","middle").text("landet "+fN(land.per_innb)+" kr");}
+};
+
+/* Title: every dot is a call. The share that passes the 2-minute line is Oslo's real share. */
+const flyt=(()=>{const cv=document.getElementById("flyt"),x=cv.getContext("2d"),P=D.store.find(r=>r.n==="Oslo").a26;let W=0,H=0,ps=[],raf=0,col={};
+  document.getElementById("osloTall").textContent=Math.round(P*100);
+  function size(){const r=cv.getBoundingClientRect(),k=Math.min(2,devicePixelRatio||1);W=cv.width=Math.round(r.width*k);H=cv.height=Math.round(r.height*k);
+    col={n:c("--night-muted"),s:c("--svar")==="#2B59E0"?"#6E93FF":c("--svar"),v:c("--vent"),t:c("--night-muted")};}
+  function spawn(){const u=Math.max(W/900,(W/cv.getBoundingClientRect().width)*.6);ps.push({x:-8,y:H*(.07+Math.random()*.25),v:(1.6+Math.random()*1.4)*u,r:(2.6+Math.random()*2.2)*u,ok:Math.random()<P,stop:W*(.66-Math.random()*.2),wait:240+Math.random()*420,st:0,a:1});}
+  function step(){if(ps.length<420&&Math.random()<.5)spawn();
+    for(const p of ps){if(p.ok){p.x+=p.v*(p.x>W*.68?1.7:1);}else if(p.st===0){p.x+=p.v;if(p.x>=p.stop)p.st=1;}else if(p.st===1){p.wait--;p.y+=Math.sin((p.wait+p.stop)*.05)*.15;if(p.wait<=0)p.st=2;}else{p.x+=p.v*.45;p.a-=.006;}}
+    ps=ps.filter(p=>p.x<W+10&&p.a>0);}
+  function paint(){x.clearRect(0,0,W,H);const gx=W*.68,u=Math.max(W/900,(W/cv.getBoundingClientRect().width)*.85);x.strokeStyle=col.t;x.globalAlpha=.5;x.setLineDash([6*u,7*u]);x.lineWidth=1.2*u;x.beginPath();x.moveTo(gx,H*.04);x.lineTo(gx,H*.35);x.stroke();x.setLineDash([]);
+    x.globalAlpha=.9;x.fillStyle=col.t;x.font=`500 ${13*u}px Instrument Sans, system-ui, sans-serif`;x.fillText("2 minutter",gx+8*u,H*.04+13*u);
+    for(const p of ps){x.globalAlpha=p.a*(p.ok||p.st?0.95:0.55);x.fillStyle=p.ok?(p.x>gx?col.s:col.n):(p.st?col.v:col.n);x.beginPath();x.arc(p.x,p.y,p.r,0,6.3);x.fill();}x.globalAlpha=1;}
+  function loop(){if(!cv.closest(".slide").classList.contains("on")&&!stacked()){raf=0;return;}step();paint();raf=requestAnimationFrame(loop);}
+  return {start(){cancelAnimationFrame(raf);size();if(!ps.length)for(let i=0;i<900;i++)step();paint();if(!RM)raf=requestAnimationFrame(loop);},resize(){size();ps=[];for(let i=0;i<900;i++)step();paint();}};})();
+
+function countUp(sl){if(RM||!ANIM)return;sl.querySelectorAll("[data-tell]").forEach(b=>{const t=+b.dataset.tell,dec=(b.dataset.tell.split(".")[1]||"").length,t0=performance.now();
+  const f=n=>{const k=Math.min(1,(n-t0)/1100),e=1-Math.pow(1-k,3);b.textContent=(b.dataset.pre||"")+nf({minimumFractionDigits:dec,maximumFractionDigits:dec}).format(t*e)+(b.dataset.suf||"");if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);});}
+
+const slides=[...document.querySelectorAll(".slide")];
+const stacked=()=>getComputedStyle(slides[1]).position==="relative";
+let cur=0;
+function render(sl,anim){ANIM=anim;sl.querySelectorAll(".fig").forEach(f=>draw[f.id]&&draw[f.id]());if(sl.classList.contains("title"))flyt.start();if(anim)countUp(sl);ANIM=true;}
+function show(i,anim=true){cur=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,k)=>{s.classList.toggle("on",k===cur);s.classList.toggle("anim",k===cur&&anim);});
+  document.getElementById("cnt").textContent=(cur+1)+" / "+slides.length;try{history.replaceState(null,"","#s"+(cur+1));}catch(e){}
+  if(stacked())slides.forEach(s=>render(s,false));else render(slides[cur],anim);}
+document.getElementById("prev").addEventListener("click",()=>show(cur-1));
+document.getElementById("next").addEventListener("click",()=>show(cur+1));
+addEventListener("keydown",e=>{if(stacked())return;if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();show(cur+1);}else if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();show(cur-1);}else if(e.key==="Home")show(0);else if(e.key==="End")show(slides.length-1);});
+let tx=null;const dk=document.getElementById("deck");
+dk.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
+dk.addEventListener("touchend",e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>50){show(dx<0?cur+1:cur-1);e.preventDefault();}});
+document.getElementById("deck").addEventListener("click",e=>{if(stacked())return;const r=slides[cur].getBoundingClientRect();show(e.clientX>r.left+r.width/2?cur+1:cur-1);});
+let rz;addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(()=>show(cur,false),120);});
+addEventListener("hashchange",()=>{const n=+location.hash.replace("#s","");if(n&&n-1!==cur)show(n-1);});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>show(cur,false));
+new MutationObserver(()=>show(cur,false)).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+addEventListener("beforeprint",()=>slides.forEach(s=>{s.classList.add("on");render(s,false);}));
+addEventListener("afterprint",()=>show(cur,false));
+const start=()=>show((+location.hash.replace("#s","")||1)-1);
+(document.fonts&&document.fonts.ready?Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1200))]):Promise.resolve()).then(start);
+</script>
+</body></html>
